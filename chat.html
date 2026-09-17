@@ -18,7 +18,7 @@
     justify-content:space-between; height:60px; flex-shrink:0; transition:background 0.3s;
   }
   .nav-left { display:flex; align-items:center; gap:14px; }
-  .back-btn { padding:7px 14px; background:transparent; border:1px solid var(--border); border-radius:8px; color:var(--text-muted); font-family:'DM Sans',sans-serif; font-size:13px; cursor:pointer; transition:all 0.2s; text-decoration:none; display:flex; align-items:center; gap:6px; }
+  .back-btn { padding:7px 14px; background:transparent; border:1px solid var(--border); border-radius:8px; color:var(--text-muted); font-family:'DM Sans',sans-serif; font-size:13px; cursor:pointer; transition:all 0.2s; text-decoration:none; display:flex; align-items:center; gap:6px; min-height:36px; box-sizing:border-box; }
   .back-btn:hover { border-color:var(--mint); color:var(--mint); }
   .nav-logo { font-family:'DM Serif Display',serif; font-size:18px; display:flex; align-items:center; gap:8px; }
   .nav-logo span { color:var(--mint); }
@@ -30,39 +30,35 @@
 
   .nav-right { display:flex; align-items:center; gap:10px; }
 
-  /* Export button */
   .btn-export {
     padding:7px 14px; background:transparent;
     border:1px solid var(--border); border-radius:8px;
     color:var(--text-muted); font-family:'DM Sans',sans-serif;
     font-size:13px; cursor:pointer; transition:all 0.2s;
-    display:flex; align-items:center; gap:6px;
+    display:flex; align-items:center; gap:6px; min-height:36px; box-sizing:border-box;
   }
   .btn-export:hover { border-color:var(--mint); color:var(--mint); }
 
-  /* End Consultation button */
   .btn-end {
     padding:7px 14px; background:transparent;
     border:1px solid rgba(255,92,124,0.3); border-radius:8px;
     color:var(--danger); font-family:'DM Sans',sans-serif;
     font-size:13px; cursor:pointer; transition:all 0.2s;
-    display:flex; align-items:center; gap:6px;
+    display:flex; align-items:center; gap:6px; min-height:36px; box-sizing:border-box;
   }
   .btn-end:hover:not(:disabled) { background:rgba(255,92,124,0.1); border-color:var(--danger); }
   .btn-end:disabled { opacity:0.4; cursor:not-allowed; }
 
-  /* Send Report button */
   .btn-report {
     padding:7px 14px; background:var(--mint);
     border:none; border-radius:8px;
     color:#0a1628; font-family:'DM Sans',sans-serif;
     font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s;
-    display:flex; align-items:center; gap:6px;
+    display:flex; align-items:center; gap:6px; min-height:36px; box-sizing:border-box;
   }
   .btn-report:hover:not(:disabled) { background:var(--mint-light); }
   .btn-report:disabled { opacity:0.5; cursor:not-allowed; }
 
-  /* Copy toast (reused for all toast messages) */
   .copy-toast {
     position:fixed; bottom:100px; left:50%; transform:translateX(-50%);
     background:var(--mint); color:#0a1628; padding:10px 20px;
@@ -73,7 +69,6 @@
   .copy-toast.show { opacity:1; }
   .copy-toast.error { background:var(--danger); color:#fff; }
 
-  /* Ended banner */
   .ended-banner {
     background:var(--mint-dim); border:1px solid rgba(0,200,150,0.2);
     border-radius:12px; padding:14px 18px; margin:0 36px;
@@ -84,8 +79,7 @@
   .ended-banner-text strong { display:block; color:var(--mint); font-size:14px; margin-bottom:2px; }
   .ended-banner-text p { color:var(--text-muted); font-size:12px; }
 
-  /* Theme toggle */
-  .theme-toggle-nav { background:transparent; border:1px solid var(--border); border-radius:50px; padding:5px 12px; display:flex; align-items:center; gap:7px; cursor:pointer; font-size:12px; color:var(--text-muted); font-family:'DM Sans',sans-serif; transition:all 0.2s; }
+  .theme-toggle-nav { background:transparent; border:1px solid var(--border); border-radius:50px; padding:5px 12px; display:flex; align-items:center; gap:7px; cursor:pointer; font-size:12px; color:var(--text-muted); font-family:'DM Sans',sans-serif; transition:all 0.2s; min-height:36px; box-sizing:border-box; }
   .theme-toggle-nav:hover { border-color:var(--mint); color:var(--mint); }
   .toggle-track { width:28px; height:16px; background:var(--bg-toggle); border-radius:8px; position:relative; transition:background 0.3s; }
   .toggle-thumb { width:12px; height:12px; background:var(--mint); border-radius:50%; position:absolute; top:2px; left:2px; transition:transform 0.3s; }
@@ -93,7 +87,6 @@
 
   .chat-layout { display:flex; flex:1; overflow:hidden; }
 
-  /* Sidebar */
   .sidebar { width:260px; background:var(--bg-mid); border-right:1px solid var(--border); padding:22px 18px; display:flex; flex-direction:column; gap:20px; overflow-y:auto; flex-shrink:0; transition:background 0.3s; }
   .sidebar-title { font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted); margin-bottom:4px; }
   .info-card { background:var(--bg); border-radius:12px; padding:14px; border:1px solid var(--border); transition:background 0.3s; }
@@ -105,7 +98,6 @@
   .tip { display:flex; align-items:flex-start; gap:8px; font-size:12px; color:var(--text-muted); line-height:1.5; }
   .tip-dot { width:6px; height:6px; background:var(--mint); border-radius:50%; margin-top:5px; flex-shrink:0; }
 
-  /* Chat */
   .chat-area { flex:1; display:flex; flex-direction:column; overflow:hidden; }
 
   .messages { flex:1; overflow-y:auto; padding:28px 36px; display:flex; flex-direction:column; gap:18px; scroll-behavior:smooth; }
@@ -140,10 +132,9 @@
   .welcome-title { font-family:'DM Serif Display',serif; font-size:22px; color:var(--text); margin-bottom:8px; }
   .welcome-sub { font-size:14px; margin-bottom:22px; }
   .quick-symptoms { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; max-width:500px; margin:0 auto; }
-  .quick-btn { padding:8px 14px; background:var(--bg-mid); border:1px solid var(--border); border-radius:20px; color:var(--text-muted); font-family:'DM Sans',sans-serif; font-size:13px; cursor:pointer; transition:all 0.2s; }
+  .quick-btn { padding:8px 14px; background:var(--bg-mid); border:1px solid var(--border); border-radius:20px; color:var(--text-muted); font-family:'DM Sans',sans-serif; font-size:13px; cursor:pointer; transition:all 0.2s; min-height:36px; }
   .quick-btn:hover { border-color:var(--mint); color:var(--mint); background:var(--mint-dim); }
 
-  /* Input */
   .input-area { padding:16px 36px 24px; border-top:1px solid var(--border); background:var(--bg); flex-shrink:0; transition:background 0.3s; }
   .input-box { display:flex; gap:10px; align-items:flex-end; background:var(--bg-mid); border:1px solid var(--border); border-radius:14px; padding:10px 14px; transition:border-color 0.2s,background 0.3s; }
   .input-box:focus-within { border-color:rgba(0,200,150,0.4); box-shadow:0 0 0 3px var(--mint-dim); }
@@ -155,36 +146,97 @@
   .send-btn:disabled { opacity:0.4; cursor:not-allowed; }
   .input-hint { font-size:12px; color:var(--text-muted); opacity:0.5; margin-top:7px; text-align:center; }
 
-  /* Pharmacy alert banner */
   .pharmacy-alert { background:rgba(255,92,124,0.08); border:1px solid rgba(255,92,124,0.25); border-radius:12px; padding:14px 18px; margin:0 36px 0; display:flex; align-items:center; justify-content:space-between; gap:14px; animation:fadeIn 0.4s ease; }
   .pharmacy-alert-left { display:flex; align-items:center; gap:12px; }
   .pharmacy-alert-left span { font-size:18px; }
   .pharmacy-alert-text strong { display:block; color:var(--danger); font-size:14px; margin-bottom:2px; }
   .pharmacy-alert-text p { color:var(--text-muted); font-size:12px; }
-  .btn-find-pharmacy { padding:9px 16px; background:var(--danger); border:none; border-radius:8px; color:white; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; white-space:nowrap; text-decoration:none; display:inline-block; }
+  .btn-find-pharmacy { padding:9px 16px; background:var(--danger); border:none; border-radius:8px; color:white; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; white-space:nowrap; text-decoration:none; display:inline-block; min-height:36px; box-sizing:border-box; }
   .btn-find-pharmacy:hover { background:#ff7a94; transform:translateY(-1px); }
   .btn-find-pharmacy.medium { background:var(--warning); color:#0a1628; }
   .btn-find-pharmacy.medium:hover { background:#ffbb33; }
+
+  /* Mobile sidebar toggle (hidden on desktop) */
+  .sidebar-toggle-btn { display:none; }
+  .sidebar-backdrop { display:none; }
+
+  /* ── TABLET (900px) — trim sidebar ───────────────────────────── */
+  @media(max-width:900px){
+    .sidebar { width:220px; }
+  }
+
+  /* ── MOBILE (375px–480px) ─────────────────────────────────────── */
+  @media(max-width:600px){
+    nav { padding:0 12px; gap:6px; }
+    .nav-left { gap:8px; }
+    .back-btn span:last-child { display:none; } /* icon only */
+    .back-btn { padding:8px; }
+    .nav-logo { font-size:15px; }
+    .session-badge { display:none; } /* redundant on small screens, saves space */
+    .severity-indicator { padding:3px 9px; font-size:10px; }
+
+    .nav-right { gap:5px; }
+    .btn-export span:last-child, .btn-end span:last-child, .btn-report span:last-child { }
+    .btn-export, .btn-end, .btn-report { padding:8px; font-size:0; gap:0; } /* icon-only buttons */
+    .btn-export::after { content:'📋'; font-size:15px; }
+    .btn-end::after { content:'🏁'; font-size:15px; }
+    .btn-report::after { content:'📄'; font-size:15px; }
+    .theme-toggle-nav span#theme-label { display:none; }
+    .theme-toggle-nav { padding:6px 8px; }
+
+    /* Sidebar becomes an off-canvas drawer on mobile */
+    .sidebar-toggle-btn {
+      display:flex; align-items:center; justify-content:center;
+      width:36px; height:36px; background:transparent;
+      border:1px solid var(--border); border-radius:8px; cursor:pointer;
+      font-size:15px; color:var(--text-muted); flex-shrink:0;
+    }
+    .chat-layout { position:relative; }
+    .sidebar {
+      position:fixed; top:0; left:0; bottom:0; width:80%; max-width:300px;
+      z-index:200; transform:translateX(-100%); transition:transform 0.25s ease;
+      box-shadow:8px 0 24px rgba(0,0,0,0.3);
+    }
+    .sidebar.open { transform:translateX(0); }
+    .sidebar-backdrop {
+      display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:150;
+    }
+    .sidebar-backdrop.show { display:block; }
+
+    .messages { padding:16px; gap:14px; }
+    .msg-bubble { max-width:82vw; font-size:14px; padding:10px 14px; }
+    .msg-avatar { width:28px; height:28px; font-size:13px; }
+    .welcome-msg { padding:32px 16px; }
+    .welcome-title { font-size:19px; }
+    .quick-symptoms { gap:6px; }
+    .quick-btn { font-size:12px; padding:7px 12px; }
+
+    .input-area { padding:12px 12px 16px; }
+    .pharmacy-alert { margin:0 12px; padding:12px 14px; flex-direction:column; align-items:flex-start; gap:10px; }
+    .btn-find-pharmacy { width:100%; text-align:center; }
+    .ended-banner { margin:0 12px; flex-direction:column; align-items:flex-start; gap:8px; }
+  }
 </style>
 </head>
 <body>
 
 <nav>
   <div class="nav-left">
-    <a href="dashboard.html" class="back-btn">← Back</a>
+    <button class="sidebar-toggle-btn" id="sidebar-toggle" onclick="toggleSidebar()" aria-label="Menu">☰</button>
+    <a href="dashboard.html" class="back-btn">← <span>Back</span></a>
     <div class="nav-logo">🩺 Medi<span>AI</span></div>
     <span class="session-badge" id="session-badge">New Session</span>
     <span class="severity-indicator" id="severity-indicator"></span>
   </div>
   <div class="nav-right">
     <button class="btn-export" onclick="exportChat()" id="export-btn" style="display:none">
-      📋 Copy Consultation
+      <span>📋 Copy Consultation</span>
     </button>
     <button class="btn-end" onclick="endConsultation()" id="end-btn" style="display:none">
-      🏁 End Consultation
+      <span>🏁 End Consultation</span>
     </button>
     <button class="btn-report" onclick="sendReport()" id="report-btn" style="display:none">
-      📄 Send Report
+      <span>📄 Send Report</span>
     </button>
     <button class="theme-toggle-nav" onclick="toggleTheme()">
       <span id="theme-icon">☀️</span>
@@ -194,8 +246,10 @@
   </div>
 </nav>
 
+<div class="sidebar-backdrop" id="sidebar-backdrop" onclick="toggleSidebar()"></div>
+
 <div class="chat-layout">
-  <div class="sidebar">
+  <div class="sidebar" id="sidebar">
     <div>
       <div class="sidebar-title">About this consultation</div>
       <div class="info-card"><p>Describe your symptoms clearly. The AI will ask follow-up questions to better understand your condition.</p></div>
@@ -233,7 +287,6 @@
       </div>
     </div>
 
-    <!-- Ended banner — shown after consultation ends -->
     <div class="ended-banner" id="ended-banner">
       <div class="ended-banner-text">
         <strong id="ended-banner-title">✅ Consultation Ended</strong>
@@ -241,7 +294,6 @@
       </div>
     </div>
 
-    <!-- Pharmacy Alert Banner — shown when HIGH or MEDIUM severity detected -->
     <div class="pharmacy-alert" id="pharmacy-alert" style="display:none">
       <div class="pharmacy-alert-left">
         <span>🚨</span>
@@ -265,7 +317,6 @@
   </div>
 </div>
 
-<!-- Toast (reused for copy, end, report, errors) -->
 <div class="copy-toast" id="copy-toast">✅ Consultation copied to clipboard!</div>
 
 <script>
@@ -277,9 +328,8 @@
   let sessionId = null;
   let isLoading = false;
   let sessionEnded = false;
-  let chatHistory = []; // stores {role, content} for export
+  let chatHistory = [];
 
-  // Theme
   const savedTheme = localStorage.getItem('theme') || 'dark';
   document.documentElement.setAttribute('data-theme', savedTheme);
   updateThemeUI(savedTheme);
@@ -297,6 +347,12 @@
     document.getElementById('theme-label').textContent = theme === 'dark' ? 'Light' : 'Dark';
   }
 
+  // ✅ ADDED — mobile off-canvas sidebar toggle
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebar-backdrop').classList.toggle('show');
+  }
+
   function showToast(message, isError = false) {
     const toast = document.getElementById('copy-toast');
     toast.textContent = message;
@@ -305,7 +361,6 @@
     setTimeout(() => toast.classList.remove('show'), 3000);
   }
 
-  // Export / Copy chat
   function exportChat() {
     if (chatHistory.length === 0) return;
 
@@ -341,12 +396,10 @@
     });
   }
 
-  // ✅ ADDED — End Consultation
   async function endConsultation() {
     if (!sessionId || sessionEnded) return;
     const endBtn = document.getElementById('end-btn');
     endBtn.disabled = true;
-    endBtn.textContent = '⏳ Ending...';
 
     try {
       const res = await fetch(`${API}/consultation/end/${sessionId}`, {
@@ -363,21 +416,17 @@
       } else {
         showToast(data.message || 'Failed to end consultation', true);
         endBtn.disabled = false;
-        endBtn.textContent = '🏁 End Consultation';
       }
     } catch (e) {
       showToast('Connection error while ending consultation', true);
       endBtn.disabled = false;
-      endBtn.textContent = '🏁 End Consultation';
     }
   }
 
-  // ✅ ADDED — Send Report (works once session has ended)
   async function sendReport() {
     if (!sessionId) return;
     const reportBtn = document.getElementById('report-btn');
     reportBtn.disabled = true;
-    reportBtn.textContent = '⏳ Sending...';
 
     try {
       const res = await fetch(`${API}/consultation/report/${sessionId}`, {
@@ -398,10 +447,8 @@
     }
 
     reportBtn.disabled = false;
-    reportBtn.textContent = '📄 Send Report';
   }
 
-  // ✅ ADDED — updates UI once a session is known to be ended
   function applyEndedState() {
     sessionEnded = true;
     document.getElementById('end-btn').style.display = 'none';
@@ -440,7 +487,6 @@
     }
   }
 
-  // ✅ ADDED — checks if a re-opened session has already ended, and matches UI accordingly
   async function checkSessionStatus() {
     try {
       const res = await fetch(`${API}/consultation/history`, { headers:{'Authorization':`Bearer ${token}`} });
@@ -500,10 +546,8 @@
         ind.textContent = `Severity: ${sev}`;
         ind.className = `severity-indicator sev-${sev}`;
 
-        // Reset pharmacy banner first
         document.getElementById('pharmacy-alert').style.display = 'none';
 
-        // Show pharmacy banner for HIGH or MEDIUM severity
         if (sev === 'HIGH' || sev === 'MEDIUM') {
           const banner = document.getElementById('pharmacy-alert');
           const title = document.getElementById('pharmacy-alert-title');
@@ -579,7 +623,6 @@
       if (res.status === 401 || res.status === 403) { logout(); return; }
 
       if (res.status === 409) {
-        // Session already ended server-side
         removeTyping();
         const data = await res.json();
         showToast(data.message || 'This consultation has already ended.', true);

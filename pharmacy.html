@@ -45,7 +45,6 @@
   --shadow-sm: 0 2px 10px rgba(0,0,0,0.05);
 }
 
-/* ─── RESET ──────────────────────────────────────────────────────────────── */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 body {
   font-family: 'Inter', sans-serif;
@@ -85,6 +84,7 @@ nav {
   font-size: 12px; font-weight: 500;
   text-decoration: none; cursor: pointer;
   transition: all 0.18s var(--ease);
+  min-height: 36px;
 }
 .back-btn:hover { border-color: var(--mint); color: var(--mint); }
 .back-btn .arr { transition: transform 0.18s var(--ease); display: inline-block; }
@@ -108,7 +108,7 @@ nav {
 
 .nav-right { display: flex; align-items: center; gap: 8px; }
 .icon-btn {
-  width: 32px; height: 32px;
+  width: 36px; height: 36px;
   background: transparent; border: 1px solid var(--border);
   border-radius: 8px; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
@@ -176,7 +176,6 @@ nav {
   transition: background 0.25s var(--ease);
 }
 
-/* Search */
 .s-search { padding: 12px 12px 0; flex-shrink: 0; }
 .s-search-inner {
   display: flex; align-items: center; gap: 7px;
@@ -185,6 +184,7 @@ nav {
   border-radius: var(--radius-btn);
   padding: 8px 11px;
   transition: border-color 0.18s var(--ease), box-shadow 0.18s var(--ease);
+  min-height: 40px;
 }
 .s-search-inner:focus-within {
   border-color: rgba(0,200,150,0.45);
@@ -193,30 +193,31 @@ nav {
 .s-search-inner svg { flex-shrink:0; color:var(--text-dim); }
 .s-input {
   flex:1; background:transparent; border:none; outline:none;
-  color:var(--text); font-family:'Inter',sans-serif; font-size:13px;
+  color:var(--text); font-family:'Inter',sans-serif; font-size:14px;
 }
 .s-input::placeholder { color:var(--text-muted); opacity:0.45; }
 .s-clear {
   background:none; border:none; cursor:pointer;
-  color:var(--text-dim); font-size:13px; line-height:1;
-  display:none; padding:0; transition:color 0.15s;
+  color:var(--text-dim); font-size:14px; line-height:1;
+  display:none; padding:6px; transition:color 0.15s;
 }
 .s-clear.vis { display:block; }
 .s-clear:hover { color:var(--danger); }
 
-/* Filter row */
 .s-filters {
   padding: 9px 12px 10px;
   display: flex; align-items: center; justify-content: space-between; gap: 8px;
   border-bottom: 1px solid var(--border); flex-shrink: 0;
+  flex-wrap: wrap;
 }
-.chips { display: flex; gap: 4px; }
+.chips { display: flex; gap: 4px; flex-wrap: wrap; }
 .chip {
-  padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 500;
+  padding: 6px 10px; border-radius: 20px; font-size: 11px; font-weight: 500;
   border: 1px solid var(--border); background: transparent;
   color: var(--text-muted); cursor: pointer;
   font-family: 'Inter', sans-serif;
   transition: all 0.15s var(--ease);
+  min-height: 30px;
 }
 .chip:hover { border-color: var(--mint); color: var(--mint); }
 .chip.on { background: var(--mint-dim); border-color: rgba(0,200,150,0.3); color: var(--mint); font-weight: 600; }
@@ -225,23 +226,22 @@ nav {
   background: var(--bg-input); border: 1px solid var(--border);
   border-radius: 7px; color: var(--text-muted);
   font-family: 'Inter', sans-serif; font-size: 11px;
-  padding: 3px 7px; cursor: pointer; outline: none;
-  transition: border-color 0.15s;
+  padding: 6px 8px; cursor: pointer; outline: none;
+  transition: border-color 0.15s; min-height: 30px;
 }
 .sort-sel:hover, .sort-sel:focus { border-color: rgba(0,200,150,0.4); }
 
-/* Open-now toggle */
 .s-toggles { padding: 7px 12px 0; display: flex; gap: 5px; flex-shrink: 0; }
 .tpill {
-  padding: 3px 11px; border-radius: 20px; font-size: 11px; font-weight: 500;
+  padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 500;
   border: 1px solid var(--border); background: transparent;
   color: var(--text-muted); cursor: pointer;
   font-family: 'Inter', sans-serif;
   transition: all 0.15s var(--ease);
+  min-height: 30px;
 }
 .tpill.on { background: var(--mint-dim); border-color: rgba(0,200,150,0.3); color: var(--mint); }
 
-/* List header */
 .s-listhdr {
   padding: 7px 12px 6px;
   display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
@@ -250,7 +250,6 @@ nav {
 .s-listhdr-right { display: flex; align-items: center; gap: 8px; }
 .s-listhdr-count { font-size: 11px; color: var(--mint); font-weight: 700; }
 
-/* Cards */
 .p-list {
   flex: 1; overflow-y: auto;
   padding: 0 8px 12px;
@@ -259,12 +258,11 @@ nav {
 .p-list::-webkit-scrollbar { width: 3px; }
 .p-list::-webkit-scrollbar-thumb { background: rgba(0,200,150,0.12); border-radius: 2px; }
 
-/* Pharmacy card */
 .p-card {
   background: var(--bg-card);
   border: 1.5px solid var(--border);
   border-radius: var(--radius-card);
-  padding: 11px 12px;
+  padding: 12px;
   cursor: pointer;
   transition: all 0.18s var(--ease);
   animation: fadeUp 0.28s var(--ease) both;
@@ -294,26 +292,26 @@ nav {
 .pc-badge.unknown { background:rgba(120,136,152,0.1); color:var(--text-muted); }
 
 .pc-addr { font-size:11px; color:var(--text-muted); margin-bottom:7px; line-height:1.45; }
-.pc-meta { display:flex; align-items:center; gap:10px; margin-bottom:9px; }
+.pc-meta { display:flex; align-items:center; gap:10px; margin-bottom:9px; flex-wrap:wrap; }
 .pc-meta-item { display:flex; align-items:center; gap:3px; font-size:11px; color:var(--text-muted); }
 .stars { color:#f5a623; font-size:10px; letter-spacing:-0.5px; }
 
 .pc-btns { display:flex; gap:6px; }
 .pc-btn {
-  flex:1; padding:6px 0;
+  flex:1; padding:9px 0;
   border-radius:7px; font-size:11px; font-weight:600;
   cursor:pointer; font-family:'Inter',sans-serif;
   text-align:center; text-decoration:none;
   display:flex; align-items:center; justify-content:center; gap:4px;
   border:1px solid var(--border); background:transparent; color:var(--text-muted);
   transition:all 0.15s var(--ease);
+  min-height:36px; box-sizing:border-box;
 }
 .pc-btn:hover { border-color:var(--mint); color:var(--mint); background:var(--mint-dim); }
 .pc-btn.pri { background:var(--mint); border-color:var(--mint); color:#080f1e; font-weight:700; }
 .pc-btn.pri:hover { background:var(--mint-light); box-shadow:0 2px 8px rgba(0,200,150,0.25); }
 .pc-btn[disabled] { opacity:0.3; cursor:default; pointer-events:none; }
 
-/* Empty state */
 .empty { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:36px 20px; text-align:center; gap:7px; }
 .empty-icon { font-size:34px; opacity:0.35; }
 .empty-msg { font-size:13px; color:var(--text-muted); line-height:1.6; }
@@ -322,13 +320,12 @@ nav {
 .map-wrap { flex:1; position:relative; overflow:hidden; }
 #map { width:100%; height:100%; }
 
-/* Zoom / recenter controls */
 .map-ctrls {
   position:absolute; top:12px; left:12px; z-index:10;
   display:none; flex-direction:column; gap:5px;
 }
 .mc-btn {
-  width:33px; height:33px;
+  width:38px; height:38px;
   background:var(--bg-mid); border:1px solid var(--border);
   border-radius:8px; cursor:pointer;
   display:flex; align-items:center; justify-content:center;
@@ -338,7 +335,6 @@ nav {
 }
 .mc-btn:hover { border-color:var(--mint); color:var(--mint); }
 
-/* Map info card */
 .map-card {
   position:absolute; bottom:18px; right:18px;
   background:var(--bg-mid); border:1.5px solid var(--border);
@@ -355,18 +351,18 @@ nav {
 .mc-addr { font-size:11px; color:var(--text-muted); margin-bottom:11px; line-height:1.45; }
 .mc-btns { display:flex; gap:6px; }
 .mc-btn2 {
-  flex:1; padding:7px 0; border-radius:7px;
+  flex:1; padding:9px 0; border-radius:7px;
   font-size:11px; font-weight:700;
   cursor:pointer; font-family:'Inter',sans-serif;
   text-align:center; text-decoration:none; display:block;
   transition:all 0.15s var(--ease);
+  min-height:36px; box-sizing:border-box;
 }
 .mc-btn2.go  { background:var(--mint); color:#080f1e; border:none; }
 .mc-btn2.go:hover { background:var(--mint-light); }
 .mc-btn2.cls { background:transparent; border:1px solid var(--border); color:var(--text-muted); }
 .mc-btn2.cls:hover { border-color:var(--danger); color:var(--danger); }
 
-/* Overlays */
 .overlay {
   position:absolute; inset:0;
   display:flex; flex-direction:column; align-items:center; justify-content:center;
@@ -377,11 +373,12 @@ nav {
 .ov-title { font-family:'Syne',sans-serif; font-size:21px; font-weight:700; }
 .ov-sub { font-size:13px; color:var(--text-muted); max-width:290px; line-height:1.65; }
 .retry-btn {
-  margin-top:4px; padding:10px 24px;
+  margin-top:4px; padding:12px 24px;
   background:var(--mint); border:none; border-radius:var(--radius-btn);
   color:#080f1e; font-family:'Inter',sans-serif;
   font-size:13px; font-weight:700; cursor:pointer;
   transition:all 0.15s var(--ease);
+  min-height:44px;
 }
 .retry-btn:hover { background:var(--mint-light); transform:translateY(-1px); box-shadow:0 4px 14px rgba(0,200,150,0.28); }
 
@@ -398,13 +395,19 @@ nav {
 }
 @media (max-width:440px) {
   .sidebar { height:52dvh; }
-  .s-filters { flex-wrap:wrap; }
+  .s-filters { flex-wrap:wrap; gap:8px; }
+  .chips { width:100%; justify-content:space-between; }
+  .chip { flex:1; text-align:center; padding:7px 4px; }
+  .sort-sel { width:100%; }
+  .s-toggles { flex-wrap:wrap; }
+  .tpill { flex:1; text-align:center; }
+  .pc-btns { flex-direction:column; }
+  .pc-btn { width:100%; }
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <div class="nav-left">
     <a href="javascript:history.back()" class="back-btn" aria-label="Go back">
@@ -421,20 +424,16 @@ nav {
   </div>
 </nav>
 
-<!-- SEVERITY BANNER -->
 <div class="sev-bar hidden" id="sev-bar" role="alert">
   <span class="sev-dot" id="sev-dot"></span>
   <span class="sev-pill" id="sev-pill"></span>
   <span class="sev-txt" id="sev-txt"></span>
 </div>
 
-<!-- LAYOUT -->
 <div class="layout">
 
-  <!-- SIDEBAR -->
   <aside class="sidebar" aria-label="Pharmacy list">
 
-    <!-- Search -->
     <div class="s-search">
       <div class="s-search-inner">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -447,7 +446,6 @@ nav {
       </div>
     </div>
 
-    <!-- Radius + Sort -->
     <div class="s-filters">
       <div class="chips" role="group" aria-label="Radius">
         <button class="chip"    onclick="changeRadius(500,this)">500m</button>
@@ -462,13 +460,11 @@ nav {
       </select>
     </div>
 
-    <!-- Open-now toggle -->
     <div class="s-toggles">
       <button class="tpill on" id="t-all"  onclick="setOpenFilter('all')">All</button>
       <button class="tpill"    id="t-open" onclick="setOpenFilter('open')">Open Now</button>
     </div>
 
-    <!-- List header -->
     <div class="s-listhdr">
       <span class="s-listhdr-title">Nearby Pharmacies</span>
       <div class="s-listhdr-right">
@@ -477,31 +473,26 @@ nav {
       </div>
     </div>
 
-    <!-- Cards -->
     <div class="p-list" id="p-list" role="list">
       <div class="empty"><div class="empty-icon">📍</div><div class="empty-msg">Finding your location…</div></div>
     </div>
   </aside>
 
-  <!-- MAP -->
   <main class="map-wrap">
     <div id="map"></div>
 
-    <!-- Custom map controls -->
     <div class="map-ctrls" id="map-ctrls">
       <button class="mc-btn" onclick="mapZoom(1)"  title="Zoom in">＋</button>
       <button class="mc-btn" onclick="mapZoom(-1)" title="Zoom out">－</button>
       <button class="mc-btn" onclick="recenter()"  title="My location">◎</button>
     </div>
 
-    <!-- Loading -->
     <div class="overlay" id="ov-loading">
       <div class="spinner"></div>
       <div class="ov-title">Finding Pharmacies</div>
       <div class="ov-sub">Detecting your location and scanning nearby stores…</div>
     </div>
 
-    <!-- Error -->
     <div class="overlay off" id="ov-error">
       <div style="font-size:44px">📍</div>
       <div class="ov-title">Location Required</div>
@@ -509,7 +500,6 @@ nav {
       <button class="retry-btn" onclick="initLocation()">Try Again</button>
     </div>
 
-    <!-- Selected card -->
     <div class="map-card" id="map-card" role="dialog" aria-label="Pharmacy details">
       <div class="mc-name" id="mc-name"></div>
       <div class="mc-addr" id="mc-addr"></div>
@@ -523,20 +513,14 @@ nav {
 </div>
 
 <script>
-/* ─── CONFIG ─────────────────────────────────────────────────────────────── */
-// To use Google Maps: set your API key here.
-// If left as-is, the app automatically uses OpenStreetMap + Overpass API (free, no key needed).
 const GOOGLE_MAPS_API_KEY = 'YOUR_GOOGLE_MAPS_API_KEY';
 const USE_GOOGLE = GOOGLE_MAPS_API_KEY !== 'YOUR_GOOGLE_MAPS_API_KEY';
 
-/* ─── STATE ──────────────────────────────────────────────────────────────── */
 let map, markers = [], allPharmacies = [];
 let currentRadius = 1000, userLocation = null;
 let openFilter = 'all', sortMode = 'dist', searchQuery = '';
-// 'google' | 'osm'
 let dataSource = 'osm';
 
-/* ─── THEME ──────────────────────────────────────────────────────────────── */
 const savedTheme = localStorage.getItem('theme') || 'dark';
 document.documentElement.setAttribute('data-theme', savedTheme);
 setThemeIcon(savedTheme);
@@ -555,7 +539,6 @@ function setThemeIcon(t) {
   btn.title = t === 'dark' ? 'Light mode' : 'Dark mode';
 }
 
-/* ─── SEVERITY BANNER ────────────────────────────────────────────────────── */
 const sev = new URLSearchParams(window.location.search).get('severity');
 if (sev) {
   const bar  = document.getElementById('sev-bar');
@@ -574,7 +557,6 @@ if (sev) {
   txt.innerHTML = copy[sev] || '';
 }
 
-/* ─── DARK MAP STYLE (Google only) ──────────────────────────────────────── */
 const darkStyle = [
   {elementType:'geometry',stylers:[{color:'#080f1e'}]},
   {elementType:'labels.text.stroke',stylers:[{color:'#080f1e'}]},
@@ -590,7 +572,6 @@ const darkStyle = [
   {featureType:'water',elementType:'labels.text.fill',stylers:[{color:'#263d65'}]}
 ];
 
-/* ─── LOCATION ───────────────────────────────────────────────────────────── */
 function initLocation() {
   document.getElementById('ov-error').classList.add('off');
   document.getElementById('ov-loading').classList.remove('off');
@@ -621,9 +602,6 @@ function showError(msg) {
   document.getElementById('ov-errmsg').textContent = msg;
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   PATH A — GOOGLE MAPS (when API key is provided)
-   ═══════════════════════════════════════════════════════════════════════════ */
 function initGoogleMap(loc) {
   dataSource = 'google';
   map = new google.maps.Map(document.getElementById('map'), {
@@ -698,9 +676,6 @@ function selectGooglePlace(i, place) {
   document.getElementById('map-card').classList.add('show');
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   PATH B — OPENSTREETMAP + OVERPASS API (free, no key needed)
-   ═══════════════════════════════════════════════════════════════════════════ */
 function initOSMMap(loc) {
   dataSource = 'osm';
   renderOSMMap(loc);
@@ -709,10 +684,9 @@ function initOSMMap(loc) {
 }
 
 function renderOSMMap(loc) {
-  // Use OpenStreetMap iframe embed — works without any API key
   const theme = document.documentElement.getAttribute('data-theme');
   const layer = theme === 'dark' ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png' : 'mapnik';
-  const delta = currentRadius / 111000; // rough degrees per metre
+  const delta = currentRadius / 111000;
   const bbox = `${loc.lng - delta * 1.5},${loc.lat - delta},${loc.lng + delta * 1.5},${loc.lat + delta}`;
   document.getElementById('map').innerHTML = `
     <iframe
@@ -727,7 +701,6 @@ function renderOSMMap(loc) {
 
 async function fetchOverpassPharmacies(loc) {
   const r = currentRadius;
-  // Overpass QL query — fetches all pharmacies, chemists, and medical stores nearby
   const query = `
     [out:json][timeout:25];
     (
@@ -739,7 +712,6 @@ async function fetchOverpassPharmacies(loc) {
     out body center;
   `;
 
-  // Try multiple Overpass endpoints for reliability
   const endpoints = [
     'https://overpass-api.de/api/interpreter',
     'https://overpass.kumi.systems/api/interpreter',
@@ -766,7 +738,6 @@ async function fetchOverpassPharmacies(loc) {
     return;
   }
 
-  // Normalize OSM data into our internal format
   allPharmacies = data.elements
     .filter(el => el.tags)
     .map(el => {
@@ -808,7 +779,6 @@ function guessOpenStatus(openingHoursStr) {
   const day = ['su','mo','tu','we','th','fr','sa'][now.getDay()];
   const curMins = now.getHours() * 60 + now.getMinutes();
 
-  // Simple parser for "Mo-Fr 09:00-21:00" style
   const match = s.match(/(\d{1,2}):(\d{2})\s*[-–]\s*(\d{1,2}):(\d{2})/);
   if (match) {
     const open  = parseInt(match[1]) * 60 + parseInt(match[2]);
@@ -826,7 +796,6 @@ function selectOSMPlace(i) {
   document.getElementById('mc-addr').textContent = p.address;
   document.getElementById('mc-nav').href = `https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`;
   document.getElementById('map-card').classList.add('show');
-  // Re-center map on selected place
   if (userLocation) {
     const delta = currentRadius / 111000;
     const bbox = `${p.lng - delta},${p.lat - delta},${p.lng + delta},${p.lat + delta}`;
@@ -839,7 +808,6 @@ function selectOSMPlace(i) {
   }
 }
 
-/* ─── SOURCE BADGE ───────────────────────────────────────────────────────── */
 function setSourceBadge(src) {
   const badge = document.getElementById('source-badge');
   badge.classList.add('show');
@@ -852,12 +820,10 @@ function setSourceBadge(src) {
   }
 }
 
-/* ─── RENDER LIST ────────────────────────────────────────────────────────── */
 function renderList() {
   const list = document.getElementById('p-list');
   let data = [...allPharmacies];
 
-  // 1. Open-now filter
   if (openFilter === 'open') {
     data = data.filter(p => {
       if (USE_GOOGLE) return p.opening_hours?.isOpen?.() === true;
@@ -865,7 +831,6 @@ function renderList() {
     });
   }
 
-  // 2. Search filter
   if (searchQuery) {
     const q = searchQuery.toLowerCase();
     data = data.filter(p => {
@@ -875,7 +840,6 @@ function renderList() {
     });
   }
 
-  // 3. Sort
   data.sort((a, b) => {
     if (sortMode === 'dist') {
       const da = USE_GOOGLE
@@ -902,7 +866,6 @@ function renderList() {
     const origIdx = allPharmacies.indexOf(p);
 
     if (USE_GOOGLE) {
-      // Google Places data
       const isOpen  = p.opening_hours?.isOpen?.();
       const openCls = isOpen===true?'open':isOpen===false?'closed':'unknown';
       const openLbl = isOpen===true?'Open':isOpen===false?'Closed':'N/A';
@@ -926,7 +889,6 @@ function renderList() {
         </div>
       </div>`;
     } else {
-      // OSM / Overpass data
       const openCls = p.isOpen===true?'open':p.isOpen===false?'closed':'unknown';
       const openLbl = p.isOpen===true?'Open':p.isOpen===false?'Closed':'N/A';
       const d       = p.distRaw < 1000 ? Math.round(p.distRaw)+'m' : (p.distRaw/1000).toFixed(1)+'km';
@@ -953,7 +915,6 @@ function renderList() {
   }).join('');
 }
 
-/* ─── SELECTION ──────────────────────────────────────────────────────────── */
 function activateCard(i) {
   document.querySelectorAll('.p-card').forEach(c => c.classList.remove('active'));
   const c = document.getElementById(`pc-${i}`);
@@ -963,11 +924,9 @@ function activateCard(i) {
 function closeCard() {
   document.getElementById('map-card').classList.remove('show');
   document.querySelectorAll('.p-card').forEach(c => c.classList.remove('active'));
-  // Restore full area map for OSM
   if (!USE_GOOGLE && userLocation) renderOSMMap(userLocation);
 }
 
-/* ─── GOOGLE MARKERS ─────────────────────────────────────────────────────── */
 function markerSVG() {
   return `<svg width="28" height="36" viewBox="0 0 28 36" xmlns="http://www.w3.org/2000/svg">
     <path d="M14 0C6.268 0 0 6.268 0 14c0 7.732 14 22 14 22S28 21.732 28 14C28 6.268 21.732 0 14 0z" fill="#00c896"/>
@@ -976,10 +935,8 @@ function markerSVG() {
   </svg>`;
 }
 
-/* ─── MAP CONTROLS ───────────────────────────────────────────────────────── */
 function mapZoom(d) {
   if (USE_GOOGLE && map) { map.setZoom(map.getZoom() + d); return; }
-  // For OSM: adjust radius and re-render
   currentRadius = Math.max(300, currentRadius * (d > 0 ? 0.7 : 1.4));
   if (userLocation) renderOSMMap(userLocation);
 }
@@ -988,7 +945,6 @@ function recenter() {
   if (!USE_GOOGLE && userLocation) renderOSMMap(userLocation);
 }
 
-/* ─── FILTER CONTROLS ────────────────────────────────────────────────────── */
 function onSearch(val) {
   searchQuery = val.trim();
   document.getElementById('s-clear').classList.toggle('vis', val.length > 0);
@@ -1025,7 +981,6 @@ function changeRadius(r, btn) {
   }
 }
 
-/* ─── HELPERS ────────────────────────────────────────────────────────────── */
 function renderStars(r) {
   const f = Math.floor(r), h = r%1>=0.5?1:0;
   return '★'.repeat(f) + (h?'½':'') + '☆'.repeat(5-f-h);
@@ -1044,7 +999,6 @@ function esc(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-/* ─── KEYBOARD SHORTCUTS ─────────────────────────────────────────────────── */
 document.addEventListener('keydown', e => {
   if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
     e.preventDefault(); document.getElementById('s-input').focus();
@@ -1052,7 +1006,6 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeCard();
 });
 
-/* ─── BOOT ───────────────────────────────────────────────────────────────── */
 if (USE_GOOGLE) {
   window.initGoogleMapCallback = () => initLocation();
   const s = document.createElement('script');
@@ -1060,11 +1013,10 @@ if (USE_GOOGLE) {
   s.async = true; s.defer = true;
   s.onerror = () => {
     console.warn('Google Maps failed, falling back to OpenStreetMap');
-    initLocation(); // will use OSM path since USE_GOOGLE check happens inside
+    initLocation();
   };
   document.head.appendChild(s);
 } else {
-  // Use OpenStreetMap + Overpass — no API key needed
   initLocation();
 }
 </script>

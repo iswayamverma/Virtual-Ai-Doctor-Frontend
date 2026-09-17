@@ -17,14 +17,14 @@
   .nav-logo span { color:var(--mint); }
   .nav-logo-icon { width:36px; height:36px; background:var(--mint); border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; }
   .nav-right { display:flex; align-items:center; gap:12px; }
-  .nav-link { padding:8px 16px; background:transparent; border:1px solid var(--border); border-radius:8px; color:var(--text-muted); font-family:'DM Sans',sans-serif; font-size:13px; cursor:pointer; transition:all 0.2s; text-decoration:none; display:inline-block; }
+  .nav-link { padding:8px 16px; background:transparent; border:1px solid var(--border); border-radius:8px; color:var(--text-muted); font-family:'DM Sans',sans-serif; font-size:13px; cursor:pointer; transition:all 0.2s; text-decoration:none; display:inline-flex; align-items:center; min-height:40px; box-sizing:border-box; }
   .nav-link:hover { border-color:var(--mint); color:var(--mint); }
   .theme-toggle-nav { background:transparent; border:1px solid var(--border); border-radius:50px; padding:5px 12px; display:flex; align-items:center; gap:7px; cursor:pointer; font-size:12px; color:var(--text-muted); font-family:'DM Sans',sans-serif; transition:all 0.2s; }
   .theme-toggle-nav:hover { border-color:var(--mint); color:var(--mint); }
   .toggle-track { width:28px; height:16px; background:var(--bg-toggle); border-radius:8px; position:relative; }
   .toggle-thumb { width:12px; height:12px; background:var(--mint); border-radius:50%; position:absolute; top:2px; left:2px; transition:transform 0.3s; }
   [data-theme="light"] .toggle-thumb { transform:translateX(12px); }
-  .btn-logout { padding:8px 16px; background:transparent; border:1px solid var(--border); border-radius:8px; color:var(--text-muted); font-family:'DM Sans',sans-serif; font-size:13px; cursor:pointer; transition:all 0.2s; }
+  .btn-logout { padding:8px 16px; background:transparent; border:1px solid var(--border); border-radius:8px; color:var(--text-muted); font-family:'DM Sans',sans-serif; font-size:13px; cursor:pointer; transition:all 0.2s; min-height:40px; }
   .btn-logout:hover { border-color:var(--danger); color:var(--danger); }
 
   main { max-width:800px; margin:0 auto; padding:48px 40px; }
@@ -33,7 +33,6 @@
   .page-title { font-family:'DM Serif Display',serif; font-size:36px; margin-bottom:6px; }
   .page-sub { color:var(--text-muted); font-size:15px; }
 
-  /* Profile avatar */
   .profile-top {
     background:var(--bg-mid); border:1px solid var(--border);
     border-radius:20px; padding:32px; margin-bottom:24px;
@@ -47,10 +46,9 @@
     font-size:32px; color:#0a1628; flex-shrink:0;
   }
   .profile-info h2 { font-family:'DM Serif Display',serif; font-size:24px; margin-bottom:4px; }
-  .profile-info p { color:var(--text-muted); font-size:14px; }
+  .profile-info p { color:var(--text-muted); font-size:14px; word-break:break-word; }
   .profile-badge { display:inline-flex; align-items:center; gap:6px; margin-top:10px; padding:5px 12px; background:var(--mint-dim); border:1px solid rgba(0,200,150,0.2); border-radius:20px; font-size:12px; color:var(--mint); }
 
-  /* Form sections */
   .form-section {
     background:var(--bg-mid); border:1px solid var(--border);
     border-radius:20px; padding:28px; margin-bottom:20px;
@@ -71,13 +69,13 @@
     border:1px solid var(--border); border-radius:10px;
     color:var(--text); font-family:'DM Sans',sans-serif;
     font-size:14px; transition:all 0.2s; outline:none;
+    min-height:44px;
   }
   .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--mint); box-shadow:0 0 0 3px var(--mint-dim); }
   .form-group input::placeholder, .form-group textarea::placeholder { color:var(--text-muted); opacity:0.5; }
   .form-group select { cursor:pointer; }
   .form-group textarea { resize:vertical; min-height:90px; line-height:1.5; }
 
-  /* AI context notice */
   .ai-notice {
     background:var(--mint-dim); border:1px solid rgba(0,200,150,0.2);
     border-radius:12px; padding:14px 16px;
@@ -92,7 +90,7 @@
     width:100%; padding:15px; background:var(--mint); border:none;
     border-radius:10px; color:#0a1628; font-family:'DM Sans',sans-serif;
     font-size:15px; font-weight:600; cursor:pointer; transition:all 0.2s;
-    margin-top:8px;
+    margin-top:8px; min-height:48px;
   }
   .btn-save:hover { background:var(--mint-light); transform:translateY(-1px); box-shadow:0 8px 25px rgba(0,200,150,0.3); }
   .btn-save.loading { pointer-events:none; opacity:0.7; }
@@ -102,13 +100,36 @@
     background:var(--mint); color:#0a1628; padding:12px 24px;
     border-radius:20px; font-size:14px; font-weight:600;
     opacity:0; transition:opacity 0.3s; z-index:1000; pointer-events:none;
+    max-width:90vw; text-align:center; box-sizing:border-box;
   }
   .success-toast.show { opacity:1; }
 
   @keyframes spin { to{transform:rotate(360deg)} }
   .spinner { width:28px; height:28px; border:3px solid rgba(0,200,150,0.2); border-top-color:var(--mint); border-radius:50%; animation:spin 0.8s linear infinite; margin:60px auto; display:block; }
 
-  @media(max-width:600px) { .form-grid { grid-template-columns:1fr; } main { padding:32px 20px; } }
+  /* ── TABLET (768px) ───────────────────────────────────────────── */
+  @media(max-width:768px){
+    main { padding:36px 24px; }
+  }
+
+  /* ── MOBILE (375px–480px) ─────────────────────────────────────── */
+  @media(max-width:480px){
+    nav { padding:0 14px; height:56px; }
+    .nav-link span, .nav-link { font-size:12px; padding:7px 10px; }
+    .theme-toggle-nav span#theme-label { display:none; }
+    .btn-logout { padding:7px 10px; font-size:12px; }
+
+    main { padding:24px 16px; }
+    .page-title { font-size:26px; }
+    .page-sub { font-size:13px; }
+
+    .profile-top { flex-direction:column; text-align:center; padding:24px 20px; gap:14px; }
+    .avatar { width:64px; height:64px; font-size:26px; }
+
+    .form-section { padding:20px; border-radius:16px; }
+    .form-grid { grid-template-columns:1fr; gap:14px; }
+    .section-title { font-size:16px; }
+  }
 </style>
 </head>
 <body>
@@ -139,7 +160,6 @@
 
   <div id="profile-content" style="display:none">
 
-    <!-- Profile Top -->
     <div class="profile-top">
       <div class="avatar" id="avatar-initials">S</div>
       <div class="profile-info">
@@ -149,13 +169,11 @@
       </div>
     </div>
 
-    <!-- AI Notice -->
     <div class="ai-notice">
       <div class="ai-notice-icon">🤖</div>
       <p><strong>AI-Enhanced Diagnosis:</strong> When you fill in your age, blood group, allergies and medical history, the AI doctor uses this information to give you more personalized and accurate health guidance.</p>
     </div>
 
-    <!-- Basic Info -->
     <div class="form-section">
       <div class="section-header">
         <div class="section-icon">👤</div>
@@ -176,7 +194,6 @@
       </div>
     </div>
 
-    <!-- Medical Info -->
     <div class="form-section">
       <div class="section-header">
         <div class="section-icon">🩸</div>
@@ -250,13 +267,11 @@
       if (res.status === 403) { logout(); return; }
       const user = await res.json();
 
-      // Set avatar initials
       const initials = user.name ? user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2) : 'U';
       document.getElementById('avatar-initials').textContent = initials;
       document.getElementById('profile-name').textContent = user.name || 'User';
       document.getElementById('profile-email').textContent = user.email || '';
 
-      // Fill form
       document.getElementById('name').value = user.name || '';
       document.getElementById('age').value = user.age || '';
       document.getElementById('bloodGroup').value = user.bloodGroup || '';
@@ -291,7 +306,6 @@
       if (res.status === 403) { logout(); return; }
       const msg = await res.text();
       if (msg.includes('successfully')) {
-        // Update avatar and name
         const initials = data.name ? data.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2) : 'U';
         document.getElementById('avatar-initials').textContent = initials;
         document.getElementById('profile-name').textContent = data.name;

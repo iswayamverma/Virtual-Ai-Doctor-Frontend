@@ -18,7 +18,7 @@
   .nav-logo span { color:var(--mint); }
   .nav-logo-icon { width:36px; height:36px; background:var(--mint); border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; }
   .nav-right { display:flex; align-items:center; gap:12px; }
-  .nav-link { padding:8px 16px; background:transparent; border:1px solid var(--border); border-radius:8px; color:var(--text-muted); font-family:'DM Sans',sans-serif; font-size:13px; cursor:pointer; transition:all 0.2s; text-decoration:none; display:inline-block; }
+  .nav-link { padding:8px 16px; background:transparent; border:1px solid var(--border); border-radius:8px; color:var(--text-muted); font-family:'DM Sans',sans-serif; font-size:13px; cursor:pointer; transition:all 0.2s; text-decoration:none; display:inline-block; min-height:40px; box-sizing:border-box; display:inline-flex; align-items:center; }
   .nav-link:hover { border-color:var(--mint); color:var(--mint); }
   .theme-toggle-nav { background:transparent; border:1px solid var(--border); border-radius:50px; padding:5px 12px; display:flex; align-items:center; gap:7px; cursor:pointer; font-size:12px; color:var(--text-muted); font-family:'DM Sans',sans-serif; transition:all 0.2s; }
   .theme-toggle-nav:hover { border-color:var(--mint); color:var(--mint); }
@@ -28,27 +28,24 @@
 
   main { max-width:860px; margin:0 auto; padding:40px; }
 
-  /* Session selector */
   .selector-card { background:var(--bg-mid); border:1px solid var(--border); border-radius:16px; padding:28px; margin-bottom:28px; transition:background 0.3s; }
   .selector-title { font-family:'DM Serif Display',serif; font-size:22px; margin-bottom:6px; }
   .selector-sub { font-size:14px; color:var(--text-muted); margin-bottom:20px; }
   .selector-row { display:flex; gap:12px; align-items:center; }
-  .session-select { flex:1; padding:13px 16px; background:var(--bg-input); border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:'DM Sans',sans-serif; font-size:14px; outline:none; cursor:pointer; transition:all 0.2s; }
+  .session-select { flex:1; padding:13px 16px; background:var(--bg-input); border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:'DM Sans',sans-serif; font-size:14px; outline:none; cursor:pointer; transition:all 0.2s; min-height:44px; }
   .session-select:focus { border-color:var(--mint); box-shadow:0 0 0 3px var(--mint-dim); }
-  .btn-generate { padding:13px 24px; background:var(--mint); border:none; border-radius:10px; color:#0a1628; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s; white-space:nowrap; }
+  .btn-generate { padding:13px 24px; background:var(--mint); border:none; border-radius:10px; color:#0a1628; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s; white-space:nowrap; min-height:44px; }
   .btn-generate:hover { background:var(--mint-light); transform:translateY(-1px); box-shadow:0 6px 20px rgba(0,200,150,0.3); }
   .btn-generate:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
 
-  /* Report preview */
   .report-container { display:none; }
 
   .report-actions { display:flex; gap:12px; margin-bottom:20px; justify-content:flex-end; }
-  .btn-pdf { padding:12px 22px; background:var(--mint); border:none; border-radius:10px; color:#0a1628; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:8px; }
+  .btn-pdf { padding:12px 22px; background:var(--mint); border:none; border-radius:10px; color:#0a1628; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:8px; min-height:44px; }
   .btn-pdf:hover { background:var(--mint-light); transform:translateY(-1px); box-shadow:0 6px 20px rgba(0,200,150,0.3); }
-  .btn-back-dash { padding:12px 22px; background:transparent; border:1px solid var(--border); border-radius:10px; color:var(--text-muted); font-family:'DM Sans',sans-serif; font-size:14px; cursor:pointer; transition:all 0.2s; text-decoration:none; display:inline-flex; align-items:center; gap:8px; }
+  .btn-back-dash { padding:12px 22px; background:transparent; border:1px solid var(--border); border-radius:10px; color:var(--text-muted); font-family:'DM Sans',sans-serif; font-size:14px; cursor:pointer; transition:all 0.2s; text-decoration:none; display:inline-flex; align-items:center; gap:8px; min-height:44px; box-sizing:border-box; }
   .btn-back-dash:hover { border-color:var(--mint); color:var(--mint); }
 
-  /* The actual report (print-friendly) */
   #report-card {
     background:#fff; color:#0a1628;
     border-radius:16px; overflow:hidden;
@@ -77,7 +74,7 @@
     border-radius:12px; border:1px solid #e2e8f0;
   }
   .meta-item label { font-size:11px; text-transform:uppercase; letter-spacing:0.5px; color:#64748b; display:block; margin-bottom:5px; font-weight:600; }
-  .meta-item p { font-size:15px; font-weight:600; color:#0a1628; }
+  .meta-item p { font-size:15px; font-weight:600; color:#0a1628; word-break:break-word; }
 
   .severity-block {
     display:inline-flex; align-items:center; gap:8px;
@@ -112,7 +109,6 @@
   @keyframes spin { to{transform:rotate(360deg)} }
   .spinner { width:24px; height:24px; border:3px solid rgba(0,200,150,0.2); border-top-color:var(--mint); border-radius:50%; animation:spin 0.8s linear infinite; display:inline-block; vertical-align:middle; margin-right:8px; }
 
-  /* Print styles */
   @media print {
     body { background:#fff !important; }
     nav, .selector-card, .report-actions { display:none !important; }
@@ -120,6 +116,43 @@
     .report-container { display:block !important; }
     #report-card { box-shadow:none !important; border-radius:0 !important; }
     @page { margin:15mm; size:A4; }
+  }
+
+  /* ── TABLET (768px) ───────────────────────────────────────────── */
+  @media(max-width:768px){
+    main { padding:28px 20px; }
+    .report-header, .report-body, .report-footer { padding-left:24px; padding-right:24px; }
+  }
+
+  /* ── MOBILE (375px–480px) ─────────────────────────────────────── */
+  @media(max-width:480px){
+    nav { padding:0 16px; height:56px; }
+    .nav-link span { display:none; }
+    .nav-link { padding:8px 10px; }
+    .theme-toggle-nav span#theme-label { display:none; }
+
+    main { padding:20px 14px; }
+
+    .selector-card { padding:18px; border-radius:12px; }
+    .selector-title { font-size:19px; }
+    .selector-sub { font-size:13px; margin-bottom:16px; }
+    .selector-row { flex-direction:column; align-items:stretch; }
+    .btn-generate { width:100%; }
+
+    .report-actions { flex-direction:column-reverse; }
+    .btn-pdf, .btn-back-dash { width:100%; justify-content:center; }
+
+    .report-header { padding:20px; flex-direction:column; align-items:flex-start; gap:12px; }
+    .report-title-right { text-align:left; }
+
+    .report-body { padding:20px; }
+    .report-meta { grid-template-columns:1fr; gap:12px; padding:14px; }
+    .severity-block { width:100%; justify-content:center; box-sizing:border-box; }
+
+    .chat-msg { max-width:100%; }
+    .msg-text { max-width:78vw; font-size:13px; }
+
+    .report-footer { padding:16px 20px; flex-direction:column; align-items:flex-start; gap:10px; }
   }
 </style>
 </head>
@@ -131,7 +164,7 @@
     Medi<span>AI</span>
   </div>
   <div class="nav-right">
-    <a href="dashboard.html" class="nav-link">← Dashboard</a>
+    <a href="dashboard.html" class="nav-link"><span>← Dashboard</span></a>
     <button class="theme-toggle-nav" onclick="toggleTheme()">
       <span id="theme-icon">☀️</span>
       <div class="toggle-track"><div class="toggle-thumb"></div></div>
@@ -142,7 +175,6 @@
 
 <main>
 
-  <!-- Session Selector -->
   <div class="selector-card">
     <div class="selector-title">Generate Consultation Report</div>
     <div class="selector-sub">Select a consultation session to generate a downloadable PDF report</div>
@@ -156,7 +188,6 @@
     </div>
   </div>
 
-  <!-- Report Preview + Actions -->
   <div class="report-container" id="report-container">
     <div class="report-actions">
       <a href="dashboard.html" class="btn-back-dash">← Back to Dashboard</a>
@@ -165,7 +196,6 @@
       </button>
     </div>
 
-    <!-- Report Card (this gets printed) -->
     <div id="report-card">
 
       <div class="report-header">
@@ -181,7 +211,6 @@
 
       <div class="report-body">
 
-        <!-- Meta info -->
         <div class="report-meta">
           <div class="meta-item">
             <label>Patient</label>
@@ -197,16 +226,13 @@
           </div>
         </div>
 
-        <!-- Severity badge -->
         <div id="severity-badge" class="severity-block sev-LOW">LOW RISK</div>
 
-        <!-- Consultation summary -->
         <div class="report-section">
           <div class="report-section-title">AI Diagnosis Summary</div>
           <p id="diagnosis-text" style="font-size:14px;color:#334155;line-height:1.7;background:#f8fafc;padding:16px;border-radius:10px;border:1px solid #e2e8f0;">—</p>
         </div>
 
-        <!-- Full conversation -->
         <div class="report-section">
           <div class="report-section-title">Full Consultation Transcript</div>
           <div id="messages-list"></div>
@@ -269,7 +295,6 @@
 
       document.getElementById('generate-btn').disabled = false;
 
-      // Auto-select if coming from URL param
       const urlParams = new URLSearchParams(window.location.search);
       const sessionParam = urlParams.get('session');
       if (sessionParam) {
@@ -290,36 +315,30 @@
     btn.disabled = true;
 
     try {
-      // Load messages
       const res = await fetch(`${API}/consultation/messages/${sessionId}`, { headers:{'Authorization':`Bearer ${token}`} });
       const messages = await res.json();
 
-      // Load history to get session details
       const histRes = await fetch(`${API}/consultation/history`, { headers:{'Authorization':`Bearer ${token}`} });
       const sessions = await histRes.json();
       const session = sessions.find(s => s.id == sessionId);
 
       if (!session) { alert('Session not found.'); return; }
 
-      // Populate report
       const patientName = email ? email.split('@')[0] : 'Patient';
       document.getElementById('report-date').textContent = formatDate(session.createdAt);
       document.getElementById('meta-patient').textContent = patientName.charAt(0).toUpperCase() + patientName.slice(1);
       document.getElementById('meta-session').textContent = `#${session.id}`;
       document.getElementById('meta-severity').textContent = session.severity || 'Pending';
 
-      // Severity badge
       const sev = session.severity || 'LOW';
       const badge = document.getElementById('severity-badge');
       badge.className = `severity-block sev-${sev}`;
       const sevLabels = { LOW:'✅ Low Risk', MEDIUM:'⚠️ Medium Risk', HIGH:'🚨 High Risk — See Doctor' };
       badge.textContent = sevLabels[sev] || sev;
 
-      // Diagnosis
       const diagText = session.diagnosis ? session.diagnosis.replace(/\[SEVERITY:\s*(LOW|MEDIUM|HIGH)\]/g, '').trim() : 'No diagnosis recorded.';
       document.getElementById('diagnosis-text').textContent = diagText;
 
-      // Messages
       const msgList = document.getElementById('messages-list');
       msgList.innerHTML = messages.map(msg => {
         const isUser = msg.sender === 'user';
@@ -334,7 +353,6 @@
         `;
       }).join('');
 
-      // Show report
       document.getElementById('report-container').style.display = 'block';
       document.getElementById('report-container').scrollIntoView({ behavior:'smooth' });
 
