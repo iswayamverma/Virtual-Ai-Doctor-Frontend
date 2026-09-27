@@ -1,707 +1,1305 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MediAI — Nearby Pharmacies</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-/* ─── DESIGN TOKENS ──────────────────────────────────────────────────────── */
-:root {
-  --mint: #00c896;
-  --mint-light: #00e6aa;
-  --mint-dim: rgba(0,200,150,0.10);
-  --mint-glow: rgba(0,200,150,0.14);
-  --danger: #ff5c7c;
-  --warning: #ffaa00;
-  --radius-card: 13px;
-  --radius-btn: 9px;
-  --ease: cubic-bezier(.4,0,.2,1);
-}
-[data-theme="dark"] {
-  --bg:        #080f1e;
-  --bg-mid:    #0d1a2e;
-  --bg-card:   #0d1a2e;
-  --bg-input:  #060d1a;
-  --bg-hover:  rgba(0,200,150,0.045);
-  --text:      #edf2f8;
-  --text-muted:#788898;
-  --text-dim:  #3d4d5e;
-  --border:    rgba(255,255,255,0.055);
-  --shadow:    0 4px 28px rgba(0,0,0,0.45);
-  --shadow-sm: 0 2px 10px rgba(0,0,0,0.3);
-}
-[data-theme="light"] {
-  --bg:        #f2f6fb;
-  --bg-mid:    #ffffff;
-  --bg-card:   #ffffff;
-  --bg-input:  #edf2f7;
-  --bg-hover:  rgba(0,200,150,0.04);
-  --text:      #0a1628;
-  --text-muted:#5e7080;
-  --text-dim:  #a0aec0;
-  --border:    rgba(0,0,0,0.065);
-  --shadow:    0 4px 28px rgba(0,0,0,0.08);
-  --shadow-sm: 0 2px 10px rgba(0,0,0,0.05);
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediAI — Nearby Pharmacies</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    /* ─── DESIGN TOKENS ──────────────────────────────────────────────────────── */
+    :root {
+      --mint: #00c896;
+      --mint-light: #00e6aa;
+      --mint-dim: rgba(0, 200, 150, 0.10);
+      --mint-glow: rgba(0, 200, 150, 0.14);
+      --danger: #ff5c7c;
+      --warning: #ffaa00;
+      --radius-card: 13px;
+      --radius-btn: 9px;
+      --ease: cubic-bezier(.4, 0, .2, 1);
+    }
 
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-body {
-  font-family: 'Inter', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  -webkit-font-smoothing: antialiased;
-  transition: background 0.25s var(--ease), color 0.25s var(--ease);
-}
+    [data-theme="dark"] {
+      --bg: #080f1e;
+      --bg-mid: #0d1a2e;
+      --bg-card: #0d1a2e;
+      --bg-input: #060d1a;
+      --bg-hover: rgba(0, 200, 150, 0.045);
+      --text: #edf2f8;
+      --text-muted: #788898;
+      --text-dim: #3d4d5e;
+      --border: rgba(255, 255, 255, 0.055);
+      --shadow: 0 4px 28px rgba(0, 0, 0, 0.45);
+      --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
 
-/* ─── NAV ────────────────────────────────────────────────────────────────── */
-nav {
-  height: 56px;
-  background: var(--bg-mid);
-  border-bottom: 1px solid var(--border);
-  padding: 0 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-shrink: 0;
-  z-index: 100;
-  transition: background 0.25s var(--ease);
-}
-.nav-left { display: flex; align-items: center; gap: 12px; }
+    [data-theme="light"] {
+      --bg: #f2f6fb;
+      --bg-mid: #ffffff;
+      --bg-card: #ffffff;
+      --bg-input: #edf2f7;
+      --bg-hover: rgba(0, 200, 150, 0.04);
+      --text: #0a1628;
+      --text-muted: #5e7080;
+      --text-dim: #a0aec0;
+      --border: rgba(0, 0, 0, 0.065);
+      --shadow: 0 4px 28px rgba(0, 0, 0, 0.08);
+      --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
 
-.back-btn {
-  display: flex; align-items: center; gap: 5px;
-  padding: 5px 11px;
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-btn);
-  color: var(--text-muted);
-  font-family: 'Inter', sans-serif;
-  font-size: 12px; font-weight: 500;
-  text-decoration: none; cursor: pointer;
-  transition: all 0.18s var(--ease);
-  min-height: 36px;
-}
-.back-btn:hover { border-color: var(--mint); color: var(--mint); }
-.back-btn .arr { transition: transform 0.18s var(--ease); display: inline-block; }
-.back-btn:hover .arr { transform: translateX(-2px); }
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-.brand { display: flex; align-items: center; gap: 8px; }
-.brand-icon {
-  width: 28px; height: 28px;
-  background: linear-gradient(135deg, var(--mint) 0%, var(--mint-light) 100%);
-  border-radius: 7px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 13px;
-  box-shadow: 0 2px 8px rgba(0,200,150,0.28);
-}
-.brand-name {
-  font-family: 'Syne', sans-serif;
-  font-size: 16px; font-weight: 700;
-  letter-spacing: -0.2px;
-}
-.brand-name em { color: var(--mint); font-style: normal; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.25s var(--ease), color 0.25s var(--ease);
+    }
 
-.nav-right { display: flex; align-items: center; gap: 8px; }
-.icon-btn {
-  width: 36px; height: 36px;
-  background: transparent; border: 1px solid var(--border);
-  border-radius: 8px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px; transition: all 0.18s var(--ease); color: var(--text-muted);
-}
-.icon-btn:hover { border-color: var(--mint); background: var(--mint-dim); }
+    /* ─── NAV ────────────────────────────────────────────────────────────────── */
+    nav {
+      height: 56px;
+      background: var(--bg-mid);
+      border-bottom: 1px solid var(--border);
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      z-index: 100;
+      transition: background 0.25s var(--ease);
+    }
 
-/* ─── SEVERITY BANNER ────────────────────────────────────────────────────── */
-.sev-bar {
-  padding: 8px 20px;
-  display: flex; align-items: center; gap: 9px;
-  font-size: 13px; flex-shrink: 0;
-  border-bottom: 1px solid var(--border);
-  animation: slideDown 0.28s var(--ease);
-}
-@keyframes slideDown { from{opacity:0;transform:translateY(-5px)} to{opacity:1;transform:translateY(0)} }
-.sev-bar.HIGH   { background: rgba(255,92,124,0.06); }
-.sev-bar.MEDIUM { background: rgba(255,170,0,0.06); }
-.sev-bar.LOW    { background: rgba(0,200,150,0.05); }
-.sev-bar.hidden { display: none; }
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-.sev-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; animation: blink 2s infinite; }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-.sev-dot.HIGH   { background: var(--danger); }
-.sev-dot.MEDIUM { background: var(--warning); }
-.sev-dot.LOW    { background: var(--mint); }
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 11px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-btn);
+      color: var(--text-muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.18s var(--ease);
+      min-height: 36px;
+    }
 
-.sev-pill {
-  font-size: 10px; font-weight: 700; padding: 2px 7px;
-  border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0;
-}
-.sev-pill.HIGH   { color:var(--danger);  background:rgba(255,92,124,0.14); }
-.sev-pill.MEDIUM { color:var(--warning); background:rgba(255,170,0,0.14); }
-.sev-pill.LOW    { color:var(--mint);    background:rgba(0,200,150,0.12); }
-.sev-txt { color: var(--text-muted); font-size: 12px; }
-.sev-txt strong { color: var(--text); font-weight: 600; }
+    .back-btn:hover {
+      border-color: var(--mint);
+      color: var(--mint);
+    }
 
-/* ─── SOURCE BADGE ───────────────────────────────────────────────────────── */
-.source-badge {
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 10px;
-  font-weight: 600;
-  border: 1px solid var(--border);
-  color: var(--text-muted);
-  background: transparent;
-  display: none;
-  align-items: center;
-  gap: 5px;
-}
-.source-badge.show { display: flex; }
-.source-badge.live { border-color: rgba(0,200,150,0.3); color: var(--mint); background: var(--mint-dim); }
-.source-badge.osm  { border-color: rgba(255,170,0,0.3); color: var(--warning); background: rgba(255,170,0,0.08); }
+    .back-btn .arr {
+      transition: transform 0.18s var(--ease);
+      display: inline-block;
+    }
 
-/* ─── LAYOUT ─────────────────────────────────────────────────────────────── */
-.layout { display: flex; flex: 1; overflow: hidden; }
+    .back-btn:hover .arr {
+      transform: translateX(-2px);
+    }
 
-/* ─── SIDEBAR ────────────────────────────────────────────────────────────── */
-.sidebar {
-  width: 350px; flex-shrink: 0;
-  display: flex; flex-direction: column;
-  border-right: 1px solid var(--border);
-  background: var(--bg-mid);
-  overflow: hidden;
-  transition: background 0.25s var(--ease);
-}
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-.s-search { padding: 12px 12px 0; flex-shrink: 0; }
-.s-search-inner {
-  display: flex; align-items: center; gap: 7px;
-  background: var(--bg-input);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-btn);
-  padding: 8px 11px;
-  transition: border-color 0.18s var(--ease), box-shadow 0.18s var(--ease);
-  min-height: 40px;
-}
-.s-search-inner:focus-within {
-  border-color: rgba(0,200,150,0.45);
-  box-shadow: 0 0 0 3px var(--mint-dim);
-}
-.s-search-inner svg { flex-shrink:0; color:var(--text-dim); }
-.s-input {
-  flex:1; background:transparent; border:none; outline:none;
-  color:var(--text); font-family:'Inter',sans-serif; font-size:14px;
-}
-.s-input::placeholder { color:var(--text-muted); opacity:0.45; }
-.s-clear {
-  background:none; border:none; cursor:pointer;
-  color:var(--text-dim); font-size:14px; line-height:1;
-  display:none; padding:6px; transition:color 0.15s;
-}
-.s-clear.vis { display:block; }
-.s-clear:hover { color:var(--danger); }
+    .brand-icon {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, var(--mint) 0%, var(--mint-light) 100%);
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      box-shadow: 0 2px 8px rgba(0, 200, 150, 0.28);
+    }
 
-.s-filters {
-  padding: 9px 12px 10px;
-  display: flex; align-items: center; justify-content: space-between; gap: 8px;
-  border-bottom: 1px solid var(--border); flex-shrink: 0;
-  flex-wrap: wrap;
-}
-.chips { display: flex; gap: 4px; flex-wrap: wrap; }
-.chip {
-  padding: 6px 10px; border-radius: 20px; font-size: 11px; font-weight: 500;
-  border: 1px solid var(--border); background: transparent;
-  color: var(--text-muted); cursor: pointer;
-  font-family: 'Inter', sans-serif;
-  transition: all 0.15s var(--ease);
-  min-height: 30px;
-}
-.chip:hover { border-color: var(--mint); color: var(--mint); }
-.chip.on { background: var(--mint-dim); border-color: rgba(0,200,150,0.3); color: var(--mint); font-weight: 600; }
+    .brand-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+    }
 
-.sort-sel {
-  background: var(--bg-input); border: 1px solid var(--border);
-  border-radius: 7px; color: var(--text-muted);
-  font-family: 'Inter', sans-serif; font-size: 11px;
-  padding: 6px 8px; cursor: pointer; outline: none;
-  transition: border-color 0.15s; min-height: 30px;
-}
-.sort-sel:hover, .sort-sel:focus { border-color: rgba(0,200,150,0.4); }
+    .brand-name em {
+      color: var(--mint);
+      font-style: normal;
+    }
 
-.s-toggles { padding: 7px 12px 0; display: flex; gap: 5px; flex-shrink: 0; }
-.tpill {
-  padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 500;
-  border: 1px solid var(--border); background: transparent;
-  color: var(--text-muted); cursor: pointer;
-  font-family: 'Inter', sans-serif;
-  transition: all 0.15s var(--ease);
-  min-height: 30px;
-}
-.tpill.on { background: var(--mint-dim); border-color: rgba(0,200,150,0.3); color: var(--mint); }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-.s-listhdr {
-  padding: 7px 12px 6px;
-  display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
-}
-.s-listhdr-title { font-size: 10px; text-transform: uppercase; letter-spacing: 1.1px; color: var(--text-dim); font-weight: 600; }
-.s-listhdr-right { display: flex; align-items: center; gap: 8px; }
-.s-listhdr-count { font-size: 11px; color: var(--mint); font-weight: 700; }
+    .icon-btn {
+      width: 36px;
+      height: 36px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      transition: all 0.18s var(--ease);
+      color: var(--text-muted);
+    }
 
-.p-list {
-  flex: 1; overflow-y: auto;
-  padding: 0 8px 12px;
-  display: flex; flex-direction: column; gap: 6px;
-}
-.p-list::-webkit-scrollbar { width: 3px; }
-.p-list::-webkit-scrollbar-thumb { background: rgba(0,200,150,0.12); border-radius: 2px; }
+    .icon-btn:hover {
+      border-color: var(--mint);
+      background: var(--mint-dim);
+    }
 
-.p-card {
-  background: var(--bg-card);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-card);
-  padding: 12px;
-  cursor: pointer;
-  transition: all 0.18s var(--ease);
-  animation: fadeUp 0.28s var(--ease) both;
-  position: relative;
-  overflow: hidden;
-}
-.p-card::after {
-  content: '';
-  position: absolute; left: 0; top: 12%; bottom: 12%;
-  width: 2.5px; background: var(--mint); border-radius: 2px;
-  opacity: 0; transition: opacity 0.18s;
-}
-@keyframes fadeUp { from{opacity:0;transform:translateY(7px)} to{opacity:1;transform:translateY(0)} }
-.p-card:hover  { border-color: rgba(0,200,150,0.28); background: var(--bg-hover); box-shadow: var(--shadow-sm); }
-.p-card:hover::after  { opacity:1; }
-.p-card.active { border-color: var(--mint); background: var(--mint-glow); }
-.p-card.active::after { opacity:1; }
+    /* ─── SEVERITY BANNER ────────────────────────────────────────────────────── */
+    .sev-bar {
+      padding: 8px 20px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 13px;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--border);
+      animation: slideDown 0.28s var(--ease);
+    }
 
-.pc-row1 { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; margin-bottom:3px; }
-.pc-name { font-size:13px; font-weight:600; line-height:1.3; font-family:'Syne',sans-serif; }
-.pc-badge {
-  font-size:9px; font-weight:700; padding:2px 6px; border-radius:20px;
-  flex-shrink:0; text-transform:uppercase; letter-spacing:0.4px;
-}
-.pc-badge.open    { background:rgba(0,200,150,0.12); color:var(--mint); }
-.pc-badge.closed  { background:rgba(255,92,124,0.12); color:var(--danger); }
-.pc-badge.unknown { background:rgba(120,136,152,0.1); color:var(--text-muted); }
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-5px)
+      }
 
-.pc-addr { font-size:11px; color:var(--text-muted); margin-bottom:7px; line-height:1.45; }
-.pc-meta { display:flex; align-items:center; gap:10px; margin-bottom:9px; flex-wrap:wrap; }
-.pc-meta-item { display:flex; align-items:center; gap:3px; font-size:11px; color:var(--text-muted); }
-.stars { color:#f5a623; font-size:10px; letter-spacing:-0.5px; }
-
-.pc-btns { display:flex; gap:6px; }
-.pc-btn {
-  flex:1; padding:9px 0;
-  border-radius:7px; font-size:11px; font-weight:600;
-  cursor:pointer; font-family:'Inter',sans-serif;
-  text-align:center; text-decoration:none;
-  display:flex; align-items:center; justify-content:center; gap:4px;
-  border:1px solid var(--border); background:transparent; color:var(--text-muted);
-  transition:all 0.15s var(--ease);
-  min-height:36px; box-sizing:border-box;
-}
-.pc-btn:hover { border-color:var(--mint); color:var(--mint); background:var(--mint-dim); }
-.pc-btn.pri { background:var(--mint); border-color:var(--mint); color:#080f1e; font-weight:700; }
-.pc-btn.pri:hover { background:var(--mint-light); box-shadow:0 2px 8px rgba(0,200,150,0.25); }
-.pc-btn[disabled] { opacity:0.3; cursor:default; pointer-events:none; }
-
-.empty { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:36px 20px; text-align:center; gap:7px; }
-.empty-icon { font-size:34px; opacity:0.35; }
-.empty-msg { font-size:13px; color:var(--text-muted); line-height:1.6; }
-
-/* ─── MAP ────────────────────────────────────────────────────────────────── */
-.map-wrap { flex:1; position:relative; overflow:hidden; }
-#map { width:100%; height:100%; }
-
-.map-ctrls {
-  position:absolute; top:12px; left:12px; z-index:10;
-  display:none; flex-direction:column; gap:5px;
-}
-.mc-btn {
-  width:38px; height:38px;
-  background:var(--bg-mid); border:1px solid var(--border);
-  border-radius:8px; cursor:pointer;
-  display:flex; align-items:center; justify-content:center;
-  font-size:14px; color:var(--text-muted);
-  box-shadow:var(--shadow-sm);
-  transition:all 0.15s var(--ease);
-}
-.mc-btn:hover { border-color:var(--mint); color:var(--mint); }
-
-.map-card {
-  position:absolute; bottom:18px; right:18px;
-  background:var(--bg-mid); border:1.5px solid var(--border);
-  border-radius:var(--radius-card); padding:14px 15px;
-  max-width:260px; min-width:210px;
-  box-shadow:var(--shadow);
-  display:none; z-index:10;
-  animation:pop 0.2s cubic-bezier(.34,1.56,.64,1);
-  transition:background 0.25s var(--ease);
-}
-@keyframes pop { from{opacity:0;transform:scale(0.9)translateY(6px)} to{opacity:1;transform:scale(1)translateY(0)} }
-.map-card.show { display:block; }
-.mc-name { font-size:13px; font-weight:700; font-family:'Syne',sans-serif; margin-bottom:3px; }
-.mc-addr { font-size:11px; color:var(--text-muted); margin-bottom:11px; line-height:1.45; }
-.mc-btns { display:flex; gap:6px; }
-.mc-btn2 {
-  flex:1; padding:9px 0; border-radius:7px;
-  font-size:11px; font-weight:700;
-  cursor:pointer; font-family:'Inter',sans-serif;
-  text-align:center; text-decoration:none; display:block;
-  transition:all 0.15s var(--ease);
-  min-height:36px; box-sizing:border-box;
-}
-.mc-btn2.go  { background:var(--mint); color:#080f1e; border:none; }
-.mc-btn2.go:hover { background:var(--mint-light); }
-.mc-btn2.cls { background:transparent; border:1px solid var(--border); color:var(--text-muted); }
-.mc-btn2.cls:hover { border-color:var(--danger); color:var(--danger); }
-
-.overlay {
-  position:absolute; inset:0;
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  background:var(--bg); z-index:20; gap:12px; text-align:center; padding:40px;
-  transition:background 0.25s var(--ease);
-}
-.overlay.off { display:none; }
-.ov-title { font-family:'Syne',sans-serif; font-size:21px; font-weight:700; }
-.ov-sub { font-size:13px; color:var(--text-muted); max-width:290px; line-height:1.65; }
-.retry-btn {
-  margin-top:4px; padding:12px 24px;
-  background:var(--mint); border:none; border-radius:var(--radius-btn);
-  color:#080f1e; font-family:'Inter',sans-serif;
-  font-size:13px; font-weight:700; cursor:pointer;
-  transition:all 0.15s var(--ease);
-  min-height:44px;
-}
-.retry-btn:hover { background:var(--mint-light); transform:translateY(-1px); box-shadow:0 4px 14px rgba(0,200,150,0.28); }
-
-@keyframes spin { to{transform:rotate(360deg)} }
-.spinner { width:40px; height:40px; border:3px solid rgba(0,200,150,0.14); border-top-color:var(--mint); border-radius:50%; animation:spin 0.72s linear infinite; }
-
-/* ─── RESPONSIVE ─────────────────────────────────────────────────────────── */
-@media (max-width:768px) {
-  .layout { flex-direction:column; }
-  .sidebar { width:100%; height:46dvh; border-right:none; border-bottom:1px solid var(--border); }
-  .map-wrap { flex:1; min-height:0; }
-  nav { padding:0 14px; }
-  .back-txt { display:none; }
-}
-@media (max-width:440px) {
-  .sidebar { height:52dvh; }
-  .s-filters { flex-wrap:wrap; gap:8px; }
-  .chips { width:100%; justify-content:space-between; }
-  .chip { flex:1; text-align:center; padding:7px 4px; }
-  .sort-sel { width:100%; }
-  .s-toggles { flex-wrap:wrap; }
-  .tpill { flex:1; text-align:center; }
-  .pc-btns { flex-direction:column; }
-  .pc-btn { width:100%; }
-}
-</style>
-</head>
-<body>
-
-<nav>
-  <div class="nav-left">
-    <a href="javascript:history.back()" class="back-btn" aria-label="Go back">
-      <span class="arr">←</span>
-      <span class="back-txt">Back</span>
-    </a>
-    <div class="brand">
-      <div class="brand-icon">🩺</div>
-      <span class="brand-name">Medi<em>AI</em></span>
-    </div>
-  </div>
-  <div class="nav-right">
-    <button class="icon-btn" id="theme-btn" onclick="toggleTheme()" title="Toggle theme">☀️</button>
-  </div>
-</nav>
-
-<div class="sev-bar hidden" id="sev-bar" role="alert">
-  <span class="sev-dot" id="sev-dot"></span>
-  <span class="sev-pill" id="sev-pill"></span>
-  <span class="sev-txt" id="sev-txt"></span>
-</div>
-
-<div class="layout">
-
-  <aside class="sidebar" aria-label="Pharmacy list">
-
-    <div class="s-search">
-      <div class="s-search-inner">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-          <circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.4"/>
-          <path d="M9.5 9.5L12.5 12.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-        </svg>
-        <input class="s-input" id="s-input" placeholder="Search pharmacies…"
-          autocomplete="off" oninput="onSearch(this.value)" aria-label="Search pharmacies"/>
-        <button class="s-clear" id="s-clear" onclick="clearSearch()" aria-label="Clear">✕</button>
-      </div>
-    </div>
-
-    <div class="s-filters">
-      <div class="chips" role="group" aria-label="Radius">
-        <button class="chip"    onclick="changeRadius(500,this)">500m</button>
-        <button class="chip on" onclick="changeRadius(1000,this)">1km</button>
-        <button class="chip"    onclick="changeRadius(2000,this)">2km</button>
-        <button class="chip"    onclick="changeRadius(5000,this)">5km</button>
-      </div>
-      <select class="sort-sel" id="sort-sel" onchange="onSortChange()" aria-label="Sort by">
-        <option value="dist">Nearest</option>
-        <option value="rating">Top Rated</option>
-        <option value="name">A – Z</option>
-      </select>
-    </div>
-
-    <div class="s-toggles">
-      <button class="tpill on" id="t-all"  onclick="setOpenFilter('all')">All</button>
-      <button class="tpill"    id="t-open" onclick="setOpenFilter('open')">Open Now</button>
-    </div>
-
-    <div class="s-listhdr">
-      <span class="s-listhdr-title">Nearby Pharmacies</span>
-      <div class="s-listhdr-right">
-        <span class="source-badge" id="source-badge"></span>
-        <span class="s-listhdr-count" id="list-count">—</span>
-      </div>
-    </div>
-
-    <div class="p-list" id="p-list" role="list">
-      <div class="empty"><div class="empty-icon">📍</div><div class="empty-msg">Finding your location…</div></div>
-    </div>
-  </aside>
-
-  <main class="map-wrap">
-    <div id="map"></div>
-
-    <div class="map-ctrls" id="map-ctrls">
-      <button class="mc-btn" onclick="mapZoom(1)"  title="Zoom in">＋</button>
-      <button class="mc-btn" onclick="mapZoom(-1)" title="Zoom out">－</button>
-      <button class="mc-btn" onclick="recenter()"  title="My location">◎</button>
-    </div>
-
-    <div class="overlay" id="ov-loading">
-      <div class="spinner"></div>
-      <div class="ov-title">Finding Pharmacies</div>
-      <div class="ov-sub">Detecting your location and scanning nearby stores…</div>
-    </div>
-
-    <div class="overlay off" id="ov-error">
-      <div style="font-size:44px">📍</div>
-      <div class="ov-title">Location Required</div>
-      <div class="ov-sub" id="ov-errmsg">Allow location access to find pharmacies near you.</div>
-      <button class="retry-btn" onclick="initLocation()">Try Again</button>
-    </div>
-
-    <div class="map-card" id="map-card" role="dialog" aria-label="Pharmacy details">
-      <div class="mc-name" id="mc-name"></div>
-      <div class="mc-addr" id="mc-addr"></div>
-      <div class="mc-btns">
-        <a class="mc-btn2 go" id="mc-nav" href="#" target="_blank" rel="noopener">🗺 Navigate</a>
-        <button class="mc-btn2 cls" onclick="closeCard()">✕ Close</button>
-      </div>
-    </div>
-  </main>
-
-</div>
-
-<script>
-const GOOGLE_MAPS_API_KEY = 'YOUR_GOOGLE_MAPS_API_KEY';
-const USE_GOOGLE = GOOGLE_MAPS_API_KEY !== 'YOUR_GOOGLE_MAPS_API_KEY';
-
-let map, markers = [], allPharmacies = [];
-let currentRadius = 1000, userLocation = null;
-let openFilter = 'all', sortMode = 'dist', searchQuery = '';
-let dataSource = 'osm';
-
-const savedTheme = localStorage.getItem('theme') || 'dark';
-document.documentElement.setAttribute('data-theme', savedTheme);
-setThemeIcon(savedTheme);
-
-function toggleTheme() {
-  const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', next);
-  localStorage.setItem('theme', next);
-  setThemeIcon(next);
-  if (map && USE_GOOGLE) map.setOptions({ styles: next === 'dark' ? darkStyle : [] });
-  if (!USE_GOOGLE && userLocation) renderOSMMap(userLocation);
-}
-function setThemeIcon(t) {
-  const btn = document.getElementById('theme-btn');
-  btn.textContent = t === 'dark' ? '☀️' : '🌙';
-  btn.title = t === 'dark' ? 'Light mode' : 'Dark mode';
-}
-
-const sev = new URLSearchParams(window.location.search).get('severity');
-if (sev) {
-  const bar  = document.getElementById('sev-bar');
-  const dot  = document.getElementById('sev-dot');
-  const pill = document.getElementById('sev-pill');
-  const txt  = document.getElementById('sev-txt');
-  bar.classList.remove('hidden'); bar.classList.add(sev);
-  dot.className  = `sev-dot ${sev}`;
-  pill.className = `sev-pill ${sev}`;
-  pill.textContent = sev;
-  const copy = {
-    HIGH:   '<strong>Urgent:</strong> Please visit a pharmacy or hospital immediately.',
-    MEDIUM: '<strong>Advisory:</strong> Consider picking up medicines from a nearby pharmacy.',
-    LOW:    '<strong>Informational:</strong> Locate a nearby pharmacy if needed.'
-  };
-  txt.innerHTML = copy[sev] || '';
-}
-
-const darkStyle = [
-  {elementType:'geometry',stylers:[{color:'#080f1e'}]},
-  {elementType:'labels.text.stroke',stylers:[{color:'#080f1e'}]},
-  {elementType:'labels.text.fill',stylers:[{color:'#788898'}]},
-  {featureType:'administrative.locality',elementType:'labels.text.fill',stylers:[{color:'#c8d4e8'}]},
-  {featureType:'poi',elementType:'labels',stylers:[{visibility:'off'}]},
-  {featureType:'road',elementType:'geometry',stylers:[{color:'#182e4e'}]},
-  {featureType:'road',elementType:'labels.text.fill',stylers:[{color:'#788898'}]},
-  {featureType:'road.highway',elementType:'geometry',stylers:[{color:'#1c3a6a'}]},
-  {featureType:'road.highway',elementType:'labels.text.fill',stylers:[{color:'#c8d4e8'}]},
-  {featureType:'transit',elementType:'geometry',stylers:[{color:'#0d1a2e'}]},
-  {featureType:'water',elementType:'geometry',stylers:[{color:'#040b16'}]},
-  {featureType:'water',elementType:'labels.text.fill',stylers:[{color:'#263d65'}]}
-];
-
-function initLocation() {
-  document.getElementById('ov-error').classList.add('off');
-  document.getElementById('ov-loading').classList.remove('off');
-
-  if (!navigator.geolocation) { showError('Geolocation not supported by your browser.'); return; }
-
-  navigator.geolocation.getCurrentPosition(
-    pos => {
-      userLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-      if (USE_GOOGLE) initGoogleMap(userLocation);
-      else initOSMMap(userLocation);
-    },
-    err => {
-      const m = {
-        1: 'Location access denied. Please allow it in browser settings.',
-        2: 'Location unavailable. Check GPS / network.',
-        3: 'Request timed out. Please try again.'
-      };
-      showError(m[err.code] || 'Could not get your location.');
-    },
-    { timeout: 10000, enableHighAccuracy: true }
-  );
-}
-
-function showError(msg) {
-  document.getElementById('ov-loading').classList.add('off');
-  document.getElementById('ov-error').classList.remove('off');
-  document.getElementById('ov-errmsg').textContent = msg;
-}
-
-function initGoogleMap(loc) {
-  dataSource = 'google';
-  map = new google.maps.Map(document.getElementById('map'), {
-    center: loc, zoom: 15,
-    styles: savedTheme === 'dark' ? darkStyle : [],
-    mapTypeControl: false, streetViewControl: false,
-    fullscreenControl: false, zoomControl: false
-  });
-
-  new google.maps.Marker({
-    position: loc, map, title: 'You',
-    icon: { path: google.maps.SymbolPath.CIRCLE, scale: 8, fillColor: '#00c896', fillOpacity: 1, strokeColor: '#fff', strokeWeight: 2.5 },
-    zIndex: 999
-  });
-
-  new google.maps.Circle({
-    map, center: loc, radius: currentRadius,
-    strokeColor: '#00c896', strokeOpacity: 0.2, strokeWeight: 1,
-    fillColor: '#00c896', fillOpacity: 0.035
-  });
-
-  document.getElementById('map-ctrls').style.display = 'flex';
-  searchGoogleNearby(loc);
-}
-
-function searchGoogleNearby(loc) {
-  const svc = new google.maps.places.PlacesService(map);
-  svc.nearbySearch(
-    { location: loc, radius: currentRadius, type: 'pharmacy', keyword: 'pharmacy medical store chemist' },
-    (results, status) => {
-      document.getElementById('ov-loading').classList.add('off');
-      if (status === google.maps.places.PlacesServiceStatus.OK) {
-        allPharmacies = results;
-        setSourceBadge('google');
-        renderList();
-        placeGoogleMarkers(results);
-      } else {
-        allPharmacies = [];
-        renderList();
+      to {
+        opacity: 1;
+        transform: translateY(0)
       }
     }
-  );
-}
 
-function placeGoogleMarkers(places) {
-  markers.forEach(m => m.setMap(null)); markers = [];
-  places.forEach((p, i) => {
-    const m = new google.maps.Marker({
-      position: p.geometry.location, map, title: p.name,
-      icon: {
-        url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(markerSVG()),
-        scaledSize: new google.maps.Size(28, 36),
-        anchor: new google.maps.Point(14, 36)
+    .sev-bar.HIGH {
+      background: rgba(255, 92, 124, 0.06);
+    }
+
+    .sev-bar.MEDIUM {
+      background: rgba(255, 170, 0, 0.06);
+    }
+
+    .sev-bar.LOW {
+      background: rgba(0, 200, 150, 0.05);
+    }
+
+    .sev-bar.hidden {
+      display: none;
+    }
+
+    .sev-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      animation: blink 2s infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1
       }
-    });
-    m.addListener('click', () => selectGooglePlace(i, p));
-    markers.push(m);
-  });
-}
 
-function selectGooglePlace(i, place) {
-  activateCard(i);
-  const p = place || allPharmacies[i];
-  if (!p || !map) return;
-  const loc = { lat: p.geometry.location.lat(), lng: p.geometry.location.lng() };
-  map.panTo(loc); map.setZoom(17);
-  markers[i]?.setAnimation(google.maps.Animation.BOUNCE);
-  setTimeout(() => markers[i]?.setAnimation(null), 1400);
-  document.getElementById('mc-name').textContent = p.name;
-  document.getElementById('mc-addr').textContent = p.vicinity || 'Address not available';
-  document.getElementById('mc-nav').href = `https://www.google.com/maps/dir/?api=1&destination=${loc.lat},${loc.lng}`;
-  document.getElementById('map-card').classList.add('show');
-}
+      50% {
+        opacity: 0.3
+      }
+    }
 
-function initOSMMap(loc) {
-  dataSource = 'osm';
-  renderOSMMap(loc);
-  document.getElementById('map-ctrls').style.display = 'flex';
-  fetchOverpassPharmacies(loc);
-}
+    .sev-dot.HIGH {
+      background: var(--danger);
+    }
 
-function renderOSMMap(loc) {
-  const theme = document.documentElement.getAttribute('data-theme');
-  const layer = theme === 'dark' ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png' : 'mapnik';
-  const delta = currentRadius / 111000;
-  const bbox = `${loc.lng - delta * 1.5},${loc.lat - delta},${loc.lng + delta * 1.5},${loc.lat + delta}`;
-  document.getElementById('map').innerHTML = `
+    .sev-dot.MEDIUM {
+      background: var(--warning);
+    }
+
+    .sev-dot.LOW {
+      background: var(--mint);
+    }
+
+    .sev-pill {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      flex-shrink: 0;
+    }
+
+    .sev-pill.HIGH {
+      color: var(--danger);
+      background: rgba(255, 92, 124, 0.14);
+    }
+
+    .sev-pill.MEDIUM {
+      color: var(--warning);
+      background: rgba(255, 170, 0, 0.14);
+    }
+
+    .sev-pill.LOW {
+      color: var(--mint);
+      background: rgba(0, 200, 150, 0.12);
+    }
+
+    .sev-txt {
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .sev-txt strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* ─── SOURCE BADGE ───────────────────────────────────────────────────────── */
+    .source-badge {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      background: transparent;
+      display: none;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .source-badge.show {
+      display: flex;
+    }
+
+    .source-badge.live {
+      border-color: rgba(0, 200, 150, 0.3);
+      color: var(--mint);
+      background: var(--mint-dim);
+    }
+
+    .source-badge.osm {
+      border-color: rgba(255, 170, 0, 0.3);
+      color: var(--warning);
+      background: rgba(255, 170, 0, 0.08);
+    }
+
+    /* ─── LAYOUT ─────────────────────────────────────────────────────────────── */
+    .layout {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* ─── SIDEBAR ────────────────────────────────────────────────────────────── */
+    .sidebar {
+      width: 350px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+      background: var(--bg-mid);
+      overflow: hidden;
+      transition: background 0.25s var(--ease);
+    }
+
+    .s-search {
+      padding: 12px 12px 0;
+      flex-shrink: 0;
+    }
+
+    .s-search-inner {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--bg-input);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-btn);
+      padding: 8px 11px;
+      transition: border-color 0.18s var(--ease), box-shadow 0.18s var(--ease);
+      min-height: 40px;
+    }
+
+    .s-search-inner:focus-within {
+      border-color: rgba(0, 200, 150, 0.45);
+      box-shadow: 0 0 0 3px var(--mint-dim);
+    }
+
+    .s-search-inner svg {
+      flex-shrink: 0;
+      color: var(--text-dim);
+    }
+
+    .s-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+    }
+
+    .s-input::placeholder {
+      color: var(--text-muted);
+      opacity: 0.45;
+    }
+
+    .s-clear {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-dim);
+      font-size: 14px;
+      line-height: 1;
+      display: none;
+      padding: 6px;
+      transition: color 0.15s;
+    }
+
+    .s-clear.vis {
+      display: block;
+    }
+
+    .s-clear:hover {
+      color: var(--danger);
+    }
+
+    .s-filters {
+      padding: 9px 12px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      flex-wrap: wrap;
+    }
+
+    .chips {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      padding: 6px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.15s var(--ease);
+      min-height: 30px;
+    }
+
+    .chip:hover {
+      border-color: var(--mint);
+      color: var(--mint);
+    }
+
+    .chip.on {
+      background: var(--mint-dim);
+      border-color: rgba(0, 200, 150, 0.3);
+      color: var(--mint);
+      font-weight: 600;
+    }
+
+    .sort-sel {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      color: var(--text-muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      padding: 6px 8px;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.15s;
+      min-height: 30px;
+    }
+
+    .sort-sel:hover,
+    .sort-sel:focus {
+      border-color: rgba(0, 200, 150, 0.4);
+    }
+
+    .s-toggles {
+      padding: 7px 12px 0;
+      display: flex;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+
+    .tpill {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.15s var(--ease);
+      min-height: 30px;
+    }
+
+    .tpill.on {
+      background: var(--mint-dim);
+      border-color: rgba(0, 200, 150, 0.3);
+      color: var(--mint);
+    }
+
+    .s-listhdr {
+      padding: 7px 12px 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .s-listhdr-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.1px;
+      color: var(--text-dim);
+      font-weight: 600;
+    }
+
+    .s-listhdr-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .s-listhdr-count {
+      font-size: 11px;
+      color: var(--mint);
+      font-weight: 700;
+    }
+
+    .p-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0 8px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .p-list::-webkit-scrollbar {
+      width: 3px;
+    }
+
+    .p-list::-webkit-scrollbar-thumb {
+      background: rgba(0, 200, 150, 0.12);
+      border-radius: 2px;
+    }
+
+    .p-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.18s var(--ease);
+      animation: fadeUp 0.28s var(--ease) both;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .p-card::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 12%;
+      bottom: 12%;
+      width: 2.5px;
+      background: var(--mint);
+      border-radius: 2px;
+      opacity: 0;
+      transition: opacity 0.18s;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(7px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    .p-card:hover {
+      border-color: rgba(0, 200, 150, 0.28);
+      background: var(--bg-hover);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .p-card:hover::after {
+      opacity: 1;
+    }
+
+    .p-card.active {
+      border-color: var(--mint);
+      background: var(--mint-glow);
+    }
+
+    .p-card.active::after {
+      opacity: 1;
+    }
+
+    .pc-row1 {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 3px;
+    }
+
+    .pc-name {
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.3;
+      font-family: 'Syne', sans-serif;
+    }
+
+    .pc-badge {
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 20px;
+      flex-shrink: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .pc-badge.open {
+      background: rgba(0, 200, 150, 0.12);
+      color: var(--mint);
+    }
+
+    .pc-badge.closed {
+      background: rgba(255, 92, 124, 0.12);
+      color: var(--danger);
+    }
+
+    .pc-badge.unknown {
+      background: rgba(120, 136, 152, 0.1);
+      color: var(--text-muted);
+    }
+
+    .pc-addr {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 7px;
+      line-height: 1.45;
+    }
+
+    .pc-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 9px;
+      flex-wrap: wrap;
+    }
+
+    .pc-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .stars {
+      color: #f5a623;
+      font-size: 10px;
+      letter-spacing: -0.5px;
+    }
+
+    .pc-btns {
+      display: flex;
+      gap: 6px;
+    }
+
+    .pc-btn {
+      flex: 1;
+      padding: 9px 0;
+      border-radius: 7px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      text-align: center;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      transition: all 0.15s var(--ease);
+      min-height: 36px;
+      box-sizing: border-box;
+    }
+
+    .pc-btn:hover {
+      border-color: var(--mint);
+      color: var(--mint);
+      background: var(--mint-dim);
+    }
+
+    .pc-btn.pri {
+      background: var(--mint);
+      border-color: var(--mint);
+      color: #080f1e;
+      font-weight: 700;
+    }
+
+    .pc-btn.pri:hover {
+      background: var(--mint-light);
+      box-shadow: 0 2px 8px rgba(0, 200, 150, 0.25);
+    }
+
+    .pc-btn[disabled] {
+      opacity: 0.3;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .empty {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 36px 20px;
+      text-align: center;
+      gap: 7px;
+    }
+
+    .empty-icon {
+      font-size: 34px;
+      opacity: 0.35;
+    }
+
+    .empty-msg {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ─── MAP ────────────────────────────────────────────────────────────────── */
+    .map-wrap {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #map {
+      width: 100%;
+      height: 100%;
+    }
+
+    .map-ctrls {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 10;
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .mc-btn {
+      width: 38px;
+      height: 38px;
+      background: var(--bg-mid);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: var(--text-muted);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.15s var(--ease);
+    }
+
+    .mc-btn:hover {
+      border-color: var(--mint);
+      color: var(--mint);
+    }
+
+    .map-card {
+      position: absolute;
+      bottom: 18px;
+      right: 18px;
+      background: var(--bg-mid);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 14px 15px;
+      max-width: 260px;
+      min-width: 210px;
+      box-shadow: var(--shadow);
+      display: none;
+      z-index: 10;
+      animation: pop 0.2s cubic-bezier(.34, 1.56, .64, 1);
+      transition: background 0.25s var(--ease);
+    }
+
+    @keyframes pop {
+      from {
+        opacity: 0;
+        transform: scale(0.9)translateY(6px)
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1)translateY(0)
+      }
+    }
+
+    .map-card.show {
+      display: block;
+    }
+
+    .mc-name {
+      font-size: 13px;
+      font-weight: 700;
+      font-family: 'Syne', sans-serif;
+      margin-bottom: 3px;
+    }
+
+    .mc-addr {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 11px;
+      line-height: 1.45;
+    }
+
+    .mc-btns {
+      display: flex;
+      gap: 6px;
+    }
+
+    .mc-btn2 {
+      flex: 1;
+      padding: 9px 0;
+      border-radius: 7px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      text-align: center;
+      text-decoration: none;
+      display: block;
+      transition: all 0.15s var(--ease);
+      min-height: 36px;
+      box-sizing: border-box;
+    }
+
+    .mc-btn2.go {
+      background: var(--mint);
+      color: #080f1e;
+      border: none;
+    }
+
+    .mc-btn2.go:hover {
+      background: var(--mint-light);
+    }
+
+    .mc-btn2.cls {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+
+    .mc-btn2.cls:hover {
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      z-index: 20;
+      gap: 12px;
+      text-align: center;
+      padding: 40px;
+      transition: background 0.25s var(--ease);
+    }
+
+    .overlay.off {
+      display: none;
+    }
+
+    .ov-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 21px;
+      font-weight: 700;
+    }
+
+    .ov-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      max-width: 290px;
+      line-height: 1.65;
+    }
+
+    .retry-btn {
+      margin-top: 4px;
+      padding: 12px 24px;
+      background: var(--mint);
+      border: none;
+      border-radius: var(--radius-btn);
+      color: #080f1e;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s var(--ease);
+      min-height: 44px;
+    }
+
+    .retry-btn:hover {
+      background: var(--mint-light);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(0, 200, 150, 0.28);
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(0, 200, 150, 0.14);
+      border-top-color: var(--mint);
+      border-radius: 50%;
+      animation: spin 0.72s linear infinite;
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .layout {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        height: 46dvh;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .map-wrap {
+        flex: 1;
+        min-height: 0;
+      }
+
+      nav {
+        padding: 0 14px;
+      }
+
+      .back-txt {
+        display: none;
+      }
+    }
+
+    @media (max-width:440px) {
+      .sidebar {
+        height: 52dvh;
+      }
+
+      .s-filters {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .chips {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .chip {
+        flex: 1;
+        text-align: center;
+        padding: 7px 4px;
+      }
+
+      .sort-sel {
+        width: 100%;
+      }
+
+      .s-toggles {
+        flex-wrap: wrap;
+      }
+
+      .tpill {
+        flex: 1;
+        text-align: center;
+      }
+
+      .pc-btns {
+        flex-direction: column;
+      }
+
+      .pc-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="nav-left">
+      <a href="javascript:history.back()" class="back-btn" aria-label="Go back">
+        <span class="arr">←</span>
+        <span class="back-txt">Back</span>
+      </a>
+      <div class="brand">
+        <div class="brand-icon">🩺</div>
+        <span class="brand-name">Medi<em>AI</em></span>
+      </div>
+    </div>
+    <div class="nav-right">
+      <button class="icon-btn" id="theme-btn" onclick="toggleTheme()" title="Toggle theme">☀️</button>
+    </div>
+  </nav>
+
+  <div class="sev-bar hidden" id="sev-bar" role="alert">
+    <span class="sev-dot" id="sev-dot"></span>
+    <span class="sev-pill" id="sev-pill"></span>
+    <span class="sev-txt" id="sev-txt"></span>
+  </div>
+
+  <div class="layout">
+
+    <aside class="sidebar" aria-label="Pharmacy list">
+
+      <div class="s-search">
+        <div class="s-search-inner">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.4" />
+            <path d="M9.5 9.5L12.5 12.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+          </svg>
+          <input class="s-input" id="s-input" placeholder="Search pharmacies…" autocomplete="off"
+            oninput="onSearch(this.value)" aria-label="Search pharmacies" />
+          <button class="s-clear" id="s-clear" onclick="clearSearch()" aria-label="Clear">✕</button>
+        </div>
+      </div>
+
+      <div class="s-filters">
+        <div class="chips" role="group" aria-label="Radius">
+          <button class="chip" onclick="changeRadius(500,this)">500m</button>
+          <button class="chip on" onclick="changeRadius(1000,this)">1km</button>
+          <button class="chip" onclick="changeRadius(2000,this)">2km</button>
+          <button class="chip" onclick="changeRadius(5000,this)">5km</button>
+        </div>
+        <select class="sort-sel" id="sort-sel" onchange="onSortChange()" aria-label="Sort by">
+          <option value="dist">Nearest</option>
+          <option value="rating">Top Rated</option>
+          <option value="name">A – Z</option>
+        </select>
+      </div>
+
+      <div class="s-toggles">
+        <button class="tpill on" id="t-all" onclick="setOpenFilter('all')">All</button>
+        <button class="tpill" id="t-open" onclick="setOpenFilter('open')">Open Now</button>
+      </div>
+
+      <div class="s-listhdr">
+        <span class="s-listhdr-title">Nearby Pharmacies</span>
+        <div class="s-listhdr-right">
+          <span class="source-badge" id="source-badge"></span>
+          <span class="s-listhdr-count" id="list-count">—</span>
+        </div>
+      </div>
+
+      <div class="p-list" id="p-list" role="list">
+        <div class="empty">
+          <div class="empty-icon">📍</div>
+          <div class="empty-msg">Finding your location…</div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="map-wrap">
+      <div id="map"></div>
+
+      <div class="map-ctrls" id="map-ctrls">
+        <button class="mc-btn" onclick="mapZoom(1)" title="Zoom in">＋</button>
+        <button class="mc-btn" onclick="mapZoom(-1)" title="Zoom out">－</button>
+        <button class="mc-btn" onclick="recenter()" title="My location">◎</button>
+      </div>
+
+      <div class="overlay" id="ov-loading">
+        <div class="spinner"></div>
+        <div class="ov-title">Finding Pharmacies</div>
+        <div class="ov-sub">Detecting your location and scanning nearby stores…</div>
+      </div>
+
+      <div class="overlay off" id="ov-error">
+        <div style="font-size:44px">📍</div>
+        <div class="ov-title">Location Required</div>
+        <div class="ov-sub" id="ov-errmsg">Allow location access to find pharmacies near you.</div>
+        <button class="retry-btn" onclick="initLocation()">Try Again</button>
+      </div>
+
+      <div class="map-card" id="map-card" role="dialog" aria-label="Pharmacy details">
+        <div class="mc-name" id="mc-name"></div>
+        <div class="mc-addr" id="mc-addr"></div>
+        <div class="mc-btns">
+          <a class="mc-btn2 go" id="mc-nav" href="#" target="_blank" rel="noopener">🗺 Navigate</a>
+          <button class="mc-btn2 cls" onclick="closeCard()">✕ Close</button>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <script>
+    const GOOGLE_MAPS_API_KEY = 'YOUR_GOOGLE_MAPS_API_KEY';
+    const USE_GOOGLE = GOOGLE_MAPS_API_KEY !== 'YOUR_GOOGLE_MAPS_API_KEY';
+
+    let map, markers = [], allPharmacies = [];
+    let currentRadius = 1000, userLocation = null;
+    let openFilter = 'all', sortMode = 'dist', searchQuery = '';
+    let dataSource = 'osm';
+
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    setThemeIcon(savedTheme);
+
+    function toggleTheme() {
+      const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      setThemeIcon(next);
+      if (map && USE_GOOGLE) map.setOptions({ styles: next === 'dark' ? darkStyle : [] });
+      if (!USE_GOOGLE && userLocation) renderOSMMap(userLocation);
+    }
+    function setThemeIcon(t) {
+      const btn = document.getElementById('theme-btn');
+      btn.textContent = t === 'dark' ? '☀️' : '🌙';
+      btn.title = t === 'dark' ? 'Light mode' : 'Dark mode';
+    }
+
+    const sev = new URLSearchParams(window.location.search).get('severity');
+    if (sev) {
+      const bar = document.getElementById('sev-bar');
+      const dot = document.getElementById('sev-dot');
+      const pill = document.getElementById('sev-pill');
+      const txt = document.getElementById('sev-txt');
+      bar.classList.remove('hidden'); bar.classList.add(sev);
+      dot.className = `sev-dot ${sev}`;
+      pill.className = `sev-pill ${sev}`;
+      pill.textContent = sev;
+      const copy = {
+        HIGH: '<strong>Urgent:</strong> Please visit a pharmacy or hospital immediately.',
+        MEDIUM: '<strong>Advisory:</strong> Consider picking up medicines from a nearby pharmacy.',
+        LOW: '<strong>Informational:</strong> Locate a nearby pharmacy if needed.'
+      };
+      txt.innerHTML = copy[sev] || '';
+    }
+
+    const darkStyle = [
+      { elementType: 'geometry', stylers: [{ color: '#080f1e' }] },
+      { elementType: 'labels.text.stroke', stylers: [{ color: '#080f1e' }] },
+      { elementType: 'labels.text.fill', stylers: [{ color: '#788898' }] },
+      { featureType: 'administrative.locality', elementType: 'labels.text.fill', stylers: [{ color: '#c8d4e8' }] },
+      { featureType: 'poi', elementType: 'labels', stylers: [{ visibility: 'off' }] },
+      { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#182e4e' }] },
+      { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#788898' }] },
+      { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#1c3a6a' }] },
+      { featureType: 'road.highway', elementType: 'labels.text.fill', stylers: [{ color: '#c8d4e8' }] },
+      { featureType: 'transit', elementType: 'geometry', stylers: [{ color: '#0d1a2e' }] },
+      { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#040b16' }] },
+      { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#263d65' }] }
+    ];
+
+    function initLocation() {
+      document.getElementById('ov-error').classList.add('off');
+      document.getElementById('ov-loading').classList.remove('off');
+
+      if (!navigator.geolocation) { showError('Geolocation not supported by your browser.'); return; }
+
+      navigator.geolocation.getCurrentPosition(
+        pos => {
+          userLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+          if (USE_GOOGLE) initGoogleMap(userLocation);
+          else initOSMMap(userLocation);
+        },
+        err => {
+          const m = {
+            1: 'Location access denied. Please allow it in browser settings.',
+            2: 'Location unavailable. Check GPS / network.',
+            3: 'Request timed out. Please try again.'
+          };
+          showError(m[err.code] || 'Could not get your location.');
+        },
+        { timeout: 10000, enableHighAccuracy: true }
+      );
+    }
+
+    function showError(msg) {
+      document.getElementById('ov-loading').classList.add('off');
+      document.getElementById('ov-error').classList.remove('off');
+      document.getElementById('ov-errmsg').textContent = msg;
+    }
+
+    function initGoogleMap(loc) {
+      dataSource = 'google';
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: loc, zoom: 15,
+        styles: savedTheme === 'dark' ? darkStyle : [],
+        mapTypeControl: false, streetViewControl: false,
+        fullscreenControl: false, zoomControl: false
+      });
+
+      new google.maps.Marker({
+        position: loc, map, title: 'You',
+        icon: { path: google.maps.SymbolPath.CIRCLE, scale: 8, fillColor: '#00c896', fillOpacity: 1, strokeColor: '#fff', strokeWeight: 2.5 },
+        zIndex: 999
+      });
+
+      new google.maps.Circle({
+        map, center: loc, radius: currentRadius,
+        strokeColor: '#00c896', strokeOpacity: 0.2, strokeWeight: 1,
+        fillColor: '#00c896', fillOpacity: 0.035
+      });
+
+      document.getElementById('map-ctrls').style.display = 'flex';
+      searchGoogleNearby(loc);
+    }
+
+    function searchGoogleNearby(loc) {
+      const svc = new google.maps.places.PlacesService(map);
+      svc.nearbySearch(
+        { location: loc, radius: currentRadius, type: 'pharmacy', keyword: 'pharmacy medical store chemist' },
+        (results, status) => {
+          document.getElementById('ov-loading').classList.add('off');
+          if (status === google.maps.places.PlacesServiceStatus.OK) {
+            allPharmacies = results;
+            setSourceBadge('google');
+            renderList();
+            placeGoogleMarkers(results);
+          } else {
+            allPharmacies = [];
+            renderList();
+          }
+        }
+      );
+    }
+
+    function placeGoogleMarkers(places) {
+      markers.forEach(m => m.setMap(null)); markers = [];
+      places.forEach((p, i) => {
+        const m = new google.maps.Marker({
+          position: p.geometry.location, map, title: p.name,
+          icon: {
+            url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(markerSVG()),
+            scaledSize: new google.maps.Size(28, 36),
+            anchor: new google.maps.Point(14, 36)
+          }
+        });
+        m.addListener('click', () => selectGooglePlace(i, p));
+        markers.push(m);
+      });
+    }
+
+    function selectGooglePlace(i, place) {
+      activateCard(i);
+      const p = place || allPharmacies[i];
+      if (!p || !map) return;
+      const loc = { lat: p.geometry.location.lat(), lng: p.geometry.location.lng() };
+      map.panTo(loc); map.setZoom(17);
+      markers[i]?.setAnimation(google.maps.Animation.BOUNCE);
+      setTimeout(() => markers[i]?.setAnimation(null), 1400);
+      document.getElementById('mc-name').textContent = p.name;
+      document.getElementById('mc-addr').textContent = p.vicinity || 'Address not available';
+      document.getElementById('mc-nav').href = `https://www.google.com/maps/dir/?api=1&destination=${loc.lat},${loc.lng}`;
+      document.getElementById('map-card').classList.add('show');
+    }
+
+    function initOSMMap(loc) {
+      dataSource = 'osm';
+      renderOSMMap(loc);
+      document.getElementById('map-ctrls').style.display = 'flex';
+      fetchOverpassPharmacies(loc);
+    }
+
+    function renderOSMMap(loc) {
+      const theme = document.documentElement.getAttribute('data-theme');
+      const layer = theme === 'dark' ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png' : 'mapnik';
+      const delta = currentRadius / 111000;
+      const bbox = `${loc.lng - delta * 1.5},${loc.lat - delta},${loc.lng + delta * 1.5},${loc.lat + delta}`;
+      document.getElementById('map').innerHTML = `
     <iframe
       width="100%" height="100%"
-      style="border:none;display:block;filter:${theme==='dark'?'invert(0.9) hue-rotate(180deg)':''}"
+      style="border:none;display:block;filter:${theme === 'dark' ? 'invert(0.9) hue-rotate(180deg)' : ''}"
       src="https://www.openstreetmap.org/export/embed.html?bbox=${encodeURIComponent(bbox)}&layer=mapnik&marker=${loc.lat},${loc.lng}"
       title="Map of nearby pharmacies"
       loading="lazy"
       allowfullscreen>
     </iframe>`;
-}
+    }
 
-async function fetchOverpassPharmacies(loc) {
-  const r = currentRadius;
-  const query = `
+    async function fetchOverpassPharmacies(loc) {
+      const r = currentRadius;
+      const query = `
     [out:json][timeout:25];
     (
       node["amenity"="pharmacy"](around:${r},${loc.lat},${loc.lng});
@@ -712,189 +1310,189 @@ async function fetchOverpassPharmacies(loc) {
     out body center;
   `;
 
-  const endpoints = [
-    'https://overpass-api.de/api/interpreter',
-    'https://overpass.kumi.systems/api/interpreter',
-    'https://maps.mail.ru/osm/tools/overpass/api/interpreter'
-  ];
+      const endpoints = [
+        'https://overpass-api.de/api/interpreter',
+        'https://overpass.kumi.systems/api/interpreter',
+        'https://maps.mail.ru/osm/tools/overpass/api/interpreter'
+      ];
 
-  let data = null;
-  for (const endpoint of endpoints) {
-    try {
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        body: 'data=' + encodeURIComponent(query),
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-      });
-      if (res.ok) { data = await res.json(); break; }
-    } catch(e) { continue; }
-  }
+      let data = null;
+      for (const endpoint of endpoints) {
+        try {
+          const res = await fetch(endpoint, {
+            method: 'POST',
+            body: 'data=' + encodeURIComponent(query),
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+          });
+          if (res.ok) { data = await res.json(); break; }
+        } catch (e) { continue; }
+      }
 
-  document.getElementById('ov-loading').classList.add('off');
+      document.getElementById('ov-loading').classList.add('off');
 
-  if (!data || !data.elements?.length) {
-    allPharmacies = [];
-    renderList();
-    return;
-  }
+      if (!data || !data.elements?.length) {
+        allPharmacies = [];
+        renderList();
+        return;
+      }
 
-  allPharmacies = data.elements
-    .filter(el => el.tags)
-    .map(el => {
-      const lat = el.lat ?? el.center?.lat;
-      const lng = el.lon ?? el.center?.lon;
-      if (!lat || !lng) return null;
+      allPharmacies = data.elements
+        .filter(el => el.tags)
+        .map(el => {
+          const lat = el.lat ?? el.center?.lat;
+          const lng = el.lon ?? el.center?.lon;
+          if (!lat || !lng) return null;
 
-      const name = el.tags.name || el.tags['name:en'] || 'Pharmacy';
-      const address = buildOSMAddress(el.tags);
-      const phone = el.tags.phone || el.tags['contact:phone'] || null;
-      const opening = el.tags.opening_hours || null;
-      const isOpen = guessOpenStatus(opening);
-      const dist = distRaw(loc, { lat, lng });
+          const name = el.tags.name || el.tags['name:en'] || 'Pharmacy';
+          const address = buildOSMAddress(el.tags);
+          const phone = el.tags.phone || el.tags['contact:phone'] || null;
+          const opening = el.tags.opening_hours || null;
+          const isOpen = guessOpenStatus(opening);
+          const dist = distRaw(loc, { lat, lng });
 
-      return { _osm: true, id: el.id, name, address, phone, opening, isOpen, lat, lng, distRaw: dist };
-    })
-    .filter(Boolean);
+          return { _osm: true, id: el.id, name, address, phone, opening, isOpen, lat, lng, distRaw: dist };
+        })
+        .filter(Boolean);
 
-  setSourceBadge('osm');
-  renderList();
-}
+      setSourceBadge('osm');
+      renderList();
+    }
 
-function buildOSMAddress(tags) {
-  const parts = [
-    tags['addr:housename'],
-    tags['addr:street'] ? `${tags['addr:housenumber'] || ''} ${tags['addr:street']}`.trim() : null,
-    tags['addr:suburb'] || tags['addr:neighbourhood'],
-    tags['addr:city'],
-  ].filter(Boolean);
-  return parts.length ? parts.join(', ') : (tags['description'] || 'Address not available');
-}
+    function buildOSMAddress(tags) {
+      const parts = [
+        tags['addr:housename'],
+        tags['addr:street'] ? `${tags['addr:housenumber'] || ''} ${tags['addr:street']}`.trim() : null,
+        tags['addr:suburb'] || tags['addr:neighbourhood'],
+        tags['addr:city'],
+      ].filter(Boolean);
+      return parts.length ? parts.join(', ') : (tags['description'] || 'Address not available');
+    }
 
-function guessOpenStatus(openingHoursStr) {
-  if (!openingHoursStr) return null;
-  const s = openingHoursStr.toLowerCase();
-  if (s === '24/7') return true;
+    function guessOpenStatus(openingHoursStr) {
+      if (!openingHoursStr) return null;
+      const s = openingHoursStr.toLowerCase();
+      if (s === '24/7') return true;
 
-  const now = new Date();
-  const day = ['su','mo','tu','we','th','fr','sa'][now.getDay()];
-  const curMins = now.getHours() * 60 + now.getMinutes();
+      const now = new Date();
+      const day = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'][now.getDay()];
+      const curMins = now.getHours() * 60 + now.getMinutes();
 
-  const match = s.match(/(\d{1,2}):(\d{2})\s*[-–]\s*(\d{1,2}):(\d{2})/);
-  if (match) {
-    const open  = parseInt(match[1]) * 60 + parseInt(match[2]);
-    const close = parseInt(match[3]) * 60 + parseInt(match[4]);
-    return curMins >= open && curMins < close;
-  }
-  return null;
-}
+      const match = s.match(/(\d{1,2}):(\d{2})\s*[-–]\s*(\d{1,2}):(\d{2})/);
+      if (match) {
+        const open = parseInt(match[1]) * 60 + parseInt(match[2]);
+        const close = parseInt(match[3]) * 60 + parseInt(match[4]);
+        return curMins >= open && curMins < close;
+      }
+      return null;
+    }
 
-function selectOSMPlace(i) {
-  activateCard(i);
-  const p = allPharmacies[i];
-  if (!p) return;
-  document.getElementById('mc-name').textContent = p.name;
-  document.getElementById('mc-addr').textContent = p.address;
-  document.getElementById('mc-nav').href = `https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`;
-  document.getElementById('map-card').classList.add('show');
-  if (userLocation) {
-    const delta = currentRadius / 111000;
-    const bbox = `${p.lng - delta},${p.lat - delta},${p.lng + delta},${p.lat + delta}`;
-    const theme = document.documentElement.getAttribute('data-theme');
-    document.getElementById('map').innerHTML = `
+    function selectOSMPlace(i) {
+      activateCard(i);
+      const p = allPharmacies[i];
+      if (!p) return;
+      document.getElementById('mc-name').textContent = p.name;
+      document.getElementById('mc-addr').textContent = p.address;
+      document.getElementById('mc-nav').href = `https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`;
+      document.getElementById('map-card').classList.add('show');
+      if (userLocation) {
+        const delta = currentRadius / 111000;
+        const bbox = `${p.lng - delta},${p.lat - delta},${p.lng + delta},${p.lat + delta}`;
+        const theme = document.documentElement.getAttribute('data-theme');
+        document.getElementById('map').innerHTML = `
       <iframe width="100%" height="100%"
-        style="border:none;display:block;filter:${theme==='dark'?'invert(0.9) hue-rotate(180deg)':''}"
+        style="border:none;display:block;filter:${theme === 'dark' ? 'invert(0.9) hue-rotate(180deg)' : ''}"
         src="https://www.openstreetmap.org/export/embed.html?bbox=${encodeURIComponent(bbox)}&layer=mapnik&marker=${p.lat},${p.lng}"
         title="${esc(p.name)}" loading="lazy" allowfullscreen></iframe>`;
-  }
-}
-
-function setSourceBadge(src) {
-  const badge = document.getElementById('source-badge');
-  badge.classList.add('show');
-  if (src === 'google') {
-    badge.classList.add('live'); badge.classList.remove('osm');
-    badge.textContent = '● Google Live';
-  } else {
-    badge.classList.add('osm'); badge.classList.remove('live');
-    badge.textContent = '● OpenStreetMap';
-  }
-}
-
-function renderList() {
-  const list = document.getElementById('p-list');
-  let data = [...allPharmacies];
-
-  if (openFilter === 'open') {
-    data = data.filter(p => {
-      if (USE_GOOGLE) return p.opening_hours?.isOpen?.() === true;
-      return p.isOpen === true;
-    });
-  }
-
-  if (searchQuery) {
-    const q = searchQuery.toLowerCase();
-    data = data.filter(p => {
-      const name = p.name.toLowerCase();
-      const addr = (USE_GOOGLE ? (p.vicinity || '') : (p.address || '')).toLowerCase();
-      return name.includes(q) || addr.includes(q);
-    });
-  }
-
-  data.sort((a, b) => {
-    if (sortMode === 'dist') {
-      const da = USE_GOOGLE
-        ? (userLocation ? distRaw(userLocation, {lat:a.geometry.location.lat(),lng:a.geometry.location.lng()}) : 0)
-        : a.distRaw;
-      const db = USE_GOOGLE
-        ? (userLocation ? distRaw(userLocation, {lat:b.geometry.location.lat(),lng:b.geometry.location.lng()}) : 0)
-        : b.distRaw;
-      return da - db;
+      }
     }
-    if (sortMode === 'rating') return (b.rating||0) - (a.rating||0);
-    if (sortMode === 'name')   return a.name.localeCompare(b.name);
-    return 0;
-  });
 
-  document.getElementById('list-count').textContent = data.length ? `${data.length} found` : '0 found';
+    function setSourceBadge(src) {
+      const badge = document.getElementById('source-badge');
+      badge.classList.add('show');
+      if (src === 'google') {
+        badge.classList.add('live'); badge.classList.remove('osm');
+        badge.textContent = '● Google Live';
+      } else {
+        badge.classList.add('osm'); badge.classList.remove('live');
+        badge.textContent = '● OpenStreetMap';
+      }
+    }
 
-  if (!data.length) {
-    list.innerHTML = `<div class="empty"><div class="empty-icon">🔍</div><div class="empty-msg">${searchQuery ? 'No results for "'+esc(searchQuery)+'"' : 'No pharmacies found here.<br>Try a wider radius.'}</div></div>`;
-    return;
-  }
+    function renderList() {
+      const list = document.getElementById('p-list');
+      let data = [...allPharmacies];
 
-  list.innerHTML = data.map((p, i) => {
-    const origIdx = allPharmacies.indexOf(p);
+      if (openFilter === 'open') {
+        data = data.filter(p => {
+          if (USE_GOOGLE) return p.opening_hours?.isOpen?.() === true;
+          return p.isOpen === true;
+        });
+      }
 
-    if (USE_GOOGLE) {
-      const isOpen  = p.opening_hours?.isOpen?.();
-      const openCls = isOpen===true?'open':isOpen===false?'closed':'unknown';
-      const openLbl = isOpen===true?'Open':isOpen===false?'Closed':'N/A';
-      const d       = userLocation ? distStr(userLocation,{lat:p.geometry.location.lat(),lng:p.geometry.location.lng()}) : '';
-      const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${p.geometry.location.lat()},${p.geometry.location.lng()}`;
-      return `<div class="p-card" id="pc-${origIdx}" role="listitem" onclick="selectGooglePlace(${origIdx},null)" style="animation-delay:${i*0.04}s">
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        data = data.filter(p => {
+          const name = p.name.toLowerCase();
+          const addr = (USE_GOOGLE ? (p.vicinity || '') : (p.address || '')).toLowerCase();
+          return name.includes(q) || addr.includes(q);
+        });
+      }
+
+      data.sort((a, b) => {
+        if (sortMode === 'dist') {
+          const da = USE_GOOGLE
+            ? (userLocation ? distRaw(userLocation, { lat: a.geometry.location.lat(), lng: a.geometry.location.lng() }) : 0)
+            : a.distRaw;
+          const db = USE_GOOGLE
+            ? (userLocation ? distRaw(userLocation, { lat: b.geometry.location.lat(), lng: b.geometry.location.lng() }) : 0)
+            : b.distRaw;
+          return da - db;
+        }
+        if (sortMode === 'rating') return (b.rating || 0) - (a.rating || 0);
+        if (sortMode === 'name') return a.name.localeCompare(b.name);
+        return 0;
+      });
+
+      document.getElementById('list-count').textContent = data.length ? `${data.length} found` : '0 found';
+
+      if (!data.length) {
+        list.innerHTML = `<div class="empty"><div class="empty-icon">🔍</div><div class="empty-msg">${searchQuery ? 'No results for "' + esc(searchQuery) + '"' : 'No pharmacies found here.<br>Try a wider radius.'}</div></div>`;
+        return;
+      }
+
+      list.innerHTML = data.map((p, i) => {
+        const origIdx = allPharmacies.indexOf(p);
+
+        if (USE_GOOGLE) {
+          const isOpen = p.opening_hours?.isOpen?.();
+          const openCls = isOpen === true ? 'open' : isOpen === false ? 'closed' : 'unknown';
+          const openLbl = isOpen === true ? 'Open' : isOpen === false ? 'Closed' : 'N/A';
+          const d = userLocation ? distStr(userLocation, { lat: p.geometry.location.lat(), lng: p.geometry.location.lng() }) : '';
+          const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${p.geometry.location.lat()},${p.geometry.location.lng()}`;
+          return `<div class="p-card" id="pc-${origIdx}" role="listitem" onclick="selectGooglePlace(${origIdx},null)" style="animation-delay:${i * 0.04}s">
         <div class="pc-row1">
           <div class="pc-name">💊 ${esc(p.name)}</div>
           <span class="pc-badge ${openCls}">${openLbl}</span>
         </div>
-        <div class="pc-addr">📍 ${esc(p.vicinity||'Address not available')}</div>
+        <div class="pc-addr">📍 ${esc(p.vicinity || 'Address not available')}</div>
         <div class="pc-meta">
-          ${d?`<div class="pc-meta-item">📏 ${d}</div>`:''}
-          ${p.rating?`<div class="pc-meta-item"><span class="stars">${renderStars(p.rating)}</span> ${p.rating}</div>`:''}
+          ${d ? `<div class="pc-meta-item">📏 ${d}</div>` : ''}
+          ${p.rating ? `<div class="pc-meta-item"><span class="stars">${renderStars(p.rating)}</span> ${p.rating}</div>` : ''}
         </div>
         <div class="pc-btns">
           <a class="pc-btn pri" href="${mapsUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🗺 Directions</a>
           ${p.formatted_phone_number
-            ? `<a class="pc-btn" href="tel:${p.formatted_phone_number}" onclick="event.stopPropagation()">📞 Call</a>`
-            : `<button class="pc-btn" disabled>📞 N/A</button>`}
+              ? `<a class="pc-btn" href="tel:${p.formatted_phone_number}" onclick="event.stopPropagation()">📞 Call</a>`
+              : `<button class="pc-btn" disabled>📞 N/A</button>`}
         </div>
       </div>`;
-    } else {
-      const openCls = p.isOpen===true?'open':p.isOpen===false?'closed':'unknown';
-      const openLbl = p.isOpen===true?'Open':p.isOpen===false?'Closed':'N/A';
-      const d       = p.distRaw < 1000 ? Math.round(p.distRaw)+'m' : (p.distRaw/1000).toFixed(1)+'km';
-      const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`;
-      const osmUrl  = `https://www.openstreetmap.org/node/${p.id}`;
-      return `<div class="p-card" id="pc-${origIdx}" role="listitem" onclick="selectOSMPlace(${origIdx})" style="animation-delay:${i*0.04}s">
+        } else {
+          const openCls = p.isOpen === true ? 'open' : p.isOpen === false ? 'closed' : 'unknown';
+          const openLbl = p.isOpen === true ? 'Open' : p.isOpen === false ? 'Closed' : 'N/A';
+          const d = p.distRaw < 1000 ? Math.round(p.distRaw) + 'm' : (p.distRaw / 1000).toFixed(1) + 'km';
+          const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`;
+          const osmUrl = `https://www.openstreetmap.org/node/${p.id}`;
+          return `<div class="p-card" id="pc-${origIdx}" role="listitem" onclick="selectOSMPlace(${origIdx})" style="animation-delay:${i * 0.04}s">
         <div class="pc-row1">
           <div class="pc-name">💊 ${esc(p.name)}</div>
           <span class="pc-badge ${openCls}">${openLbl}</span>
@@ -907,118 +1505,119 @@ function renderList() {
         <div class="pc-btns">
           <a class="pc-btn pri" href="${mapsUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🗺 Directions</a>
           ${p.phone
-            ? `<a class="pc-btn" href="tel:${p.phone}" onclick="event.stopPropagation()">📞 Call</a>`
-            : `<a class="pc-btn" href="${osmUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">ℹ️ Info</a>`}
+              ? `<a class="pc-btn" href="tel:${p.phone}" onclick="event.stopPropagation()">📞 Call</a>`
+              : `<a class="pc-btn" href="${osmUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">ℹ️ Info</a>`}
         </div>
       </div>`;
+        }
+      }).join('');
     }
-  }).join('');
-}
 
-function activateCard(i) {
-  document.querySelectorAll('.p-card').forEach(c => c.classList.remove('active'));
-  const c = document.getElementById(`pc-${i}`);
-  if (c) { c.classList.add('active'); c.scrollIntoView({ behavior:'smooth', block:'nearest' }); }
-}
+    function activateCard(i) {
+      document.querySelectorAll('.p-card').forEach(c => c.classList.remove('active'));
+      const c = document.getElementById(`pc-${i}`);
+      if (c) { c.classList.add('active'); c.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+    }
 
-function closeCard() {
-  document.getElementById('map-card').classList.remove('show');
-  document.querySelectorAll('.p-card').forEach(c => c.classList.remove('active'));
-  if (!USE_GOOGLE && userLocation) renderOSMMap(userLocation);
-}
+    function closeCard() {
+      document.getElementById('map-card').classList.remove('show');
+      document.querySelectorAll('.p-card').forEach(c => c.classList.remove('active'));
+      if (!USE_GOOGLE && userLocation) renderOSMMap(userLocation);
+    }
 
-function markerSVG() {
-  return `<svg width="28" height="36" viewBox="0 0 28 36" xmlns="http://www.w3.org/2000/svg">
+    function markerSVG() {
+      return `<svg width="28" height="36" viewBox="0 0 28 36" xmlns="http://www.w3.org/2000/svg">
     <path d="M14 0C6.268 0 0 6.268 0 14c0 7.732 14 22 14 22S28 21.732 28 14C28 6.268 21.732 0 14 0z" fill="#00c896"/>
     <circle cx="14" cy="14" r="7" fill="white"/>
     <text x="14" y="18.5" text-anchor="middle" font-size="10" font-family="sans-serif">💊</text>
   </svg>`;
-}
+    }
 
-function mapZoom(d) {
-  if (USE_GOOGLE && map) { map.setZoom(map.getZoom() + d); return; }
-  currentRadius = Math.max(300, currentRadius * (d > 0 ? 0.7 : 1.4));
-  if (userLocation) renderOSMMap(userLocation);
-}
-function recenter() {
-  if (USE_GOOGLE && map && userLocation) { map.panTo(userLocation); map.setZoom(15); return; }
-  if (!USE_GOOGLE && userLocation) renderOSMMap(userLocation);
-}
+    function mapZoom(d) {
+      if (USE_GOOGLE && map) { map.setZoom(map.getZoom() + d); return; }
+      currentRadius = Math.max(300, currentRadius * (d > 0 ? 0.7 : 1.4));
+      if (userLocation) renderOSMMap(userLocation);
+    }
+    function recenter() {
+      if (USE_GOOGLE && map && userLocation) { map.panTo(userLocation); map.setZoom(15); return; }
+      if (!USE_GOOGLE && userLocation) renderOSMMap(userLocation);
+    }
 
-function onSearch(val) {
-  searchQuery = val.trim();
-  document.getElementById('s-clear').classList.toggle('vis', val.length > 0);
-  renderList();
-}
-function clearSearch() {
-  searchQuery = '';
-  document.getElementById('s-input').value = '';
-  document.getElementById('s-clear').classList.remove('vis');
-  renderList();
-}
-function setOpenFilter(mode) {
-  openFilter = mode;
-  document.getElementById('t-all').classList.toggle('on',  mode==='all');
-  document.getElementById('t-open').classList.toggle('on', mode==='open');
-  renderList();
-}
-function onSortChange() {
-  sortMode = document.getElementById('sort-sel').value;
-  renderList();
-}
-function changeRadius(r, btn) {
-  currentRadius = r;
-  document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
-  btn.classList.add('on');
-  if (!userLocation) return;
-  if (USE_GOOGLE && map) {
-    markers.forEach(m => m.setMap(null)); markers = [];
-    searchGoogleNearby(userLocation);
-  } else {
-    document.getElementById('ov-loading').classList.remove('off');
-    renderOSMMap(userLocation);
-    fetchOverpassPharmacies(userLocation);
-  }
-}
+    function onSearch(val) {
+      searchQuery = val.trim();
+      document.getElementById('s-clear').classList.toggle('vis', val.length > 0);
+      renderList();
+    }
+    function clearSearch() {
+      searchQuery = '';
+      document.getElementById('s-input').value = '';
+      document.getElementById('s-clear').classList.remove('vis');
+      renderList();
+    }
+    function setOpenFilter(mode) {
+      openFilter = mode;
+      document.getElementById('t-all').classList.toggle('on', mode === 'all');
+      document.getElementById('t-open').classList.toggle('on', mode === 'open');
+      renderList();
+    }
+    function onSortChange() {
+      sortMode = document.getElementById('sort-sel').value;
+      renderList();
+    }
+    function changeRadius(r, btn) {
+      currentRadius = r;
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+      btn.classList.add('on');
+      if (!userLocation) return;
+      if (USE_GOOGLE && map) {
+        markers.forEach(m => m.setMap(null)); markers = [];
+        searchGoogleNearby(userLocation);
+      } else {
+        document.getElementById('ov-loading').classList.remove('off');
+        renderOSMMap(userLocation);
+        fetchOverpassPharmacies(userLocation);
+      }
+    }
 
-function renderStars(r) {
-  const f = Math.floor(r), h = r%1>=0.5?1:0;
-  return '★'.repeat(f) + (h?'½':'') + '☆'.repeat(5-f-h);
-}
-function distRaw(a, b) {
-  const R=6371000, dLat=(b.lat-a.lat)*Math.PI/180, dLng=(b.lng-a.lng)*Math.PI/180;
-  const x=Math.sin(dLat/2)**2+Math.cos(a.lat*Math.PI/180)*Math.cos(b.lat*Math.PI/180)*Math.sin(dLng/2)**2;
-  return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));
-}
-function distStr(a, b) {
-  const d = distRaw(a, b);
-  return d<1000 ? Math.round(d)+'m' : (d/1000).toFixed(1)+'km';
-}
-function esc(s) {
-  if (!s) return '';
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+    function renderStars(r) {
+      const f = Math.floor(r), h = r % 1 >= 0.5 ? 1 : 0;
+      return '★'.repeat(f) + (h ? '½' : '') + '☆'.repeat(5 - f - h);
+    }
+    function distRaw(a, b) {
+      const R = 6371000, dLat = (b.lat - a.lat) * Math.PI / 180, dLng = (b.lng - a.lng) * Math.PI / 180;
+      const x = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * Math.PI / 180) * Math.cos(b.lat * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+      return R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
+    }
+    function distStr(a, b) {
+      const d = distRaw(a, b);
+      return d < 1000 ? Math.round(d) + 'm' : (d / 1000).toFixed(1) + 'km';
+    }
+    function esc(s) {
+      if (!s) return '';
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
 
-document.addEventListener('keydown', e => {
-  if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
-    e.preventDefault(); document.getElementById('s-input').focus();
-  }
-  if (e.key === 'Escape') closeCard();
-});
+    document.addEventListener('keydown', e => {
+      if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
+        e.preventDefault(); document.getElementById('s-input').focus();
+      }
+      if (e.key === 'Escape') closeCard();
+    });
 
-if (USE_GOOGLE) {
-  window.initGoogleMapCallback = () => initLocation();
-  const s = document.createElement('script');
-  s.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places&callback=initGoogleMapCallback`;
-  s.async = true; s.defer = true;
-  s.onerror = () => {
-    console.warn('Google Maps failed, falling back to OpenStreetMap');
-    initLocation();
-  };
-  document.head.appendChild(s);
-} else {
-  initLocation();
-}
-</script>
+    if (USE_GOOGLE) {
+      window.initGoogleMapCallback = () => initLocation();
+      const s = document.createElement('script');
+      s.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places&callback=initGoogleMapCallback`;
+      s.async = true; s.defer = true;
+      s.onerror = () => {
+        console.warn('Google Maps failed, falling back to OpenStreetMap');
+        initLocation();
+      };
+      document.head.appendChild(s);
+    } else {
+      initLocation();
+    }
+  </script>
 </body>
+
 </html>

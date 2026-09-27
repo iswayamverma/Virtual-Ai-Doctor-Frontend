@@ -1,286 +1,592 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MediAI — Virtual Doctor</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --mint: #00c896;
-    --mint-light: #00e6aa;
-    --mint-dim: rgba(0,200,150,0.12);
-    --danger: #ff5c7c;
-    --warning: #ffaa00;
-  }
-  [data-theme="dark"] {
-    --bg: #0a1628;
-    --bg-mid: #112240;
-    --bg-input: #0a1628;
-    --bg-toggle: #1d3461;
-    --text: #f0f4f8;
-    --text-muted: #8892a4;
-    --border: rgba(255,255,255,0.07);
-  }
-  [data-theme="light"] {
-    --bg: #f0f4f8;
-    --bg-mid: #ffffff;
-    --bg-input: #f8fafc;
-    --bg-toggle: #e2e8f0;
-    --text: #0a1628;
-    --text-muted: #64748b;
-    --border: rgba(0,0,0,0.09);
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    font-family:'DM Sans',sans-serif;
-    background:var(--bg); color:var(--text);
-    min-height:100vh; display:flex; overflow:hidden;
-    transition:background 0.3s,color 0.3s;
-  }
-  body::before {
-    content:''; position:fixed;
-    width:600px; height:600px;
-    background:radial-gradient(circle,rgba(0,200,150,0.08) 0%,transparent 70%);
-    top:-200px; right:-200px; border-radius:50%;
-    animation:pulse 6s ease-in-out infinite; pointer-events:none;
-  }
-  @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediAI — Virtual Doctor</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --mint: #00c896;
+      --mint-light: #00e6aa;
+      --mint-dim: rgba(0, 200, 150, 0.12);
+      --danger: #ff5c7c;
+      --warning: #ffaa00;
+    }
 
-  .theme-toggle {
-    position:fixed; top:18px; right:20px; z-index:999;
-    background:var(--bg-mid); border:1px solid var(--border);
-    border-radius:50px; padding:6px 14px;
-    display:flex; align-items:center; gap:8px;
-    cursor:pointer; font-size:13px; color:var(--text-muted);
-    font-family:'DM Sans',sans-serif; transition:all 0.2s;
-    box-shadow:0 2px 12px rgba(0,0,0,0.15);
-  }
-  .theme-toggle:hover { border-color:var(--mint); color:var(--mint); }
-  .toggle-track {
-    width:32px; height:18px; background:var(--bg-toggle);
-    border-radius:9px; position:relative; transition:background 0.3s;
-  }
-  .toggle-thumb {
-    width:14px; height:14px; background:var(--mint);
-    border-radius:50%; position:absolute; top:2px; left:2px;
-    transition:transform 0.3s;
-  }
-  [data-theme="light"] .toggle-thumb { transform:translateX(14px); }
+    [data-theme="dark"] {
+      --bg: #0a1628;
+      --bg-mid: #112240;
+      --bg-input: #0a1628;
+      --bg-toggle: #1d3461;
+      --text: #f0f4f8;
+      --text-muted: #8892a4;
+      --border: rgba(255, 255, 255, 0.07);
+    }
 
-  .grid-lines {
-    position:fixed; top:0; left:0; right:0; bottom:0;
-    background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
-    background-size:60px 60px; pointer-events:none; z-index:0;
-  }
+    [data-theme="light"] {
+      --bg: #f0f4f8;
+      --bg-mid: #ffffff;
+      --bg-input: #f8fafc;
+      --bg-toggle: #e2e8f0;
+      --text: #0a1628;
+      --text-muted: #64748b;
+      --border: rgba(0, 0, 0, 0.09);
+    }
 
-  .left-panel {
-    flex:1; display:flex; flex-direction:column;
-    justify-content:center; padding:80px; position:relative; z-index:1;
-  }
-  .logo { display:flex; align-items:center; gap:12px; margin-bottom:70px; }
-  .logo-icon { width:44px; height:44px; background:var(--mint); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; }
-  .logo-text { font-family:'DM Serif Display',serif; font-size:24px; }
-  .logo-text span { color:var(--mint); }
-  .hero-title { font-family:'DM Serif Display',serif; font-size:52px; line-height:1.1; margin-bottom:22px; }
-  .hero-title em { font-style:italic; color:var(--mint); }
-  .hero-sub { font-size:16px; color:var(--text-muted); line-height:1.7; max-width:400px; margin-bottom:44px; }
-  .features { display:flex; flex-direction:column; gap:14px; }
-  .feature { display:flex; align-items:center; gap:14px; font-size:15px; color:var(--text-muted); }
-  .feature-dot { width:8px; height:8px; background:var(--mint); border-radius:50%; flex-shrink:0; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  .right-panel {
-    width:480px; background:var(--bg-mid);
-    display:flex; align-items:center; justify-content:center;
-    padding:60px 50px; position:relative; z-index:1;
-    border-left:1px solid var(--border); transition:background 0.3s;
-  }
-  .auth-box { width:100%; }
-  .tab-switch {
-    display:flex; background:var(--bg-input); border-radius:12px;
-    padding:4px; margin-bottom:34px; border:1px solid var(--border);
-  }
-  .tab-btn {
-    flex:1; padding:12px; border:none; background:transparent;
-    color:var(--text-muted); font-family:'DM Sans',sans-serif;
-    font-size:14px; font-weight:500; border-radius:9px; cursor:pointer; transition:all 0.25s;
-    min-height:44px;
-  }
-  .tab-btn.active { background:var(--mint); color:#0a1628; }
-  .form-title { font-family:'DM Serif Display',serif; font-size:28px; margin-bottom:8px; }
-  .form-sub { font-size:14px; color:var(--text-muted); margin-bottom:30px; }
-  .form-group { margin-bottom:16px; }
-  .form-group label { display:block; font-size:12px; font-weight:600; color:var(--text-muted); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px; }
-  .form-group input {
-    width:100%; padding:14px 16px; background:var(--bg-input);
-    border:1px solid var(--border); border-radius:10px; color:var(--text);
-    font-family:'DM Sans',sans-serif; font-size:15px; transition:all 0.2s; outline:none;
-    min-height:44px;
-  }
-  .form-group input:focus { border-color:var(--mint); box-shadow:0 0 0 3px var(--mint-dim); }
-  .form-group input::placeholder { color:var(--text-muted); opacity:0.5; }
-  .btn-primary {
-    width:100%; padding:15px; background:var(--mint); border:none;
-    border-radius:10px; color:#0a1628; font-family:'DM Sans',sans-serif;
-    font-size:15px; font-weight:600; cursor:pointer; transition:all 0.2s; margin-top:6px;
-    min-height:48px;
-  }
-  .btn-primary:hover { background:var(--mint-light); transform:translateY(-1px); box-shadow:0 8px 25px rgba(0,200,150,0.3); }
-  .btn-primary.loading { pointer-events:none; opacity:0.7; }
-  .error-msg { background:rgba(255,92,124,0.1); border:1px solid rgba(255,92,124,0.3); color:var(--danger); padding:12px 16px; border-radius:8px; font-size:13px; margin-top:12px; display:none; }
-  .success-msg { background:var(--mint-dim); border:1px solid rgba(0,200,150,0.3); color:var(--mint); padding:12px 16px; border-radius:8px; font-size:13px; margin-top:12px; display:none; }
-  .form-section { display:none; }
-  .form-section.active { display:block; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      overflow: hidden;
+      transition: background 0.3s, color 0.3s;
+    }
 
-  @media(max-width:900px){ .left-panel{display:none;} .right-panel{width:100%;border-left:none;} }
+    body::before {
+      content: '';
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0, 200, 150, 0.08) 0%, transparent 70%);
+      top: -200px;
+      right: -200px;
+      border-radius: 50%;
+      animation: pulse 6s ease-in-out infinite;
+      pointer-events: none;
+    }
 
-  /* ── MOBILE (375px–430px) ──────────────────────────────────────── */
-  @media(max-width:480px){
-    body { overflow-y:auto; }
-    .theme-toggle { top:12px; right:12px; padding:5px 11px; font-size:12px; }
-    .right-panel { padding:28px 20px; min-height:100vh; align-items:flex-start; padding-top:72px; }
-    .auth-box { width:100%; }
-    .tab-switch { margin-bottom:24px; }
-    .tab-btn { padding:11px; font-size:13px; }
-    .form-title { font-size:24px; }
-    .form-sub { font-size:13px; margin-bottom:24px; }
-    .form-group input { padding:12px 14px; font-size:16px; } /* 16px avoids iOS auto-zoom */
-    .btn-primary { padding:14px; font-size:15px; }
-  }
-</style>
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1)
+      }
+
+      50% {
+        transform: scale(1.1)
+      }
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 18px;
+      right: 20px;
+      z-index: 999;
+      background: var(--bg-mid);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text-muted);
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.2s;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--mint);
+      color: var(--mint);
+    }
+
+    .toggle-track {
+      width: 32px;
+      height: 18px;
+      background: var(--bg-toggle);
+      border-radius: 9px;
+      position: relative;
+      transition: background 0.3s;
+    }
+
+    .toggle-thumb {
+      width: 14px;
+      height: 14px;
+      background: var(--mint);
+      border-radius: 50%;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.3s;
+    }
+
+    [data-theme="light"] .toggle-thumb {
+      transform: translateX(14px);
+    }
+
+    .grid-lines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .left-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 70px;
+    }
+
+    .logo-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--mint);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .logo-text {
+      font-family: 'DM Serif Display', serif;
+      font-size: 24px;
+    }
+
+    .logo-text span {
+      color: var(--mint);
+    }
+
+    .hero-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 52px;
+      line-height: 1.1;
+      margin-bottom: 22px;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--mint);
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 400px;
+      margin-bottom: 44px;
+    }
+
+    .features {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .feature {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 15px;
+      color: var(--text-muted);
+    }
+
+    .feature-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--mint);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .right-panel {
+      width: 480px;
+      background: var(--bg-mid);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 50px;
+      position: relative;
+      z-index: 1;
+      border-left: 1px solid var(--border);
+      transition: background 0.3s;
+    }
+
+    .auth-box {
+      width: 100%;
+    }
+
+    .tab-switch {
+      display: flex;
+      background: var(--bg-input);
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 34px;
+      border: 1px solid var(--border);
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: all 0.25s;
+      min-height: 44px;
+    }
+
+    .tab-btn.active {
+      background: var(--mint);
+      color: #0a1628;
+    }
+
+    .form-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .form-sub {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 14px 16px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      transition: all 0.2s;
+      outline: none;
+      min-height: 44px;
+    }
+
+    .form-group input:focus {
+      border-color: var(--mint);
+      box-shadow: 0 0 0 3px var(--mint-dim);
+    }
+
+    .form-group input::placeholder {
+      color: var(--text-muted);
+      opacity: 0.5;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 15px;
+      background: var(--mint);
+      border: none;
+      border-radius: 10px;
+      color: #0a1628;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 6px;
+      min-height: 48px;
+    }
+
+    .btn-primary:hover {
+      background: var(--mint-light);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 25px rgba(0, 200, 150, 0.3);
+    }
+
+    .btn-primary.loading {
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    .error-msg {
+      background: rgba(255, 92, 124, 0.1);
+      border: 1px solid rgba(255, 92, 124, 0.3);
+      color: var(--danger);
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-top: 12px;
+      display: none;
+    }
+
+    .success-msg {
+      background: var(--mint-dim);
+      border: 1px solid rgba(0, 200, 150, 0.3);
+      color: var(--mint);
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-top: 12px;
+      display: none;
+    }
+
+    .form-section {
+      display: none;
+    }
+
+    .form-section.active {
+      display: block;
+    }
+
+    @media(max-width:900px) {
+      .left-panel {
+        display: none;
+      }
+
+      .right-panel {
+        width: 100%;
+        border-left: none;
+      }
+    }
+
+    /* ── MOBILE (375px–430px) ──────────────────────────────────────── */
+    @media(max-width:480px) {
+      body {
+        overflow-y: auto;
+      }
+
+      .theme-toggle {
+        top: 12px;
+        right: 12px;
+        padding: 5px 11px;
+        font-size: 12px;
+      }
+
+      .right-panel {
+        padding: 28px 20px;
+        min-height: 100vh;
+        align-items: flex-start;
+        padding-top: 72px;
+      }
+
+      .auth-box {
+        width: 100%;
+      }
+
+      .tab-switch {
+        margin-bottom: 24px;
+      }
+
+      .tab-btn {
+        padding: 11px;
+        font-size: 13px;
+      }
+
+      .form-title {
+        font-size: 24px;
+      }
+
+      .form-sub {
+        font-size: 13px;
+        margin-bottom: 24px;
+      }
+
+      .form-group input {
+        padding: 12px 14px;
+        font-size: 16px;
+      }
+
+      /* 16px avoids iOS auto-zoom */
+      .btn-primary {
+        padding: 14px;
+        font-size: 15px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-<div class="grid-lines"></div>
+  <div class="grid-lines"></div>
 
-<button class="theme-toggle" onclick="toggleTheme()">
-  <span id="theme-icon">☀️</span>
-  <div class="toggle-track"><div class="toggle-thumb"></div></div>
-  <span id="theme-label">Light</span>
-</button>
-
-<div class="left-panel">
-  <div class="logo">
-    <div class="logo-icon">🩺</div>
-    <div class="logo-text">Medi<span>AI</span></div>
-  </div>
-  <h1 class="hero-title">Your personal<br><em>AI Doctor</em><br>always available.</h1>
-  <p class="hero-sub">Get instant medical guidance powered by advanced AI. Describe your symptoms, receive a professional assessment, and know when to seek urgent care.</p>
-  <div class="features">
-    <div class="feature"><div class="feature-dot"></div>AI-powered symptom analysis</div>
-    <div class="feature"><div class="feature-dot"></div>Intelligent follow-up questions</div>
-    <div class="feature"><div class="feature-dot"></div>Severity detection & alerts</div>
-    <div class="feature"><div class="feature-dot"></div>Complete health history tracking</div>
-  </div>
-</div>
-
-<div class="right-panel">
-  <div class="auth-box">
-    <div class="tab-switch">
-      <button class="tab-btn active" onclick="switchTab('login')">Sign In</button>
-      <button class="tab-btn" onclick="switchTab('register')">Register</button>
+  <button class="theme-toggle" onclick="toggleTheme()">
+    <span id="theme-icon">☀️</span>
+    <div class="toggle-track">
+      <div class="toggle-thumb"></div>
     </div>
-    <div class="form-section active" id="login-section">
-      <h2 class="form-title">Welcome back</h2>
-      <p class="form-sub">Sign in to continue your health journey</p>
-      <div class="form-group"><label>Email Address</label><input type="email" id="login-email" placeholder="you@example.com"/></div>
-      <div class="form-group"><label>Password</label><input type="password" id="login-password" placeholder="••••••••"/></div>
-      <button class="btn-primary" id="login-btn" onclick="handleLogin()">Sign In →</button>
-      <div class="error-msg" id="login-error"></div>
-      <div class="success-msg" id="login-success"></div>
+    <span id="theme-label">Light</span>
+  </button>
+
+  <div class="left-panel">
+    <div class="logo">
+      <div class="logo-icon">🩺</div>
+      <div class="logo-text">Medi<span>AI</span></div>
     </div>
-    <div class="form-section" id="register-section">
-      <h2 class="form-title">Create account</h2>
-      <p class="form-sub">Join thousands using AI-powered health guidance</p>
-      <div class="form-group"><label>Full Name</label><input type="text" id="reg-name" placeholder="Your full name"/></div>
-      <div class="form-group"><label>Email Address</label><input type="email" id="reg-email" placeholder="you@example.com"/></div>
-      <div class="form-group"><label>Password</label><input type="password" id="reg-password" placeholder="Min. 6 characters"/></div>
-      <button class="btn-primary" id="register-btn" onclick="handleRegister()">Create Account →</button>
-      <div class="error-msg" id="reg-error"></div>
-      <div class="success-msg" id="reg-success"></div>
+    <h1 class="hero-title">Your personal<br><em>AI Doctor</em><br>always available.</h1>
+    <p class="hero-sub">Get instant medical guidance powered by advanced AI. Describe your symptoms, receive a
+      professional assessment, and know when to seek urgent care.</p>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-dot"></div>AI-powered symptom analysis
+      </div>
+      <div class="feature">
+        <div class="feature-dot"></div>Intelligent follow-up questions
+      </div>
+      <div class="feature">
+        <div class="feature-dot"></div>Severity detection & alerts
+      </div>
+      <div class="feature">
+        <div class="feature-dot"></div>Complete health history tracking
+      </div>
     </div>
   </div>
-</div>
 
-<script>
-  const API = 'https://virtual-ai-doctor.onrender.com';
-  const savedTheme = localStorage.getItem('theme') || 'dark';
-  document.documentElement.setAttribute('data-theme', savedTheme);
-  updateThemeUI(savedTheme);
+  <div class="right-panel">
+    <div class="auth-box">
+      <div class="tab-switch">
+        <button class="tab-btn active" onclick="switchTab('login')">Sign In</button>
+        <button class="tab-btn" onclick="switchTab('register')">Register</button>
+      </div>
+      <div class="form-section active" id="login-section">
+        <h2 class="form-title">Welcome back</h2>
+        <p class="form-sub">Sign in to continue your health journey</p>
+        <div class="form-group"><label>Email Address</label><input type="email" id="login-email"
+            placeholder="you@example.com" /></div>
+        <div class="form-group"><label>Password</label><input type="password" id="login-password"
+            placeholder="••••••••" /></div>
+        <button class="btn-primary" id="login-btn" onclick="handleLogin()">Sign In →</button>
+        <div class="error-msg" id="login-error"></div>
+        <div class="success-msg" id="login-success"></div>
+      </div>
+      <div class="form-section" id="register-section">
+        <h2 class="form-title">Create account</h2>
+        <p class="form-sub">Join thousands using AI-powered health guidance</p>
+        <div class="form-group"><label>Full Name</label><input type="text" id="reg-name" placeholder="Your full name" />
+        </div>
+        <div class="form-group"><label>Email Address</label><input type="email" id="reg-email"
+            placeholder="you@example.com" /></div>
+        <div class="form-group"><label>Password</label><input type="password" id="reg-password"
+            placeholder="Min. 6 characters" /></div>
+        <button class="btn-primary" id="register-btn" onclick="handleRegister()">Create Account →</button>
+        <div class="error-msg" id="reg-error"></div>
+        <div class="success-msg" id="reg-success"></div>
+      </div>
+    </div>
+  </div>
 
-  function toggleTheme() {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-    updateThemeUI(next);
-  }
+  <script>
+    const API = 'https://virtual-ai-doctor.onrender.com';
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeUI(savedTheme);
 
-  function updateThemeUI(theme) {
-    document.getElementById('theme-icon').textContent = theme === 'dark' ? '☀️' : '🌙';
-    document.getElementById('theme-label').textContent = theme === 'dark' ? 'Light' : 'Dark';
-  }
-
-  function switchTab(tab) {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
-    if (tab === 'login') {
-      document.querySelectorAll('.tab-btn')[0].classList.add('active');
-      document.getElementById('login-section').classList.add('active');
-    } else {
-      document.querySelectorAll('.tab-btn')[1].classList.add('active');
-      document.getElementById('register-section').classList.add('active');
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      updateThemeUI(next);
     }
-  }
 
-  function showMsg(id, msg) {
-    const el = document.getElementById(id);
-    el.textContent = msg; el.style.display = 'block';
-    setTimeout(() => el.style.display = 'none', 4000);
-  }
-
-  async function handleLogin() {
-    const email = document.getElementById('login-email').value.trim();
-    const password = document.getElementById('login-password').value.trim();
-    if (!email || !password) { showMsg('login-error', 'Please fill in all fields.'); return; }
-    const btn = document.getElementById('login-btn');
-    btn.textContent = 'Signing in...'; btn.classList.add('loading');
-    try {
-      const res = await fetch(`${API}/auth/login`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email,password}) });
-      const token = await res.text();
-      if (token.startsWith('eyJ')) {
-        localStorage.setItem('token', token); localStorage.setItem('email', email);
-        showMsg('login-success', 'Login successful! Redirecting...');
-        setTimeout(() => window.location.href = 'dashboard.html', 1000);
-      } else { showMsg('login-error', token || 'Invalid credentials.'); }
-    } catch(e) { showMsg('login-error', 'Connection error. Is the server running?'); }
-    btn.textContent = 'Sign In →'; btn.classList.remove('loading');
-  }
-
-  async function handleRegister() {
-    const name = document.getElementById('reg-name').value.trim();
-    const email = document.getElementById('reg-email').value.trim();
-    const password = document.getElementById('reg-password').value.trim();
-    if (!name || !email || !password) { showMsg('reg-error', 'Please fill in all fields.'); return; }
-    if (password.length < 6) { showMsg('reg-error', 'Password must be at least 6 characters.'); return; }
-    const btn = document.getElementById('register-btn');
-    btn.textContent = 'Creating account...'; btn.classList.add('loading');
-    try {
-      const res = await fetch(`${API}/auth/register`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({name,email,password}) });
-if (res.status === 503 || res.status === 502) { showMsg('reg-error', 'Server is waking up, wait 30 seconds and try again.'); btn.textContent = 'Create Account →'; btn.classList.remove('loading'); return; }
-const msg = await res.text();
-if (msg.includes('successfully')) { showMsg('reg-success', 'Account created! Please sign in.'); setTimeout(() => switchTab('login'), 1500); }
-      else { showMsg('reg-error', msg || 'Registration failed.'); }
-    } catch(e) { showMsg('reg-error', 'Server may be waking up (can take 30s on free tier). Please try again.'); }
-    btn.textContent = 'Create Account →'; btn.classList.remove('loading');
-  }
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Enter') {
-      if (document.getElementById('login-section').classList.contains('active')) handleLogin(); else handleRegister();
+    function updateThemeUI(theme) {
+      document.getElementById('theme-icon').textContent = theme === 'dark' ? '☀️' : '🌙';
+      document.getElementById('theme-label').textContent = theme === 'dark' ? 'Light' : 'Dark';
     }
-  });
 
-  if (localStorage.getItem('token')) window.location.href = 'dashboard.html';
-</script>
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+      if (tab === 'login') {
+        document.querySelectorAll('.tab-btn')[0].classList.add('active');
+        document.getElementById('login-section').classList.add('active');
+      } else {
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        document.getElementById('register-section').classList.add('active');
+      }
+    }
+
+    function showMsg(id, msg) {
+      const el = document.getElementById(id);
+      el.textContent = msg; el.style.display = 'block';
+      setTimeout(() => el.style.display = 'none', 4000);
+    }
+
+    async function handleLogin() {
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value.trim();
+      if (!email || !password) { showMsg('login-error', 'Please fill in all fields.'); return; }
+      const btn = document.getElementById('login-btn');
+      btn.textContent = 'Signing in...'; btn.classList.add('loading');
+      try {
+        const res = await fetch(`${API}/auth/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) });
+        const token = await res.text();
+        if (token.startsWith('eyJ')) {
+          localStorage.setItem('token', token); localStorage.setItem('email', email);
+          showMsg('login-success', 'Login successful! Redirecting...');
+          setTimeout(() => window.location.href = 'dashboard.html', 1000);
+        } else { showMsg('login-error', token || 'Invalid credentials.'); }
+      } catch (e) { showMsg('login-error', 'Connection error. Is the server running?'); }
+      btn.textContent = 'Sign In →'; btn.classList.remove('loading');
+    }
+
+    async function handleRegister() {
+      const name = document.getElementById('reg-name').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const password = document.getElementById('reg-password').value.trim();
+      if (!name || !email || !password) { showMsg('reg-error', 'Please fill in all fields.'); return; }
+      if (password.length < 6) { showMsg('reg-error', 'Password must be at least 6 characters.'); return; }
+      const btn = document.getElementById('register-btn');
+      btn.textContent = 'Creating account...'; btn.classList.add('loading');
+      try {
+        const res = await fetch(`${API}/auth/register`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, email, password }) });
+        if (res.status === 503 || res.status === 502) { showMsg('reg-error', 'Server is waking up, wait 30 seconds and try again.'); btn.textContent = 'Create Account →'; btn.classList.remove('loading'); return; }
+        const msg = await res.text();
+        if (msg.includes('successfully')) { showMsg('reg-success', 'Account created! Please sign in.'); setTimeout(() => switchTab('login'), 1500); }
+        else { showMsg('reg-error', msg || 'Registration failed.'); }
+      } catch (e) { showMsg('reg-error', 'Server may be waking up (can take 30s on free tier). Please try again.'); }
+      btn.textContent = 'Create Account →'; btn.classList.remove('loading');
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        if (document.getElementById('login-section').classList.contains('active')) handleLogin(); else handleRegister();
+      }
+    });
+
+    if (localStorage.getItem('token')) window.location.href = 'dashboard.html';
+  </script>
 </body>
+
 </html>

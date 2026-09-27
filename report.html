@@ -1,380 +1,900 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MediAI — Consultation Report</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root { --mint:#00c896; --mint-light:#00e6aa; --mint-dim:rgba(0,200,150,0.12); --danger:#ff5c7c; --warning:#ffaa00; }
-  [data-theme="dark"] { --bg:#0a1628; --bg-mid:#112240; --bg-input:#0a1628; --bg-toggle:#1d3461; --text:#f0f4f8; --text-muted:#8892a4; --border:rgba(255,255,255,0.07); }
-  [data-theme="light"] { --bg:#f0f4f8; --bg-mid:#ffffff; --bg-input:#f8fafc; --bg-toggle:#e2e8f0; --text:#0a1628; --text-muted:#64748b; --border:rgba(0,0,0,0.09); }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediAI — Consultation Report</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --mint: #00c896;
+      --mint-light: #00e6aa;
+      --mint-dim: rgba(0, 200, 150, 0.12);
+      --danger: #ff5c7c;
+      --warning: #ffaa00;
+    }
 
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; transition:background 0.3s,color 0.3s; }
+    [data-theme="dark"] {
+      --bg: #0a1628;
+      --bg-mid: #112240;
+      --bg-input: #0a1628;
+      --bg-toggle: #1d3461;
+      --text: #f0f4f8;
+      --text-muted: #8892a4;
+      --border: rgba(255, 255, 255, 0.07);
+    }
 
-  nav { background:var(--bg-mid); border-bottom:1px solid var(--border); padding:0 40px; display:flex; align-items:center; justify-content:space-between; height:64px; position:sticky; top:0; z-index:100; transition:background 0.3s; }
-  .nav-logo { display:flex; align-items:center; gap:10px; font-family:'DM Serif Display',serif; font-size:20px; }
-  .nav-logo span { color:var(--mint); }
-  .nav-logo-icon { width:36px; height:36px; background:var(--mint); border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; }
-  .nav-right { display:flex; align-items:center; gap:12px; }
-  .nav-link { padding:8px 16px; background:transparent; border:1px solid var(--border); border-radius:8px; color:var(--text-muted); font-family:'DM Sans',sans-serif; font-size:13px; cursor:pointer; transition:all 0.2s; text-decoration:none; display:inline-block; min-height:40px; box-sizing:border-box; display:inline-flex; align-items:center; }
-  .nav-link:hover { border-color:var(--mint); color:var(--mint); }
-  .theme-toggle-nav { background:transparent; border:1px solid var(--border); border-radius:50px; padding:5px 12px; display:flex; align-items:center; gap:7px; cursor:pointer; font-size:12px; color:var(--text-muted); font-family:'DM Sans',sans-serif; transition:all 0.2s; }
-  .theme-toggle-nav:hover { border-color:var(--mint); color:var(--mint); }
-  .toggle-track { width:28px; height:16px; background:var(--bg-toggle); border-radius:8px; position:relative; }
-  .toggle-thumb { width:12px; height:12px; background:var(--mint); border-radius:50%; position:absolute; top:2px; left:2px; transition:transform 0.3s; }
-  [data-theme="light"] .toggle-thumb { transform:translateX(12px); }
+    [data-theme="light"] {
+      --bg: #f0f4f8;
+      --bg-mid: #ffffff;
+      --bg-input: #f8fafc;
+      --bg-toggle: #e2e8f0;
+      --text: #0a1628;
+      --text-muted: #64748b;
+      --border: rgba(0, 0, 0, 0.09);
+    }
 
-  main { max-width:860px; margin:0 auto; padding:40px; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  .selector-card { background:var(--bg-mid); border:1px solid var(--border); border-radius:16px; padding:28px; margin-bottom:28px; transition:background 0.3s; }
-  .selector-title { font-family:'DM Serif Display',serif; font-size:22px; margin-bottom:6px; }
-  .selector-sub { font-size:14px; color:var(--text-muted); margin-bottom:20px; }
-  .selector-row { display:flex; gap:12px; align-items:center; }
-  .session-select { flex:1; padding:13px 16px; background:var(--bg-input); border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:'DM Sans',sans-serif; font-size:14px; outline:none; cursor:pointer; transition:all 0.2s; min-height:44px; }
-  .session-select:focus { border-color:var(--mint); box-shadow:0 0 0 3px var(--mint-dim); }
-  .btn-generate { padding:13px 24px; background:var(--mint); border:none; border-radius:10px; color:#0a1628; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s; white-space:nowrap; min-height:44px; }
-  .btn-generate:hover { background:var(--mint-light); transform:translateY(-1px); box-shadow:0 6px 20px rgba(0,200,150,0.3); }
-  .btn-generate:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      transition: background 0.3s, color 0.3s;
+    }
 
-  .report-container { display:none; }
+    nav {
+      background: var(--bg-mid);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transition: background 0.3s;
+    }
 
-  .report-actions { display:flex; gap:12px; margin-bottom:20px; justify-content:flex-end; }
-  .btn-pdf { padding:12px 22px; background:var(--mint); border:none; border-radius:10px; color:#0a1628; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:8px; min-height:44px; }
-  .btn-pdf:hover { background:var(--mint-light); transform:translateY(-1px); box-shadow:0 6px 20px rgba(0,200,150,0.3); }
-  .btn-back-dash { padding:12px 22px; background:transparent; border:1px solid var(--border); border-radius:10px; color:var(--text-muted); font-family:'DM Sans',sans-serif; font-size:14px; cursor:pointer; transition:all 0.2s; text-decoration:none; display:inline-flex; align-items:center; gap:8px; min-height:44px; box-sizing:border-box; }
-  .btn-back-dash:hover { border-color:var(--mint); color:var(--mint); }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+    }
 
-  #report-card {
-    background:#fff; color:#0a1628;
-    border-radius:16px; overflow:hidden;
-    box-shadow:0 4px 40px rgba(0,0,0,0.2);
-    font-family:'DM Sans',sans-serif;
-  }
+    .nav-logo span {
+      color: var(--mint);
+    }
 
-  .report-header {
-    background:#0a1628; padding:32px 40px;
-    display:flex; justify-content:space-between; align-items:center;
-  }
-  .report-logo { display:flex; align-items:center; gap:12px; }
-  .report-logo-icon { width:44px; height:44px; background:#00c896; border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:20px; }
-  .report-logo-text { font-family:'DM Serif Display',serif; font-size:22px; color:#f0f4f8; }
-  .report-logo-text span { color:#00c896; }
-  .report-title-right { text-align:right; }
-  .report-title-right h2 { font-family:'DM Serif Display',serif; font-size:18px; color:#f0f4f8; }
-  .report-title-right p { font-size:13px; color:#8892a4; margin-top:4px; }
+    .nav-logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--mint);
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
 
-  .report-body { padding:32px 40px; }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-  .report-meta {
-    display:grid; grid-template-columns:1fr 1fr 1fr;
-    gap:16px; margin-bottom:28px;
-    padding:20px; background:#f8fafc;
-    border-radius:12px; border:1px solid #e2e8f0;
-  }
-  .meta-item label { font-size:11px; text-transform:uppercase; letter-spacing:0.5px; color:#64748b; display:block; margin-bottom:5px; font-weight:600; }
-  .meta-item p { font-size:15px; font-weight:600; color:#0a1628; word-break:break-word; }
+    .nav-link {
+      padding: 8px 16px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+      min-height: 40px;
+      box-sizing: border-box;
+      display: inline-flex;
+      align-items: center;
+    }
 
-  .severity-block {
-    display:inline-flex; align-items:center; gap:8px;
-    padding:8px 18px; border-radius:20px;
-    font-size:13px; font-weight:700; text-transform:uppercase;
-    letter-spacing:0.5px; margin-bottom:24px;
-  }
-  .sev-LOW { background:rgba(0,200,150,0.12); color:#0a7a5c; border:1px solid rgba(0,200,150,0.3); }
-  .sev-MEDIUM { background:rgba(255,170,0,0.12); color:#8a5700; border:1px solid rgba(255,170,0,0.3); }
-  .sev-HIGH { background:rgba(255,92,124,0.12); color:#9a1f3d; border:1px solid rgba(255,92,124,0.3); }
+    .nav-link:hover {
+      border-color: var(--mint);
+      color: var(--mint);
+    }
 
-  .report-section { margin-bottom:24px; }
-  .report-section-title { font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:#64748b; margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid #e2e8f0; }
+    .theme-toggle-nav {
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 5px 12px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.2s;
+    }
 
-  .chat-msg { display:flex; gap:12px; margin-bottom:12px; }
-  .chat-msg.user { flex-direction:row-reverse; }
-  .msg-role { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; }
-  .chat-msg.user .msg-role { text-align:right; color:#0a7a5c; }
-  .chat-msg:not(.user) .msg-role { color:#1d3461; }
-  .msg-text { background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:12px 16px; max-width:580px; font-size:14px; color:#0a1628; line-height:1.6; }
-  .chat-msg.user .msg-text { background:rgba(0,200,150,0.08); border-color:rgba(0,200,150,0.2); }
+    .theme-toggle-nav:hover {
+      border-color: var(--mint);
+      color: var(--mint);
+    }
 
-  .report-footer {
-    background:#f8fafc; padding:20px 40px;
-    border-top:1px solid #e2e8f0;
-    display:flex; justify-content:space-between; align-items:center;
-  }
-  .footer-disclaimer { font-size:12px; color:#94a3b8; max-width:500px; line-height:1.5; }
-  .footer-logo { font-family:'DM Serif Display',serif; font-size:16px; color:#0a1628; }
-  .footer-logo span { color:#00c896; }
+    .toggle-track {
+      width: 28px;
+      height: 16px;
+      background: var(--bg-toggle);
+      border-radius: 8px;
+      position: relative;
+    }
 
-  @keyframes spin { to{transform:rotate(360deg)} }
-  .spinner { width:24px; height:24px; border:3px solid rgba(0,200,150,0.2); border-top-color:var(--mint); border-radius:50%; animation:spin 0.8s linear infinite; display:inline-block; vertical-align:middle; margin-right:8px; }
+    .toggle-thumb {
+      width: 12px;
+      height: 12px;
+      background: var(--mint);
+      border-radius: 50%;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.3s;
+    }
 
-  @media print {
-    body { background:#fff !important; }
-    nav, .selector-card, .report-actions { display:none !important; }
-    main { padding:0 !important; max-width:100% !important; }
-    .report-container { display:block !important; }
-    #report-card { box-shadow:none !important; border-radius:0 !important; }
-    @page { margin:15mm; size:A4; }
-  }
+    [data-theme="light"] .toggle-thumb {
+      transform: translateX(12px);
+    }
 
-  /* ── TABLET (768px) ───────────────────────────────────────────── */
-  @media(max-width:768px){
-    main { padding:28px 20px; }
-    .report-header, .report-body, .report-footer { padding-left:24px; padding-right:24px; }
-  }
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px;
+    }
 
-  /* ── MOBILE (375px–480px) ─────────────────────────────────────── */
-  @media(max-width:480px){
-    nav { padding:0 16px; height:56px; }
-    .nav-link span { display:none; }
-    .nav-link { padding:8px 10px; }
-    .theme-toggle-nav span#theme-label { display:none; }
+    .selector-card {
+      background: var(--bg-mid);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 28px;
+      transition: background 0.3s;
+    }
 
-    main { padding:20px 14px; }
+    .selector-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
 
-    .selector-card { padding:18px; border-radius:12px; }
-    .selector-title { font-size:19px; }
-    .selector-sub { font-size:13px; margin-bottom:16px; }
-    .selector-row { flex-direction:column; align-items:stretch; }
-    .btn-generate { width:100%; }
+    .selector-sub {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
 
-    .report-actions { flex-direction:column-reverse; }
-    .btn-pdf, .btn-back-dash { width:100%; justify-content:center; }
+    .selector-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
 
-    .report-header { padding:20px; flex-direction:column; align-items:flex-start; gap:12px; }
-    .report-title-right { text-align:left; }
+    .session-select {
+      flex: 1;
+      padding: 13px 16px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      outline: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-height: 44px;
+    }
 
-    .report-body { padding:20px; }
-    .report-meta { grid-template-columns:1fr; gap:12px; padding:14px; }
-    .severity-block { width:100%; justify-content:center; box-sizing:border-box; }
+    .session-select:focus {
+      border-color: var(--mint);
+      box-shadow: 0 0 0 3px var(--mint-dim);
+    }
 
-    .chat-msg { max-width:100%; }
-    .msg-text { max-width:78vw; font-size:13px; }
+    .btn-generate {
+      padding: 13px 24px;
+      background: var(--mint);
+      border: none;
+      border-radius: 10px;
+      color: #0a1628;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+      min-height: 44px;
+    }
 
-    .report-footer { padding:16px 20px; flex-direction:column; align-items:flex-start; gap:10px; }
-  }
-</style>
+    .btn-generate:hover {
+      background: var(--mint-light);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0, 200, 150, 0.3);
+    }
+
+    .btn-generate:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .report-container {
+      display: none;
+    }
+
+    .report-actions {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      justify-content: flex-end;
+    }
+
+    .btn-pdf {
+      padding: 12px 22px;
+      background: var(--mint);
+      border: none;
+      border-radius: 10px;
+      color: #0a1628;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px;
+    }
+
+    .btn-pdf:hover {
+      background: var(--mint-light);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0, 200, 150, 0.3);
+    }
+
+    .btn-back-dash {
+      padding: 12px 22px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text-muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px;
+      box-sizing: border-box;
+    }
+
+    .btn-back-dash:hover {
+      border-color: var(--mint);
+      color: var(--mint);
+    }
+
+    #report-card {
+      background: #fff;
+      color: #0a1628;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 40px rgba(0, 0, 0, 0.2);
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .report-header {
+      background: #0a1628;
+      padding: 32px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .report-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .report-logo-icon {
+      width: 44px;
+      height: 44px;
+      background: #00c896;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .report-logo-text {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      color: #f0f4f8;
+    }
+
+    .report-logo-text span {
+      color: #00c896;
+    }
+
+    .report-title-right {
+      text-align: right;
+    }
+
+    .report-title-right h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 18px;
+      color: #f0f4f8;
+    }
+
+    .report-title-right p {
+      font-size: 13px;
+      color: #8892a4;
+      margin-top: 4px;
+    }
+
+    .report-body {
+      padding: 32px 40px;
+    }
+
+    .report-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 28px;
+      padding: 20px;
+      background: #f8fafc;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .meta-item label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #64748b;
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    .meta-item p {
+      font-size: 15px;
+      font-weight: 600;
+      color: #0a1628;
+      word-break: break-word;
+    }
+
+    .severity-block {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 24px;
+    }
+
+    .sev-LOW {
+      background: rgba(0, 200, 150, 0.12);
+      color: #0a7a5c;
+      border: 1px solid rgba(0, 200, 150, 0.3);
+    }
+
+    .sev-MEDIUM {
+      background: rgba(255, 170, 0, 0.12);
+      color: #8a5700;
+      border: 1px solid rgba(255, 170, 0, 0.3);
+    }
+
+    .sev-HIGH {
+      background: rgba(255, 92, 124, 0.12);
+      color: #9a1f3d;
+      border: 1px solid rgba(255, 92, 124, 0.3);
+    }
+
+    .report-section {
+      margin-bottom: 24px;
+    }
+
+    .report-section-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #64748b;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .chat-msg {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .chat-msg.user {
+      flex-direction: row-reverse;
+    }
+
+    .msg-role {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .chat-msg.user .msg-role {
+      text-align: right;
+      color: #0a7a5c;
+    }
+
+    .chat-msg:not(.user) .msg-role {
+      color: #1d3461;
+    }
+
+    .msg-text {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px 16px;
+      max-width: 580px;
+      font-size: 14px;
+      color: #0a1628;
+      line-height: 1.6;
+    }
+
+    .chat-msg.user .msg-text {
+      background: rgba(0, 200, 150, 0.08);
+      border-color: rgba(0, 200, 150, 0.2);
+    }
+
+    .report-footer {
+      background: #f8fafc;
+      padding: 20px 40px;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-disclaimer {
+      font-size: 12px;
+      color: #94a3b8;
+      max-width: 500px;
+      line-height: 1.5;
+    }
+
+    .footer-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 16px;
+      color: #0a1628;
+    }
+
+    .footer-logo span {
+      color: #00c896;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    .spinner {
+      width: 24px;
+      height: 24px;
+      border: 3px solid rgba(0, 200, 150, 0.2);
+      border-top-color: var(--mint);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+
+    @media print {
+      body {
+        background: #fff !important;
+      }
+
+      nav,
+      .selector-card,
+      .report-actions {
+        display: none !important;
+      }
+
+      main {
+        padding: 0 !important;
+        max-width: 100% !important;
+      }
+
+      .report-container {
+        display: block !important;
+      }
+
+      #report-card {
+        box-shadow: none !important;
+        border-radius: 0 !important;
+      }
+
+      @page {
+        margin: 15mm;
+        size: A4;
+      }
+    }
+
+    /* ── TABLET (768px) ───────────────────────────────────────────── */
+    @media(max-width:768px) {
+      main {
+        padding: 28px 20px;
+      }
+
+      .report-header,
+      .report-body,
+      .report-footer {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+    }
+
+    /* ── MOBILE (375px–480px) ─────────────────────────────────────── */
+    @media(max-width:480px) {
+      nav {
+        padding: 0 16px;
+        height: 56px;
+      }
+
+      .nav-link span {
+        display: none;
+      }
+
+      .nav-link {
+        padding: 8px 10px;
+      }
+
+      .theme-toggle-nav span#theme-label {
+        display: none;
+      }
+
+      main {
+        padding: 20px 14px;
+      }
+
+      .selector-card {
+        padding: 18px;
+        border-radius: 12px;
+      }
+
+      .selector-title {
+        font-size: 19px;
+      }
+
+      .selector-sub {
+        font-size: 13px;
+        margin-bottom: 16px;
+      }
+
+      .selector-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn-generate {
+        width: 100%;
+      }
+
+      .report-actions {
+        flex-direction: column-reverse;
+      }
+
+      .btn-pdf,
+      .btn-back-dash {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .report-header {
+        padding: 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .report-title-right {
+        text-align: left;
+      }
+
+      .report-body {
+        padding: 20px;
+      }
+
+      .report-meta {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 14px;
+      }
+
+      .severity-block {
+        width: 100%;
+        justify-content: center;
+        box-sizing: border-box;
+      }
+
+      .chat-msg {
+        max-width: 100%;
+      }
+
+      .msg-text {
+        max-width: 78vw;
+        font-size: 13px;
+      }
+
+      .report-footer {
+        padding: 16px 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<nav>
-  <div class="nav-logo">
-    <div class="nav-logo-icon">🩺</div>
-    Medi<span>AI</span>
-  </div>
-  <div class="nav-right">
-    <a href="dashboard.html" class="nav-link"><span>← Dashboard</span></a>
-    <button class="theme-toggle-nav" onclick="toggleTheme()">
-      <span id="theme-icon">☀️</span>
-      <div class="toggle-track"><div class="toggle-thumb"></div></div>
-      <span id="theme-label">Light</span>
-    </button>
-  </div>
-</nav>
-
-<main>
-
-  <div class="selector-card">
-    <div class="selector-title">Generate Consultation Report</div>
-    <div class="selector-sub">Select a consultation session to generate a downloadable PDF report</div>
-    <div class="selector-row">
-      <select class="session-select" id="session-select">
-        <option value="">Loading consultations...</option>
-      </select>
-      <button class="btn-generate" id="generate-btn" onclick="generateReport()" disabled>
-        Generate Report →
+  <nav>
+    <div class="nav-logo">
+      <div class="nav-logo-icon">🩺</div>
+      Medi<span>AI</span>
+    </div>
+    <div class="nav-right">
+      <a href="dashboard.html" class="nav-link"><span>← Dashboard</span></a>
+      <button class="theme-toggle-nav" onclick="toggleTheme()">
+        <span id="theme-icon">☀️</span>
+        <div class="toggle-track">
+          <div class="toggle-thumb"></div>
+        </div>
+        <span id="theme-label">Light</span>
       </button>
     </div>
-  </div>
+  </nav>
 
-  <div class="report-container" id="report-container">
-    <div class="report-actions">
-      <a href="dashboard.html" class="btn-back-dash">← Back to Dashboard</a>
-      <button class="btn-pdf" onclick="downloadPDF()">
-        📄 Download PDF
-      </button>
+  <main>
+
+    <div class="selector-card">
+      <div class="selector-title">Generate Consultation Report</div>
+      <div class="selector-sub">Select a consultation session to generate a downloadable PDF report</div>
+      <div class="selector-row">
+        <select class="session-select" id="session-select">
+          <option value="">Loading consultations...</option>
+        </select>
+        <button class="btn-generate" id="generate-btn" onclick="generateReport()" disabled>
+          Generate Report →
+        </button>
+      </div>
     </div>
 
-    <div id="report-card">
-
-      <div class="report-header">
-        <div class="report-logo">
-          <div class="report-logo-icon">🩺</div>
-          <div class="report-logo-text">Medi<span>AI</span></div>
-        </div>
-        <div class="report-title-right">
-          <h2>Consultation Report</h2>
-          <p id="report-date">—</p>
-        </div>
+    <div class="report-container" id="report-container">
+      <div class="report-actions">
+        <a href="dashboard.html" class="btn-back-dash">← Back to Dashboard</a>
+        <button class="btn-pdf" onclick="downloadPDF()">
+          📄 Download PDF
+        </button>
       </div>
 
-      <div class="report-body">
+      <div id="report-card">
 
-        <div class="report-meta">
-          <div class="meta-item">
-            <label>Patient</label>
-            <p id="meta-patient">—</p>
+        <div class="report-header">
+          <div class="report-logo">
+            <div class="report-logo-icon">🩺</div>
+            <div class="report-logo-text">Medi<span>AI</span></div>
           </div>
-          <div class="meta-item">
-            <label>Session ID</label>
-            <p id="meta-session">—</p>
-          </div>
-          <div class="meta-item">
-            <label>Severity</label>
-            <p id="meta-severity">—</p>
+          <div class="report-title-right">
+            <h2>Consultation Report</h2>
+            <p id="report-date">—</p>
           </div>
         </div>
 
-        <div id="severity-badge" class="severity-block sev-LOW">LOW RISK</div>
+        <div class="report-body">
 
-        <div class="report-section">
-          <div class="report-section-title">AI Diagnosis Summary</div>
-          <p id="diagnosis-text" style="font-size:14px;color:#334155;line-height:1.7;background:#f8fafc;padding:16px;border-radius:10px;border:1px solid #e2e8f0;">—</p>
+          <div class="report-meta">
+            <div class="meta-item">
+              <label>Patient</label>
+              <p id="meta-patient">—</p>
+            </div>
+            <div class="meta-item">
+              <label>Session ID</label>
+              <p id="meta-session">—</p>
+            </div>
+            <div class="meta-item">
+              <label>Severity</label>
+              <p id="meta-severity">—</p>
+            </div>
+          </div>
+
+          <div id="severity-badge" class="severity-block sev-LOW">LOW RISK</div>
+
+          <div class="report-section">
+            <div class="report-section-title">AI Diagnosis Summary</div>
+            <p id="diagnosis-text"
+              style="font-size:14px;color:#334155;line-height:1.7;background:#f8fafc;padding:16px;border-radius:10px;border:1px solid #e2e8f0;">
+              —</p>
+          </div>
+
+          <div class="report-section">
+            <div class="report-section-title">Full Consultation Transcript</div>
+            <div id="messages-list"></div>
+          </div>
+
         </div>
 
-        <div class="report-section">
-          <div class="report-section-title">Full Consultation Transcript</div>
-          <div id="messages-list"></div>
+        <div class="report-footer">
+          <p class="footer-disclaimer">⚠️ This report is generated by AI and is for informational purposes only. It is
+            NOT a substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified
+            healthcare provider.</p>
+          <div class="footer-logo">Medi<span>AI</span></div>
         </div>
 
       </div>
-
-      <div class="report-footer">
-        <p class="footer-disclaimer">⚠️ This report is generated by AI and is for informational purposes only. It is NOT a substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider.</p>
-        <div class="footer-logo">Medi<span>AI</span></div>
-      </div>
-
     </div>
-  </div>
 
-</main>
+  </main>
 
-<script>
-  const API = 'https://virtual-ai-doctor.onrender.com';
-  const token = localStorage.getItem('token');
-  const email = localStorage.getItem('email');
-  if (!token) window.location.href = 'index.html';
+  <script>
+    const API = 'https://virtual-ai-doctor.onrender.com';
+    const token = localStorage.getItem('token');
+    const email = localStorage.getItem('email');
+    if (!token) window.location.href = 'index.html';
 
-  const savedTheme = localStorage.getItem('theme') || 'dark';
-  document.documentElement.setAttribute('data-theme', savedTheme);
-  updateThemeUI(savedTheme);
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeUI(savedTheme);
 
-  function toggleTheme() {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-    updateThemeUI(next);
-  }
-
-  function updateThemeUI(theme) {
-    document.getElementById('theme-icon').textContent = theme === 'dark' ? '☀️' : '🌙';
-    document.getElementById('theme-label').textContent = theme === 'dark' ? 'Light' : 'Dark';
-  }
-
-  function formatDate(dateStr) {
-    const d = new Date(dateStr);
-    return d.toLocaleDateString('en-IN', {day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
-  }
-
-  async function loadSessions() {
-    try {
-      const res = await fetch(`${API}/consultation/history`, { headers:{'Authorization':`Bearer ${token}`} });
-      if (res.status === 403) { window.location.href = 'index.html'; return; }
-      const sessions = await res.json();
-      const select = document.getElementById('session-select');
-
-      if (sessions.length === 0) {
-        select.innerHTML = '<option value="">No consultations found</option>';
-        return;
-      }
-
-      select.innerHTML = '<option value="">Select a consultation...</option>' +
-        sessions.map(s => `<option value="${s.id}">#${s.id} — ${formatDate(s.createdAt)} — ${s.severity || 'Pending'}</option>`).join('');
-
-      document.getElementById('generate-btn').disabled = false;
-
-      const urlParams = new URLSearchParams(window.location.search);
-      const sessionParam = urlParams.get('session');
-      if (sessionParam) {
-        select.value = sessionParam;
-        generateReport();
-      }
-    } catch(e) {
-      document.getElementById('session-select').innerHTML = '<option value="">Connection error</option>';
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      updateThemeUI(next);
     }
-  }
 
-  async function generateReport() {
-    const sessionId = document.getElementById('session-select').value;
-    if (!sessionId) { alert('Please select a consultation session.'); return; }
+    function updateThemeUI(theme) {
+      document.getElementById('theme-icon').textContent = theme === 'dark' ? '☀️' : '🌙';
+      document.getElementById('theme-label').textContent = theme === 'dark' ? 'Light' : 'Dark';
+    }
 
-    const btn = document.getElementById('generate-btn');
-    btn.innerHTML = '<span class="spinner"></span> Generating...';
-    btn.disabled = true;
+    function formatDate(dateStr) {
+      const d = new Date(dateStr);
+      return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    }
 
-    try {
-      const res = await fetch(`${API}/consultation/messages/${sessionId}`, { headers:{'Authorization':`Bearer ${token}`} });
-      const messages = await res.json();
+    async function loadSessions() {
+      try {
+        const res = await fetch(`${API}/consultation/history`, { headers: { 'Authorization': `Bearer ${token}` } });
+        if (res.status === 403) { window.location.href = 'index.html'; return; }
+        const sessions = await res.json();
+        const select = document.getElementById('session-select');
 
-      const histRes = await fetch(`${API}/consultation/history`, { headers:{'Authorization':`Bearer ${token}`} });
-      const sessions = await histRes.json();
-      const session = sessions.find(s => s.id == sessionId);
+        if (sessions.length === 0) {
+          select.innerHTML = '<option value="">No consultations found</option>';
+          return;
+        }
 
-      if (!session) { alert('Session not found.'); return; }
+        select.innerHTML = '<option value="">Select a consultation...</option>' +
+          sessions.map(s => `<option value="${s.id}">#${s.id} — ${formatDate(s.createdAt)} — ${s.severity || 'Pending'}</option>`).join('');
 
-      const patientName = email ? email.split('@')[0] : 'Patient';
-      document.getElementById('report-date').textContent = formatDate(session.createdAt);
-      document.getElementById('meta-patient').textContent = patientName.charAt(0).toUpperCase() + patientName.slice(1);
-      document.getElementById('meta-session').textContent = `#${session.id}`;
-      document.getElementById('meta-severity').textContent = session.severity || 'Pending';
+        document.getElementById('generate-btn').disabled = false;
 
-      const sev = session.severity || 'LOW';
-      const badge = document.getElementById('severity-badge');
-      badge.className = `severity-block sev-${sev}`;
-      const sevLabels = { LOW:'✅ Low Risk', MEDIUM:'⚠️ Medium Risk', HIGH:'🚨 High Risk — See Doctor' };
-      badge.textContent = sevLabels[sev] || sev;
+        const urlParams = new URLSearchParams(window.location.search);
+        const sessionParam = urlParams.get('session');
+        if (sessionParam) {
+          select.value = sessionParam;
+          generateReport();
+        }
+      } catch (e) {
+        document.getElementById('session-select').innerHTML = '<option value="">Connection error</option>';
+      }
+    }
 
-      const diagText = session.diagnosis ? session.diagnosis.replace(/\[SEVERITY:\s*(LOW|MEDIUM|HIGH)\]/g, '').trim() : 'No diagnosis recorded.';
-      document.getElementById('diagnosis-text').textContent = diagText;
+    async function generateReport() {
+      const sessionId = document.getElementById('session-select').value;
+      if (!sessionId) { alert('Please select a consultation session.'); return; }
 
-      const msgList = document.getElementById('messages-list');
-      msgList.innerHTML = messages.map(msg => {
-        const isUser = msg.sender === 'user';
-        const cleanContent = msg.content.replace(/\[SEVERITY:\s*(LOW|MEDIUM|HIGH)\]/g, '').trim();
-        return `
+      const btn = document.getElementById('generate-btn');
+      btn.innerHTML = '<span class="spinner"></span> Generating...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(`${API}/consultation/messages/${sessionId}`, { headers: { 'Authorization': `Bearer ${token}` } });
+        const messages = await res.json();
+
+        const histRes = await fetch(`${API}/consultation/history`, { headers: { 'Authorization': `Bearer ${token}` } });
+        const sessions = await histRes.json();
+        const session = sessions.find(s => s.id == sessionId);
+
+        if (!session) { alert('Session not found.'); return; }
+
+        const patientName = email ? email.split('@')[0] : 'Patient';
+        document.getElementById('report-date').textContent = formatDate(session.createdAt);
+        document.getElementById('meta-patient').textContent = patientName.charAt(0).toUpperCase() + patientName.slice(1);
+        document.getElementById('meta-session').textContent = `#${session.id}`;
+        document.getElementById('meta-severity').textContent = session.severity || 'Pending';
+
+        const sev = session.severity || 'LOW';
+        const badge = document.getElementById('severity-badge');
+        badge.className = `severity-block sev-${sev}`;
+        const sevLabels = { LOW: '✅ Low Risk', MEDIUM: '⚠️ Medium Risk', HIGH: '🚨 High Risk — See Doctor' };
+        badge.textContent = sevLabels[sev] || sev;
+
+        const diagText = session.diagnosis ? session.diagnosis.replace(/\[SEVERITY:\s*(LOW|MEDIUM|HIGH)\]/g, '').trim() : 'No diagnosis recorded.';
+        document.getElementById('diagnosis-text').textContent = diagText;
+
+        const msgList = document.getElementById('messages-list');
+        msgList.innerHTML = messages.map(msg => {
+          const isUser = msg.sender === 'user';
+          const cleanContent = msg.content.replace(/\[SEVERITY:\s*(LOW|MEDIUM|HIGH)\]/g, '').trim();
+          return `
           <div class="chat-msg ${isUser ? 'user' : ''}">
             <div>
               <div class="msg-role">${isUser ? '👤 Patient' : '🩺 AI Doctor'}</div>
-              <div class="msg-text">${cleanContent.replace(/\n/g,'<br>')}</div>
+              <div class="msg-text">${cleanContent.replace(/\n/g, '<br>')}</div>
             </div>
           </div>
         `;
-      }).join('');
+        }).join('');
 
-      document.getElementById('report-container').style.display = 'block';
-      document.getElementById('report-container').scrollIntoView({ behavior:'smooth' });
+        document.getElementById('report-container').style.display = 'block';
+        document.getElementById('report-container').scrollIntoView({ behavior: 'smooth' });
 
-    } catch(e) {
-      alert('Error generating report. Make sure the server is running.');
+      } catch (e) {
+        alert('Error generating report. Make sure the server is running.');
+      }
+
+      btn.innerHTML = 'Generate Report →';
+      btn.disabled = false;
     }
 
-    btn.innerHTML = 'Generate Report →';
-    btn.disabled = false;
-  }
+    function downloadPDF() {
+      const btn = document.querySelector('.btn-pdf');
+      btn.textContent = 'Preparing PDF...';
 
-  function downloadPDF() {
-    const btn = document.querySelector('.btn-pdf');
-    btn.textContent = 'Preparing PDF...';
+      setTimeout(() => {
+        window.print();
+        btn.innerHTML = '📄 Download PDF';
+      }, 300);
+    }
 
-    setTimeout(() => {
-      window.print();
-      btn.innerHTML = '📄 Download PDF';
-    }, 300);
-  }
-
-  loadSessions();
-</script>
+    loadSessions();
+  </script>
 </body>
+
 </html>
