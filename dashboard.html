@@ -43,6 +43,10 @@
       box-sizing: border-box;
     }
 
+    html , body{
+      overflow-x : clip;
+    }
+
     body {
       font-family: 'DM Sans', sans-serif;
       background: var(--bg);
@@ -408,6 +412,9 @@
       text-decoration: none;
       color: inherit;
       gap: 12px;
+      min-width: 0;        /* NEW */
+      max-width: 100%;     /* NEW */
+      overflow: hidden;
     }
 
     .session-card:hover {
@@ -421,6 +428,12 @@
       align-items: center;
       gap: 14px;
       min-width: 0;
+      flex : 1;
+    }
+
+    .session-text {       /* NEW */
+      min-width: 0;       /* this is the key line that allows shrinking */
+      flex: 1;
     }
 
     .session-icon {
@@ -559,154 +572,166 @@
         gap: 12px;
       }
     }
+    @media (max-width: 768px) {
+  nav {
+    padding: 0 16px;
+    height: 58px;
+  }
+
+  .nav-user,
+  .nav-link,
+  .theme-toggle-nav,
+  .btn-logout {
+    display: none;
+  }
+
+  .hamburger-btn {
+    display: flex;
+  }
+
+  .mobile-menu {
+    position: fixed;
+    top: 58px;
+    left: 0;
+    right: 0;
+    background: var(--bg-mid);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px;
+    z-index: 99;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .mobile-menu.show {
+    display: flex;
+  }
+
+  .mobile-menu a,
+  .mobile-menu button {
+    width: 100%;
+    text-align: left;
+    padding: 12px 14px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    text-decoration: none;
+    cursor: pointer;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-sizing: border-box;
+  }
+
+  .mobile-menu button.logout-mobile {
+    color: var(--danger);
+    border-color: rgba(255, 92, 124, 0.3);
+  }
+}
 
     /* ── MOBILE (375px–480px) ─────────────────────────────────────── */
-    @media(max-width:480px) {
-      nav {
-        padding: 0 16px;
-        height: 58px;
-      }
+@media (max-width: 480px) {
+  main {
+    padding: 24px 16px;
+  }
 
-      .nav-user {
-        display: none;
-      }
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
 
-      .nav-link,
-      .theme-toggle-nav,
-      .btn-logout {
-        display: none;
-      }
+  .page-title {
+    font-size: 26px;
+  }
 
-      .hamburger-btn {
-        display: flex;
-      }
+  .page-sub {
+    font-size: 13px;
+  }
 
-      .mobile-menu {
-        position: fixed;
-        top: 58px;
-        left: 0;
-        right: 0;
-        background: var(--bg-mid);
-        border-bottom: 1px solid var(--border);
-        padding: 12px 16px;
-        z-index: 99;
-        flex-direction: column;
-        gap: 8px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-      }
+  .header-actions {
+    width: 100%;
+    flex-direction: column;
+    gap: 8px;
+  }
 
-      .mobile-menu.show {
-        display: flex;
-      }
+  .btn-new,
+  .btn-secondary {
+    width: 100%;
+    text-align: center;
+  }
 
-      .mobile-menu a,
-      .mobile-menu button {
-        width: 100%;
-        text-align: left;
-        padding: 12px 14px;
-        background: var(--bg);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        color: var(--text);
-        font-family: 'DM Sans', sans-serif;
-        font-size: 14px;
-        text-decoration: none;
-        cursor: pointer;
-        min-height: 44px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        box-sizing: border-box;
-      }
+  .quick-actions {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
 
-      .mobile-menu button.logout-mobile {
-        color: var(--danger);
-        border-color: rgba(255, 92, 124, 0.3);
-      }
+  .quick-card {
+    padding: 16px;
+  }
 
-      main {
-        padding: 24px 16px;
-      }
+  .quick-icon {
+    font-size: 20px;
+    margin-bottom: 6px;
+  }
 
-      .page-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
-        margin-bottom: 24px;
-      }
+  .quick-title {
+    font-size: 13px;
+  }
 
-      .page-title {
-        font-size: 26px;
-      }
+  .quick-sub {
+    font-size: 11px;
+  }
 
-      .page-sub {
-        font-size: 13px;
-      }
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
 
-      .header-actions {
-        width: 100%;
-        flex-direction: column;
-        gap: 8px;
-      }
+  .stat-card {
+    padding: 16px;
+  }
 
-      .btn-new,
-      .btn-secondary {
-        width: 100%;
-        text-align: center;
-      }
+  .stat-value {
+    font-size: 28px;
+  }
 
-      .quick-actions {
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-bottom: 22px;
-      }
+  /* ── Session cards ── */
+  .session-card {
+    padding: 14px 16px;
+    flex-wrap: wrap;
+  }
 
-      .quick-card {
-        padding: 16px;
-      }
+  .session-card:hover {
+    transform: none;
+  }
 
-      .quick-icon {
-        font-size: 20px;
-        margin-bottom: 6px;
-      }
+  .session-left {
+    flex: 1 1 100%;
+  }
 
-      .quick-title {
-        font-size: 13px;
-      }
+  .session-diagnosis {
+    max-width: none;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
 
-      .quick-sub {
-        font-size: 11px;
-      }
-
-      .stats-grid {
-        grid-template-columns: 1fr;
-        gap: 10px;
-        margin-bottom: 22px;
-      }
-
-      .stat-card {
-        padding: 16px;
-      }
-
-      .stat-value {
-        font-size: 28px;
-      }
-
-      .session-card {
-        padding: 14px 16px;
-        flex-wrap: wrap;
-      }
-
-      .session-diagnosis {
-        max-width: 180px;
-      }
-
-      .session-right {
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 6px;
-      }
-    }
+  .session-right {
+    flex: 1 1 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
   </style>
 </head>
 
@@ -739,7 +764,7 @@
   <div class="mobile-menu" id="mobile-menu">
     <a href="profile.html">👤 Profile</a>
     <a href="report.html">📄 Reports</a>
-    <button onclick="toggleTheme()">🌓 Toggle Theme</button>
+    <button onclick="toggleTheme(); toggleMobileMenu()">🌓 Toggle Theme</button>
     <button class="logout-mobile" onclick="logout()">🚪 Sign Out</button>
   </div>
 
@@ -841,9 +866,10 @@
     }
 
     function truncate(str, n) {
-      if (!str) return 'Consultation in progress...';
-      return str.length > n ? str.substring(0, n) + '...' : str;
-    }
+  if (!str) return 'Consultation in progress...';
+  str = str.replace(/\*\*/g, '');
+  return str.length > n ? str.substring(0, n) + '...' : str;
+}
 
     async function loadSessions() {
       try {
@@ -864,9 +890,9 @@
         list.innerHTML = sessions.map(s => `
         <div class="session-card" onclick="window.location='chat.html?session=${s.id}'">
           <div class="session-left">
-            <div class="session-icon">💬</div>
-            <div>
-              <div class="session-date">${formatDate(s.createdAt)}</div>
+  <div class="session-icon">💬</div>
+  <div class="session-text">
+    <div class="session-date">${formatDate(s.createdAt)}</div>
               <div class="session-diagnosis">${truncate(s.diagnosis, 75)}</div>
             </div>
           </div>
