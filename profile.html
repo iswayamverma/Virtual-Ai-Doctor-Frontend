@@ -43,6 +43,10 @@
       box-sizing: border-box;
     }
 
+  html, body {
+  overflow-x: clip;
+  }
+
     body {
       font-family: 'DM Sans', sans-serif;
       background: var(--bg);
@@ -176,6 +180,36 @@
       border-color: var(--danger);
       color: var(--danger);
     }
+
+    /* Hamburger (hidden on desktop) */
+.hamburger-btn {
+  display: none;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hamburger-btn span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: all 0.25s;
+}
+
+.hamburger-btn.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.hamburger-btn.open span:nth-child(2) { opacity: 0; }
+.hamburger-btn.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+.mobile-menu { display: none; }
 
     main {
       max-width: 800px;
@@ -445,95 +479,188 @@
     }
 
     /* ── TABLET (768px) ───────────────────────────────────────────── */
-    @media(max-width:768px) {
-      main {
-        padding: 36px 24px;
-      }
-    }
+    /* ── TABLET + NAV (768px) ─────────────────────────────────────── */
+@media (max-width: 768px) {
+  main {
+    padding: 28px 20px;
+  }
+
+  nav {
+    padding: 0 16px;
+    height: 58px;
+  }
+
+  .nav-link,
+  .theme-toggle-nav,
+  .btn-logout {
+    display: none;
+  }
+
+  .hamburger-btn {
+    display: flex;
+  }
+
+  .mobile-menu {
+    position: fixed;
+    top: 58px;
+    left: 0;
+    right: 0;
+    background: var(--bg-mid);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px;
+    z-index: 99;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .mobile-menu.show {
+    display: flex;
+  }
+
+  .mobile-menu a,
+  .mobile-menu button {
+    width: 100%;
+    text-align: left;
+    padding: 12px 14px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    text-decoration: none;
+    cursor: pointer;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-sizing: border-box;
+  }
+
+  .mobile-menu button.logout-mobile {
+    color: var(--danger);
+    border-color: rgba(255, 92, 124, 0.3);
+  }
+}
+    
 
     /* ── MOBILE (375px–480px) ─────────────────────────────────────── */
-    @media(max-width:480px) {
-      nav {
-        padding: 0 14px;
-        height: 56px;
-      }
+    /* ── MOBILE COMPACT (480px) ───────────────────────────────────── */
+@media (max-width: 480px) {
+  main {
+    padding: 16px 14px 28px;
+  }
 
-      .nav-link span,
-      .nav-link {
-        font-size: 12px;
-        padding: 7px 10px;
-      }
+  /* Heading */
+  .page-header { margin-bottom: 14px; }
+  .page-title  { font-size: 24px; margin-bottom: 2px; }
+  .page-sub    { font-size: 12.5px; }
 
-      .theme-toggle-nav span#theme-label {
-        display: none;
-      }
+  /* Profile card: avatar left, info right (compact row) */
+  .profile-top {
+    flex-direction: row;
+    text-align: left;
+    padding: 14px 16px;
+    gap: 14px;
+    margin-bottom: 12px;
+    border-radius: 16px;
+  }
+  .avatar {
+    width: 52px;
+    height: 52px;
+    font-size: 20px;
+    border-radius: 14px;
+  }
+  .profile-info h2 { font-size: 18px; margin-bottom: 2px; }
+  .profile-info p  { font-size: 12px; }
+  .profile-badge   { margin-top: 6px; padding: 3px 10px; font-size: 11px; }
 
-      .btn-logout {
-        padding: 7px 10px;
-        font-size: 12px;
-      }
+  /* AI banner */
+  .ai-notice {
+    padding: 10px 12px;
+    gap: 8px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+  }
+  .ai-notice-icon { font-size: 15px; }
+  .ai-notice p    { font-size: 11.5px; line-height: 1.45; }
 
-      main {
-        padding: 24px 16px;
-      }
+  /* Form sections */
+  .form-section {
+    padding: 14px;
+    border-radius: 14px;
+    margin-bottom: 12px;
+  }
+  .section-header { margin-bottom: 12px; gap: 8px; }
+  .section-icon   { width: 30px; height: 30px; font-size: 14px; }
+  .section-title  { font-size: 15px; }
+  .section-sub    { display: none; }
 
-      .page-title {
-        font-size: 26px;
-      }
+  /* Keep 2 columns: Name + Age, Blood Group + Allergies */
+  .form-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .form-grid.single {
+    grid-template-columns: 1fr;
+    margin-top: 10px !important;   /* overrides the inline margin-top:18px */
+  }
 
-      .page-sub {
-        font-size: 13px;
-      }
+  .form-group { gap: 5px; min-width: 0; }
+  .form-group label { font-size: 10.5px; }
 
-      .profile-top {
-        flex-direction: column;
-        text-align: center;
-        padding: 24px 20px;
-        gap: 14px;
-      }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 9px 12px;
+    font-size: 16px;      /* 16px stops iPhones zooming in on focus */
+    min-height: 40px;
+    width: 100%;
+    min-width: 0;
+  }
+  .form-group textarea { min-height: 64px; }
 
-      .avatar {
-        width: 64px;
-        height: 64px;
-        font-size: 26px;
-      }
-
-      .form-section {
-        padding: 20px;
-        border-radius: 16px;
-      }
-
-      .form-grid {
-        grid-template-columns: 1fr;
-        gap: 14px;
-      }
-
-      .section-title {
-        font-size: 16px;
-      }
-    }
+  .btn-save {
+    padding: 12px;
+    min-height: 44px;
+    font-size: 14px;
+    margin-top: 4px;
+  }
+}
+    
   </style>
 </head>
 
 <body>
 
   <nav>
-    <div class="nav-logo">
-      <div class="nav-logo-icon">🩺</div>
-      Medi<span>AI</span>
-    </div>
-    <div class="nav-right">
-      <a href="dashboard.html" class="nav-link">← Dashboard</a>
-      <button class="theme-toggle-nav" onclick="toggleTheme()">
-        <span id="theme-icon">☀️</span>
-        <div class="toggle-track">
-          <div class="toggle-thumb"></div>
-        </div>
-        <span id="theme-label">Light</span>
-      </button>
-      <button class="btn-logout" onclick="logout()">Sign Out</button>
-    </div>
-  </nav>
+  <div class="nav-logo">
+    <div class="nav-logo-icon">🩺</div>
+    Medi<span>AI</span>
+  </div>
+  <div class="nav-right">
+    <a href="dashboard.html" class="nav-link">← Dashboard</a>
+    <button class="theme-toggle-nav" onclick="toggleTheme()">
+      <span id="theme-icon">☀️</span>
+      <div class="toggle-track">
+        <div class="toggle-thumb"></div>
+      </div>
+      <span id="theme-label">Light</span>
+    </button>
+    <button class="btn-logout" onclick="logout()">Sign Out</button>
+    <button class="hamburger-btn" id="hamburger-btn" onclick="toggleMobileMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile dropdown menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="dashboard.html">← Dashboard</a>
+  <button onclick="toggleTheme(); toggleMobileMenu()">🌓 Toggle Theme</button>
+  <button class="logout-mobile" onclick="logout()">🚪 Sign Out</button>
+</div>
 
   <main>
     <div class="page-header">
@@ -649,6 +776,10 @@
     }
 
     function logout() { localStorage.clear(); window.location.href = 'index.html'; }
+    function toggleMobileMenu() {
+    document.getElementById('hamburger-btn').classList.toggle('open');
+    document.getElementById('mobile-menu').classList.toggle('show');
+    }
 
     async function loadProfile() {
       try {
