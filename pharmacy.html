@@ -957,6 +957,24 @@
       }
     }
 
+    @media (min-width: 769px) and (max-width: 1000px) {
+      .sidebar {
+        width: 300px;
+      }
+
+      .s-filters {
+        align-items: stretch;
+      }
+
+      .chips {
+        flex: 1;
+      }
+
+      .sort-sel {
+        max-width: 110px;
+      }
+    }
+
     @media (max-width:440px) {
       .sidebar {
         height: 52dvh;
@@ -1333,6 +1351,12 @@
 
       if (!data || !data.elements?.length) {
         allPharmacies = [];
+        if (!data) {
+          document.getElementById('list-count').textContent = 'Unavailable';
+          document.getElementById('p-list').innerHTML =
+            '<div class="empty"><div class="empty-icon">⚠️</div><div class="empty-msg">Pharmacy search is temporarily unavailable.<br>Check your connection and try again.</div><button class="retry-btn" onclick="fetchOverpassPharmacies(userLocation)">Try Again</button></div>';
+          return;
+        }
         renderList();
         return;
       }
@@ -1382,6 +1406,7 @@
       if (match) {
         const open = parseInt(match[1]) * 60 + parseInt(match[2]);
         const close = parseInt(match[3]) * 60 + parseInt(match[4]);
+        if (close < open) return curMins >= open || curMins < close;
         return curMins >= open && curMins < close;
       }
       return null;

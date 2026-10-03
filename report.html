@@ -819,6 +819,15 @@
       }
     }
 
+    @media (max-width: 900px) {
+      .report-header,
+      .report-body,
+      .report-footer {
+        padding-left: 28px;
+        padding-right: 28px;
+      }
+    }
+
     /* ── MOBILE (480px) ───────────────────────────────────────────── */
     @media (max-width: 480px) {
       main {
@@ -1058,6 +1067,12 @@
       });
     }
 
+    function escapeHTML(value) {
+      const div = document.createElement('div');
+      div.textContent = String(value ?? '');
+      return div.innerHTML;
+    }
+
     function toggleMobileMenu() {
       document.getElementById('hamburger-btn').classList.toggle('open');
       document.getElementById('mobile-menu').classList.toggle('show');
@@ -1115,7 +1130,8 @@
       const label = document.getElementById('dropdown-label');
       try {
         const res = await fetch(`${API}/consultation/history`, { headers: { 'Authorization': `Bearer ${token}` } });
-        if (res.status === 403) { window.location.href = 'index.html'; return; }
+        if (res.status === 401 || res.status === 403) { window.location.href = 'index.html'; return; }
+        if (!res.ok) throw new Error('Could not load consultations');
         const sessions = await res.json();
         sessionsCache = sessions;
 
@@ -1148,9 +1164,13 @@
 
       try {
         const res = await fetch(`${API}/consultation/messages/${sessionId}`, { headers: { 'Authorization': `Bearer ${token}` } });
+        if (res.status === 401 || res.status === 403) { window.location.href = 'index.html'; return; }
+        if (!res.ok) throw new Error('Could not load consultation messages');
         const messages = await res.json();
 
         const histRes = await fetch(`${API}/consultation/history`, { headers: { 'Authorization': `Bearer ${token}` } });
+        if (histRes.status === 401 || histRes.status === 403) { window.location.href = 'index.html'; return; }
+        if (!histRes.ok) throw new Error('Could not load consultation history');
         const sessions = await histRes.json();
         const session = sessions.find(s => s.id == sessionId);
 
@@ -1179,7 +1199,7 @@
           <div class="chat-msg ${isUser ? 'user' : ''}">
             <div>
               <div class="msg-role">${isUser ? '👤 Patient' : '🩺 AI Doctor'}</div>
-              <div class="msg-text">${cleanContent.replace(/\n/g, '<br>')}</div>
+              <div class="msg-text">${escapeHTML(cleanContent).replace(/\n/g, '<br>')}</div>
             </div>
           </div>
         `;

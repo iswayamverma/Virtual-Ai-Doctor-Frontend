@@ -491,7 +491,7 @@
     height: 58px;
   }
 
-  .nav-link,
+    .nav-link,
   .theme-toggle-nav,
   .btn-logout {
     display: none;
@@ -542,6 +542,20 @@
   .mobile-menu button.logout-mobile {
     color: var(--danger);
     border-color: rgba(255, 92, 124, 0.3);
+  }
+}
+
+@media (max-width: 600px) {
+  .profile-top {
+    align-items: flex-start;
+  }
+
+  .profile-info {
+    min-width: 0;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
   }
 }
     
